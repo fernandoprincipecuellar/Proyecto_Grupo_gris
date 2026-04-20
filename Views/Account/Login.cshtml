@@ -33,7 +33,10 @@
                 <button type="submit" class="btn btn-eco w-100 py-2">Ingresar</button>
             </form>
 
-            <p class="login-register-text mt-4">¿No tienes cuenta? <a asp-area="Identity" asp-page="/Account/Register">Regístrate</a></p>
+            <p class="login-register-text mt-4">
+                ¿No tienes cuenta? 
+                <a asp-controller="Account" asp-action="Register">Regístrate</a>
+            </p>
         </div>
     </div>
 </div>
