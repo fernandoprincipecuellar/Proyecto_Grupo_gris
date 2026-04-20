@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_Grupo_gris.Models;
+using System.Security.Claims;
 
 namespace Proyecto_Grupo_gris.Controllers;
 
@@ -102,5 +103,44 @@ public async Task<IActionResult> Register(RegisterViewModel model)
     }
 
     return View(model);
+}
+
+[HttpPost]
+[AllowAnonymous]
+public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
+{
+    var info = await _signInManager.GetExternalLoginInfoAsync();
+
+    if (info == null)
+        return RedirectToAction("Login");
+
+    var signInResult = await _signInManager.ExternalLoginSignInAsync(
+        info.LoginProvider, info.ProviderKey, isPersistent: false);
+
+    if (signInResult.Succeeded)
+        return RedirectToAction("Index", "Home");
+
+    var email = info.Principal.FindFirstValue(System.Security.Claims.ClaimTypes.Email);
+
+    if (email == null)
+        return RedirectToAction("Login");
+
+    var user = new ApplicationUser
+    {
+        UserName = email,
+        Email = email,
+        Nombre = email
+    };
+
+    var result = await _userManager.CreateAsync(user);
+
+    if (result.Succeeded)
+    {
+        await _userManager.AddLoginAsync(user, info);
+        await _signInManager.SignInAsync(user, false);
+        return RedirectToAction("Index", "Home");
+    }
+
+    return RedirectToAction("Login");
 }
 }

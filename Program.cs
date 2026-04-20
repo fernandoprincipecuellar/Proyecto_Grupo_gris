@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Grupo_gris.Data;
+using Microsoft.AspNetCore.Authentication.Google;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,3 +50,11 @@ app.MapRazorPages()
    .WithStaticAssets();
 
 app.Run();
+
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = "TU_CLIENT_ID";
+        options.ClientSecret = "TU_CLIENT_SECRET";
+    });
+
