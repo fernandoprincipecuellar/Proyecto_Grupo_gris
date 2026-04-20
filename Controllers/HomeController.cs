@@ -17,7 +17,7 @@ public class HomeController : Controller
             RecolectorNombre = "Camión Recolector",
             RecolectorDireccion = "Calle Principal 123",
             Distancia = "A 500 Metros de tu hogar",
-            Co2AhoradoKg = 89,
+            Co2AhorradoKg = 89,
             ArbolesSalvados = 12,
             AguaAhorradaL = 340,
             NombreUsuario = "María González",

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_Grupo_gris.Models;
