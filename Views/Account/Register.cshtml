@@ -12,6 +12,8 @@
         <h2 class="text-center">Registrarse</h2>
 
         <form asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+
             <div class="form-group mt-3">
                 <label asp-for="Nombre"></label>
                 <input asp-for="Nombre" class="form-control" />
@@ -40,11 +42,21 @@
             <button type="submit" class="btn btn-success w-100 mt-4">
                 Registrarse
             </button>
-
-            <div class="text-center mt-3">
-                ¿Ya tienes cuenta? 
-                <a asp-action="Login">Inicia sesión</a>
-            </div>
         </form>
+
+        <hr />
+
+        <form asp-controller="Account" asp-action="ExternalLogin" method="post">
+            <button type="submit" name="provider" value="Google" class="btn btn-light border w-100">
+                <img src="https://developers.google.com/identity/images/g-logo.png" width="20">
+             Registrarse con Google
+            </button>
+        </form>do
+
+        <div class="text-center mt-3">
+            ¿Ya tienes cuenta? 
+            <a asp-action="Login">Inicia sesión</a>
+        </div>
+
     </div>
 </div>

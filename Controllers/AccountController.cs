@@ -107,6 +107,15 @@ public async Task<IActionResult> Register(RegisterViewModel model)
 
 [HttpPost]
 [AllowAnonymous]
+public IActionResult ExternalLogin(string provider, string? returnUrl = null)
+{
+    var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { returnUrl });
+    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+    return Challenge(properties, provider);
+}
+
+[AllowAnonymous]
 public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
 {
     var info = await _signInManager.GetExternalLoginInfoAsync();
@@ -115,7 +124,9 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
         return RedirectToAction("Login");
 
     var signInResult = await _signInManager.ExternalLoginSignInAsync(
-        info.LoginProvider, info.ProviderKey, isPersistent: false);
+        info.LoginProvider,
+        info.ProviderKey,
+        isPersistent: false);
 
     if (signInResult.Succeeded)
         return RedirectToAction("Index", "Home");
@@ -125,11 +136,10 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
     if (email == null)
         return RedirectToAction("Login");
 
-    var user = new ApplicationUser
+    var user = new IdentityUser
     {
         UserName = email,
-        Email = email,
-        Nombre = email
+        Email = email
     };
 
     var result = await _userManager.CreateAsync(user);
@@ -143,4 +153,5 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
 
     return RedirectToAction("Login");
 }
+
 }
