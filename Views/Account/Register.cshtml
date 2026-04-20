@@ -1,7 +1,7 @@
-@model Proyecto_Grupo_gris.Models.LoginViewModel
+@model Proyecto_Grupo_gris.Models.RegisterViewModel
 
 @{
-    ViewData["Title"] = "Iniciar Sesión";
+    ViewData["Title"] = "Regístrate";
 }
 
 <div class="login-page-wrapper d-flex align-items-center justify-content-center min-vh-100">
@@ -12,9 +12,9 @@
         </div>
 
         <div class="login-card p-4 shadow-sm">
-            <h2 class="login-card-title mb-4">Iniciar Sesión</h2>
+            <h2 class="login-card-title mb-4">Regístrate</h2>
 
-            <form asp-action="Login" method="post">
+            <form asp-action="Register" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                 <div class="mb-3 text-start">
@@ -23,19 +23,25 @@
                     <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
 
-                <div class="mb-4 text-start">
+                <div class="mb-3 text-start">
                     <label asp-for="Password" class="form-label"></label>
                     <input asp-for="Password" class="form-control" placeholder="Contraseña" />
                     <span asp-validation-for="Password" class="text-danger small"></span>
                 </div>
 
+                <div class="mb-4 text-start">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirmar contraseña" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                </div>
+
                 <input asp-for="ReturnUrl" type="hidden" />
-                <button type="submit" class="btn btn-eco w-100 py-2">Ingresar</button>
+                <button type="submit" class="btn btn-eco w-100 py-2">Registrarme</button>
             </form>
 
             @if (Model.ExternalLogins?.Any() == true)
             {
-                <div class="mt-4 text-muted">O ingresa con</div>
+                <div class="mt-4 text-muted">O regístrate con</div>
                 <div class="d-grid gap-2 mt-3">
                     @foreach (var provider in Model.ExternalLogins)
                     {
@@ -44,7 +50,7 @@
                 </div>
             }
 
-            <p class="login-register-text mt-4">¿No tienes cuenta? <a asp-controller="Account" asp-action="Register">Regístrate</a></p>
+            <p class="login-register-text mt-4">¿Ya tienes cuenta? <a asp-controller="Account" asp-action="Login">Inicia sesión</a></p>
         </div>
     </div>
 </div>

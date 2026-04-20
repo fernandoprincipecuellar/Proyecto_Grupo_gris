@@ -294,18 +294,89 @@ body {
   margin-bottom: 0;
 }
 
-.dashboard-profile {
-  width: 48px;
-  height: 48px;
+.profile-card,
+.profile-page-card {
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 22px 46px rgba(48, 82, 61, 0.12);
+}
+
+.profile-page-card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.profile-settings-btn {
+  border-color: #d8e4db;
+  color: #2e7d32;
+}
+
+.profile-avatar {
+  width: 108px;
+  height: 108px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-  background: #2e7d32;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: linear-gradient(135deg, #c8e6c9 0%, #2e7d32 100%);
   color: white;
+  font-size: 2.5rem;
   font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 6px 18px rgba(46, 125, 50, 0.2);
+  box-shadow: 0 16px 34px rgba(46, 125, 50, 0.18);
+}
+
+.profile-page-title {
+  font-size: 2.5rem;
+  margin-bottom: 0;
+}
+
+.profile-page .dashboard-section-label {
+  letter-spacing: 0.1em;
+}
+
+.profile-info-item {
+  gap: 0.75rem;
+}
+
+.profile-info-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.profile-info-label {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.profile-info-value {
+  font-weight: 600;
+}
+
+.profile-achievements h3 {
+  color: #1b5e20;
+}
+
+.achievement-item {
+  background: #f8faf7;
+  border-radius: 20px;
+}
+
+.achievement-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 1.25rem;
 }
 
 .dashboard-summary-card {

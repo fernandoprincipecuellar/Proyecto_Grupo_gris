@@ -12,4 +12,15 @@ public class DashboardViewModel
     public int Co2AhoradoKg { get; set; }
     public int ArbolesSalvados { get; set; }
     public int AguaAhorradaL { get; set; }
+
+    public string NombreUsuario { get; set; } = string.Empty;
+    public string CargoUsuario { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Telefono { get; set; } = string.Empty;
+    public string Ciudad { get; set; } = string.Empty;
+    public string PerfilIniciales { get; set; } = string.Empty;
+    public string Logro1Titulo { get; set; } = string.Empty;
+    public string Logro1Descripcion { get; set; } = string.Empty;
+    public string Logro2Titulo { get; set; } = string.Empty;
+    public string Logro2Descripcion { get; set; } = string.Empty;
 }
