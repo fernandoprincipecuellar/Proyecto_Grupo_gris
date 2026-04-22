@@ -123,15 +123,30 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
     if (info == null)
         return RedirectToAction("Login");
 
+    var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+    var name = info.Principal.FindFirstValue(ClaimTypes.Name) ?? info.Principal.FindFirstValue("given_name");
+    var picture = info.Principal.FindFirstValue("picture");
+
     var signInResult = await _signInManager.ExternalLoginSignInAsync(
         info.LoginProvider,
         info.ProviderKey,
         isPersistent: false);
 
     if (signInResult.Succeeded)
-        return RedirectToAction("Index", "Home");
+    {
+        var existingUser = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+        if (existingUser != null)
+        {
+            var claims = await _userManager.GetClaimsAsync(existingUser);
 
-    var email = info.Principal.FindFirstValue(System.Security.Claims.ClaimTypes.Email);
+            if (!claims.Any(c => c.Type == "FullName") && !string.IsNullOrEmpty(name))
+                await _userManager.AddClaimAsync(existingUser, new Claim("FullName", name));
+            
+            if (!claims.Any(c => c.Type == "Picture") && !string.IsNullOrEmpty(picture))
+                await _userManager.AddClaimAsync(existingUser, new Claim("Picture", picture));
+        }
+        return RedirectToAction("Index", "Home");
+    }
 
     if (email == null)
         return RedirectToAction("Login");
@@ -147,6 +162,13 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
     if (result.Succeeded)
     {
         await _userManager.AddLoginAsync(user, info);
+        
+        // Add claims for name and picture
+        if (!string.IsNullOrEmpty(name))
+            await _userManager.AddClaimAsync(user, new Claim("FullName", name));
+        if (!string.IsNullOrEmpty(picture))
+            await _userManager.AddClaimAsync(user, new Claim("Picture", picture));
+
         await _signInManager.SignInAsync(user, false);
         return RedirectToAction("Index", "Home");
     }

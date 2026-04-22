@@ -2,42 +2,59 @@
 
 @{
     ViewData["Title"] = "Iniciar Sesión";
+    Layout = "_Layout";
 }
 
-<div class="login-page-wrapper d-flex align-items-center justify-content-center min-vh-100">
-    <div class="login-inner text-center">
-        <div class="login-brand mb-4">
-            <h1 class="app-brand">EcoRuta</h1>
-            <p class="app-subtitle">Reciclaje inteligente</p>
-        </div>
+<div class="auth-split-wrapper">
+    <!-- Left: Form Side -->
+    <div class="auth-form-side">
+        <div class="auth-form-inner">
+            <!-- Brand -->
+            <div class="auth-brand">
+                <span class="auth-brand-icon"><i class="bi bi-recycle"></i></span>
+                <span class="auth-brand-name">EcoRuta</span>
+            </div>
 
-        <div class="login-card p-4 shadow-sm">
-            <h2 class="login-card-title mb-4">Iniciar Sesión</h2>
+            <h1 class="auth-title">Bienvenidos</h1>
 
-            <form asp-action="Login" method="post">
+            <!-- Login Form -->
+            <form asp-action="Login" method="post" class="auth-form">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <div class="mb-3 text-start">
-                    <label asp-for="Email" class="form-label"></label>
-                    <input asp-for="Email" class="form-control" placeholder="Correo electrónico" />
+                <div class="auth-field-group">
+                    <label asp-for="Email" class="auth-field-label"></label>
+                    <input asp-for="Email" class="auth-field-input" placeholder="tu@correo.com" />
                     <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
 
-                <div class="mb-4 text-start">
-                    <label asp-for="Password" class="form-label"></label>
-                    <input asp-for="Password" class="form-control" placeholder="Contraseña" />
+                <div class="auth-field-group">
+                    <label asp-for="Password" class="auth-field-label"></label>
+                    <input asp-for="Password" class="auth-field-input" placeholder="••••••••" />
                     <span asp-validation-for="Password" class="text-danger small"></span>
                 </div>
 
+                <div class="auth-options">
+                    <label class="auth-checkbox">
+                        <input type="checkbox" name="RememberMe" />
+                        <span>Recordarme</span>
+                    </label>
+                    <a href="#" class="auth-forgot-link">Olvidé mi contraseña</a>
+                </div>
+
                 <input asp-for="ReturnUrl" type="hidden" />
-                <button type="submit" class="btn btn-eco w-100 py-2">Ingresar</button>
+                <button type="submit" class="btn auth-btn-submit w-100">Ingresar</button>
             </form>
 
-            <p class="login-register-text mt-4">
-                ¿No tienes cuenta? 
+            <p class="auth-switch-text">
+                ¿No tienes cuenta?
                 <a asp-controller="Account" asp-action="Register">Regístrate</a>
             </p>
         </div>
+    </div>
+
+    <!-- Right: Illustration Side -->
+    <div class="auth-illustration-side">
+        <img src="~/images/eco-illustration.png" alt="Eco illustration" class="auth-illustration-img" />
     </div>
 </div>
 

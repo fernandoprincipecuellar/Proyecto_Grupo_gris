@@ -1,0 +1,173 @@
+@{
+    ViewData["Title"] = "Editar Perfil";
+    var userPicture = User.FindFirst("Picture")?.Value ?? User.FindFirst("picture")?.Value ?? "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+    var userName = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "";
+    var userEmail = User.Identity?.Name ?? ""; 
+    var userPhone = User.FindFirst("Phone")?.Value ?? "+34 612 345 678";
+    var userCity = User.FindFirst("City")?.Value ?? "Madrid, España";
+    var userBio = User.FindFirst("Bio")?.Value ?? "Eco-entusiasta y conductora comprometida con el planeta desde 2023 🌿";
+}
+
+<div class="profile-container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 32px; background: #fff;">
+                <!-- Decorative Header -->
+                <div class="p-4 pt-5 text-center position-relative" style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background-image: radial-gradient(#166534 0.5px, transparent 0.5px); background-size: 15px 15px;"></div>
+                    <h2 class="fw-bold position-relative" style="color: #0f2d1d; letter-spacing: -0.02em;">Configuración de Cuenta</h2>
+                    <p class="text-secondary position-relative">Gestiona tu identidad y preferencias en la plataforma</p>
+                </div>
+                
+                <div class="card-body p-4 p-md-5 pt-0 position-relative">
+                    <form asp-action="EditProfile" method="post">
+                        <!-- Profile Picture Section -->
+                        <div class="text-center mb-5 mt-n3">
+                            <div class="position-relative d-inline-block">
+                                <div class="profile-img-preview-container shadow-lg">
+                                    <img src="@userPicture" alt="Profile" id="profilePreview" class="profile-img-preview">
+                                </div>
+                                <label for="photoUrl" class="photo-edit-badge" title="Cambiar foto">
+                                    <i class="bi bi-camera-fill"></i>
+                                </label>
+                            </div>
+                            <div class="mt-4 px-5">
+                                <label class="form-label small fw-bold text-success text-uppercase">URL de tu Foto de Perfil</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light border-0"><i class="bi bi-link-45deg"></i></span>
+                                    <input type="text" name="pictureUrl" id="photoUrl" class="form-control border-0 bg-light" value="@userPicture" placeholder="https://ejemplo.com/mifoto.jpg" onchange="document.getElementById('profilePreview').src = this.value">
+                                </div>
+                                <p class="x-small text-muted mt-2">Pega el enlace de una imagen para actualizar tu foto.</p>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Name -->
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="fullName" class="form-control border-0 bg-light custom-input" id="fullName" value="@userName" placeholder="Tu nombre" required>
+                                    <label for="fullName" class="text-secondary fw-bold">NOMBRE COMPLETO</label>
+                                </div>
+                            </div>
+
+                            <!-- Email (Read-only) -->
+                            <div class="col-12">
+                                <div class="form-floating mb-1">
+                                    <input type="email" class="form-control border-0 bg-light custom-input" id="email" value="@userEmail" readonly style="opacity: 0.6; cursor: not-allowed;">
+                                    <label for="email" class="text-secondary fw-bold">CORREO ELECTRÓNICO</label>
+                                </div>
+                                <div class="x-small text-muted ps-2"><i class="bi bi-shield-lock me-1"></i> El correo está verificado y vinculado a tu cuenta.</div>
+                            </div>
+
+                            <!-- Phone and City -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" name="phone" class="form-control border-0 bg-light custom-input" id="phone" value="@userPhone" placeholder="Teléfono">
+                                    <label for="phone" class="text-secondary fw-bold">TELÉFONO</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="city" class="form-control border-0 bg-light custom-input" id="city" value="@userCity" placeholder="Ciudad">
+                                    <label for="city" class="text-secondary fw-bold">CIUDAD / PAÍS</label>
+                                </div>
+                            </div>
+
+                            <!-- Bio -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea name="bio" class="form-control border-0 bg-light custom-input" id="bio" placeholder="Bio" style="height: 100px;">@userBio</textarea>
+                                    <label for="bio" class="text-secondary fw-bold">BIOGRAFÍA</label>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="col-12 mt-5 d-flex flex-column flex-sm-row gap-3">
+                                <button type="submit" class="btn btn-save-profile flex-grow-1">
+                                    <span>Guardar cambios</span>
+                                    <i class="bi bi-check-circle-fill ms-2"></i>
+                                </button>
+                                <a asp-action="Profile" class="btn btn-cancel-profile px-5">
+                                    Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .mt-n3 { margin-top: -1.5rem !important; }
+    .custom-input { border-radius: 16px !important; padding-left: 1.25rem !important; font-weight: 500; color: #1f2937; }
+    .custom-input:focus { background-color: #f8fafc !important; box-shadow: 0 0 0 4px rgba(22, 101, 52, 0.08) !important; }
+    
+    .profile-img-preview-container {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        padding: 5px;
+        background: #fff;
+        display: inline-block;
+        border: 1px solid #f1f5f9;
+    }
+    
+    .profile-img-preview {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .photo-edit-badge {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 40px;
+        height: 40px;
+        background: #166534;
+        color: white;
+        border-radius: 50%;
+        border: 4px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .photo-edit-badge:hover { transform: scale(1.1); background: #1a4d2e; }
+
+    .btn-save-profile {
+        background: linear-gradient(135deg, #166534 0%, #064e3b 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 18px;
+        font-weight: 700;
+        box-shadow: 0 10px 25px rgba(22, 101, 52, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .btn-save-profile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(22, 101, 52, 0.3);
+        color: white;
+    }
+
+    .btn-cancel-profile {
+        background: #f1f5f9;
+        color: #475569;
+        padding: 1rem 2rem;
+        border-radius: 18px;
+        font-weight: 700;
+        border: none;
+        transition: all 0.2s;
+    }
+
+    .btn-cancel-profile:hover { background: #e2e8f0; color: #1e293b; }
+
+    .x-small { font-size: 0.75rem; }
+</style>

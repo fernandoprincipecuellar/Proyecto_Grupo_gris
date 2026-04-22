@@ -5,10 +5,7 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-white fw-medium" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola @User.Identity?.Name!</a>
-    </li>
-
+    @* Saludo eliminado por solicitud del usuario *@
 }
 else
 {

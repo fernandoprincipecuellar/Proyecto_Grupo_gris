@@ -2,61 +2,81 @@
 
 @{
     ViewData["Title"] = "Registro";
+    Layout = "_Layout";
 }
 
-<div class="container text-center mt-5">
-    <h1 style="color:#2f6f4f;">EcoRuta</h1>
-    <p>Reciclaje inteligente</p>
-
-    <div class="card mx-auto p-4" style="width:350px; border-radius:15px;">
-        <h2 class="text-center">Registrarse</h2>
-
-        <form asp-action="Register" method="post">
-            @Html.AntiForgeryToken()
-
-            <div class="form-group mt-3">
-                <label asp-for="Nombre"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+<div class="auth-split-wrapper">
+    <!-- Left: Form Side -->
+    <div class="auth-form-side">
+        <div class="auth-form-inner">
+            <!-- Brand -->
+            <div class="auth-brand">
+                <span class="auth-brand-icon"><i class="bi bi-recycle"></i></span>
+                <span class="auth-brand-name">EcoRuta</span>
             </div>
 
-            <div class="form-group mt-3">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <h1 class="auth-title">Crear Cuenta</h1>
+
+            <!-- Google Register -->
+            <form asp-controller="Account" asp-action="ExternalLogin" method="post" class="mb-3">
+                <button type="submit" name="provider" value="Google" class="btn auth-btn-google w-100">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" width="20" alt="Google">
+                    Registrarse con Google
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>O REGÍSTRATE CON TU CORREO</span>
             </div>
 
-            <div class="row mt-3">
-                <div class="col">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
+            <!-- Register Form -->
+            <form asp-action="Register" method="post" class="auth-form">
+                @Html.AntiForgeryToken()
+
+                <div class="auth-field-group">
+                    <label asp-for="Nombre" class="auth-field-label"></label>
+                    <input asp-for="Nombre" class="auth-field-input" placeholder="Tu nombre completo" />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
                 </div>
-                <div class="col">
-                    <label asp-for="ConfirmPassword"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
+
+                <div class="auth-field-group">
+                    <label asp-for="Email" class="auth-field-label"></label>
+                    <input asp-for="Email" class="auth-field-input" placeholder="tu@correo.com" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
-            </div>
 
-            <span asp-validation-summary="All" class="text-danger"></span>
+                <div class="auth-field-row">
+                    <div class="auth-field-group">
+                        <label asp-for="Password" class="auth-field-label"></label>
+                        <input asp-for="Password" class="auth-field-input" placeholder="••••••••" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+                    <div class="auth-field-group">
+                        <label asp-for="ConfirmPassword" class="auth-field-label"></label>
+                        <input asp-for="ConfirmPassword" class="auth-field-input" placeholder="••••••••" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </div>
+                </div>
 
-            <button type="submit" class="btn btn-success w-100 mt-4">
-                Registrarse
-            </button>
-        </form>
+                <span asp-validation-summary="All" class="text-danger small"></span>
 
-        <hr />
+                <button type="submit" class="btn auth-btn-submit w-100">Registrarse</button>
+            </form>
 
-        <form asp-controller="Account" asp-action="ExternalLogin" method="post">
-            <button type="submit" name="provider" value="Google" class="btn btn-light border w-100">
-                <img src="https://developers.google.com/identity/images/g-logo.png" width="20">
-             Registrarse con Google
-            </button>
-        </form>do
-
-        <div class="text-center mt-3">
-            ¿Ya tienes cuenta? 
-            <a asp-action="Login">Inicia sesión</a>
+            <p class="auth-switch-text">
+                ¿Ya tienes cuenta?
+                <a asp-controller="Account" asp-action="Login">Inicia sesión</a>
+            </p>
         </div>
+    </div>
 
+    <!-- Right: Illustration Side -->
+    <div class="auth-illustration-side">
+        <img src="~/images/eco-illustration.png" alt="Eco illustration" class="auth-illustration-img" />
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -51,9 +51,19 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Proyecto_Grupo_gris - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted bg-white py-4">
+        <div class="container text-center">
+            <div class="mb-3">
+                <a class="text-decoration-none" asp-controller="Home" asp-action="Index">
+                    <span class="fs-5 fw-bold" style="color: #166534;"><i class="bi bi-recycle me-2"></i>Gris Reciclaje</span>
+                </a>
+            </div>
+            <div class="mb-3 d-flex justify-content-center gap-4">
+                <a href="#" class="text-secondary text-decoration-none small hover-success">Sobre Nosotros</a>
+                <a href="#" class="text-secondary text-decoration-none small hover-success">Contacto</a>
+                <a asp-controller="Home" asp-action="Privacy" class="text-secondary text-decoration-none small hover-success">Privacidad</a>
+            </div>
+            <p class="mb-0 small">&copy; 2026 - Proyecto EcoRuta - Comprometidos con el planeta</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
