@@ -1,118 +1,541 @@
-﻿@model Proyecto_Grupo_gris.Models.DashboardViewModel
+@model Proyecto_Grupo_gris.Models.DashboardViewModel
 
 @{
     ViewData["Title"] = "Inicio";
 }
 
-<div class="dashboard-page container py-5">
-    <section class="page-hero rounded-4 p-4 mb-5 shadow-sm">
-        <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 align-items-start">
-            <div>
-                <span class="hero-badge">Panel EcoRuta</span>
-                <h1 class="hero-title">Controla tu ruta de reciclaje</h1>
-                <p class="hero-description">Monitorea entregas, puntos y el impacto ambiental desde un tablero simple, moderno y eficiente.</p>
-            </div>
-            <div class="hero-stats p-4 rounded-4 bg-white shadow-sm">
-                <span class="d-block text-uppercase text-muted small mb-2">En progreso</span>
-                <h3 class="mb-1">A 500 metros</h3>
-                <p class="mb-0 text-muted">Tu recolector está en camino.</p>
-            </div>
-        </div>
-    </section>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
-    <div class="dashboard-topbar mb-3">
-        <div>
-            <p class="dashboard-section-label mb-1">Resumen</p>
-            <h1 class="dashboard-title">Bienvenido a tu reciclaje</h1>
-        </div>
-        <div class="dashboard-profile" title="Perfil">
-            <span>F</span>
+<style>
+    .eco-dashboard {
+        background: #eef6f0;
+        min-height: 100vh;
+    }
+
+    .card-eco {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+        background: white;
+    }
+
+    /* Hero Left */
+    .hero-panel {
+        padding: 2rem;
+        min-height: 320px;
+        display: flex;
+        flex-direction: column;
+    }
+    .hero-panel .badge-label {
+        display: inline-block;
+        background: #e8f5e9;
+        color: #166534;
+        padding: 0.35rem 0.85rem;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+    .hero-panel h1 {
+        font-size: 1.65rem;
+        font-weight: 800;
+        color: #0f2d1d;
+        line-height: 1.2;
+        margin: 1rem 0;
+    }
+    .hero-panel p {
+        font-size: 0.85rem;
+        color: #6b7c6e;
+        line-height: 1.5;
+    }
+    .truck-illustration {
+        margin-top: auto;
+        position: relative;
+        background: #e8f5e9;
+        border-radius: 16px;
+        padding: 1.25rem;
+        text-align: center;
+    }
+    .truck-illustration svg {
+        width: 120px;
+        height: auto;
+    }
+    .truck-label {
+        position: absolute;
+        top: 10px;
+        left: 65px;
+        background: #166534;
+        color: white;
+        padding: 0.2rem 0.7rem;
+        border-radius: 8px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* Main stat card */
+    .main-stat {
+        background: linear-gradient(145deg, #2e7d32 0%, #1b5e20 100%);
+        color: white;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .main-stat .recycle-watermark {
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        font-size: 7rem;
+        opacity: 0.08;
+        color: white;
+    }
+    .main-stat .stat-badge {
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+    }
+    .main-stat .stat-number {
+        font-size: 3.2rem;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+    .main-stat .progress-section {
+        margin-top: 1.5rem;
+    }
+    .main-stat .progress {
+        height: 10px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+    }
+    .main-stat .progress-bar {
+        background: white;
+        border-radius: 10px;
+    }
+
+    /* Progress card right */
+    .progress-panel {
+        padding: 2rem;
+    }
+    .progress-panel h3 {
+        color: #166534;
+        font-weight: 800;
+        font-size: 1.55rem;
+    }
+    .route-tracker {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin-top: 1.5rem;
+    }
+    .route-dot {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #166534;
+        flex-shrink: 0;
+        box-shadow: 0 0 0 4px #c8e6c9;
+    }
+    .route-line {
+        flex: 1;
+        height: 2px;
+        background: repeating-linear-gradient(90deg, #94a3b8 0px, #94a3b8 6px, transparent 6px, transparent 12px);
+    }
+    .route-truck-end {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    /* Small stat cards */
+    .stat-mini {
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .stat-mini-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: #f0fdf4;
+        color: #166534;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+    .stat-mini-text .stat-label {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        margin-bottom: 0.15rem;
+        font-weight: 500;
+    }
+    .stat-mini-text h4 {
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 0;
+        color: #0f2d1d;
+        line-height: 1.2;
+    }
+    .stat-mini-text .stat-sub {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        margin-bottom: 0;
+    }
+
+    /* Summary section */
+    .summary-panel {
+        padding: 1.75rem;
+    }
+    .summary-panel .section-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #166534;
+    }
+    .summary-panel h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #0f2d1d;
+    }
+
+    /* Action buttons */
+    .btn-action {
+        width: 100%;
+        text-align: left;
+        padding: 0.85rem 1rem;
+        border-radius: 14px;
+        margin-bottom: 0.6rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        transition: all 0.2s ease;
+        border: 1.5px solid #e2e8f0;
+        background: white;
+        color: #475569;
+    }
+    .btn-action:hover {
+        background: #f0fdf4;
+        border-color: #166534;
+        color: #166534;
+    }
+    .btn-action.primary {
+        background: #166534;
+        color: white;
+        border-color: #166534;
+    }
+    .btn-action.primary:hover {
+        background: #14532d;
+    }
+    .btn-action .action-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+    }
+    .btn-action.primary .action-icon {
+        background: rgba(255,255,255,0.2);
+    }
+    .btn-action:not(.primary) .action-icon {
+        background: #f0fdf4;
+        color: #166534;
+    }
+
+    /* Tip card */
+    .tip-card {
+        background: #f0fdf4;
+        padding: 1.5rem;
+        position: relative;
+    }
+    .tip-card .tip-icon-bg {
+        position: absolute;
+        bottom: 10px;
+        right: 15px;
+        font-size: 3rem;
+        opacity: 0.12;
+        color: #166534;
+    }
+
+    /* Map section */
+    .map-section {
+        overflow: visible;
+    }
+    .map-header {
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .map-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 0 20px 20px;
+    }
+    #map {
+        height: 350px;
+        width: 100%;
+    }
+    .map-info-bar {
+        padding: 1rem 1.25rem;
+        margin: 0;
+        background: white;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .map-info-bar .truck-badge {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: #f0fdf4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+    }
+    .distance-pill {
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+</style>
+
+<div class="eco-dashboard py-4">
+    <div class="container-fluid px-lg-5">
+        <div class="row g-4">
+
+            <!-- ═══════ COLUMNA IZQUIERDA ═══════ -->
+            <div class="col-lg-3">
+                <!-- Hero Panel -->
+                <div class="card-eco hero-panel mb-4">
+                    <span class="badge-label">Panel EcoRuta</span>
+                    <h1>Controla tu ruta de reciclaje</h1>
+                    <p>Monitorea entregas, puntos y el impacto ambiental desde un tablero simple, moderno y eficiente.</p>
+                    <div class="truck-illustration">
+                        <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="35" width="120" height="55" rx="8" fill="#2e7d32"/>
+                            <rect x="130" y="50" width="55" height="40" rx="6" fill="#1b5e20"/>
+                            <rect x="140" y="55" width="35" height="25" rx="4" fill="#a5d6a7"/>
+                            <circle cx="45" cy="95" r="12" fill="#333"/>
+                            <circle cx="45" cy="95" r="6" fill="#999"/>
+                            <circle cx="100" cy="95" r="12" fill="#333"/>
+                            <circle cx="100" cy="95" r="6" fill="#999"/>
+                            <circle cx="160" cy="95" r="12" fill="#333"/>
+                            <circle cx="160" cy="95" r="6" fill="#999"/>
+                            <text x="45" y="65" font-size="11" fill="white" font-weight="bold" text-anchor="middle">♻ EcoRuta</text>
+                        </svg>
+                        <div class="truck-label">
+                            <i class="bi bi-recycle"></i> Ruta
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary + Action Buttons -->
+                <div class="card-eco summary-panel mb-4">
+                    <p class="section-label mb-1">Resumen</p>
+                    <h2 class="mb-4">Bienvenido a tu reciclaje</h2>
+                    
+                    <button class="btn btn-action primary">
+                        <span class="action-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                        Ver Mi Ruta
+                    </button>
+                    <button class="btn btn-action">
+                        <span class="action-icon"><i class="bi bi-clock-history"></i></span>
+                        Mi Historial
+                    </button>
+                    <button class="btn btn-action">
+                        <span class="action-icon"><i class="bi bi-gift"></i></span>
+                        Premios
+                    </button>
+                </div>
+
+                <!-- Eco Tip -->
+                <div class="card-eco tip-card">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-leaf text-success"></i>
+                        <span class="fw-bold text-success" style="font-size: 0.9rem;">Consejo eco</span>
+                    </div>
+                    <p class="small text-muted mb-0" style="line-height: 1.6;">Limpia y separa tus residuos para mejorar su reciclaje y generar más impacto positivo.</p>
+                    <i class="bi bi-recycle tip-icon-bg"></i>
+                </div>
+            </div>
+
+            <!-- ═══════ COLUMNA CENTRAL ═══════ -->
+            <div class="col-lg-6">
+                <!-- Tarjeta Principal de KG -->
+                <div class="card-eco main-stat mb-4">
+                    <i class="bi bi-recycle recycle-watermark"></i>
+                    <span class="stat-badge d-inline-block mb-3">Esta semana</span>
+                    <div class="stat-number"><span id="stat-totalKg">@Model.ReciclajeTotalKg</span> kg</div>
+                    <p class="mb-0 mt-1 opacity-75" style="font-size: 0.95rem;">Reciclaje total</p>
+                    <div class="progress-section">
+                        <div class="d-flex justify-content-between small mb-2">
+                            <span class="opacity-75">+15% vs. semana anterior</span>
+                            <span class="fw-bold">75%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mini Stats Row -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <div class="card-eco stat-mini">
+                            <div class="stat-mini-icon">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <div class="stat-mini-text">
+                                <p class="stat-label">Entregas</p>
+                                <h4 id="stat-entregas">@Model.Entregas</h4>
+                                <p class="stat-sub">Totales</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card-eco stat-mini">
+                            <div class="stat-mini-icon">
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <div class="stat-mini-text">
+                                <p class="stat-label">Puntos</p>
+                                <h4 id="stat-puntos">@Model.Puntos</h4>
+                                <p class="stat-sub">Acumulados</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="card-eco map-section">
+                    <div class="map-header">
+                        <div>
+                            <h5 class="fw-bold mb-0" style="font-size: 1rem;">Recorrido en tiempo real</h5>
+                            <small class="text-muted">Sigue el camión en ruta</small>
+                        </div>
+                        <a href="#" class="text-success text-decoration-none small fw-bold">Ver mapa completo</a>
+                    </div>
+                    <div class="map-wrapper">
+                        <div id="map"></div>
+                    </div>
+                    <div class="map-info-bar">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="truck-badge">🚚</div>
+                            <div>
+                                <strong style="font-size: 0.88rem;" id="camion-nombre">@Model.RecolectorNombre</strong>
+                                <p class="mb-0 text-muted" style="font-size: 0.78rem;" id="camion-direccion">@Model.RecolectorDireccion</p>
+                            </div>
+                        </div>
+                        <span class="distance-pill" id="camion-distancia">@Model.Distancia</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════ COLUMNA DERECHA ═══════ -->
+            <div class="col-lg-3">
+                <div class="card-eco progress-panel">
+                    <p class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.1em;">En progreso</p>
+                    <h3 id="camion-distancia-prog">A 500 metros</h3>
+                    <p class="text-muted" style="font-size: 0.85rem;">Tu recolector está en camino.</p>
+                    
+                    <div class="route-tracker">
+                        <div class="route-dot"></div>
+                        <div class="route-line"></div>
+                        <div class="route-truck-end">
+                            <i class="bi bi-truck text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <section class="dashboard-actions mb-4">
-        <a class="btn btn-primary btn-lg me-2" href="#">Ver Mi Ruta</a>
-        <a class="btn btn-outline-secondary btn-lg me-2" href="#">Mi Historial</a>
-        <a class="btn btn-outline-secondary btn-lg" href="#">Premios</a>
-    </section>
-
-    <section class="dashboard-summary-card mb-3 p-4">
-        <div class="d-flex justify-content-between align-items-start">
-            <div>
-                <div class="badge bg-white text-success mb-3">Esta semana</div>
-                <div class="display-4 fw-bold mb-2">@Model.ReciclajeTotalKg kg</div>
-                <p class="mb-1">Reciclaje total</p>
-                <small class="text-white-75">@Model.Crecimiento</small>
-            </div>
-            <div class="dashboard-summary-icon">🍃</div>
-        </div>
-        <div class="progress rounded-pill mt-4" style="height: .5rem;">
-            <div class="progress-bar bg-white" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    </section>
-
-    <section class="row g-3 dashboard-small-cards mb-3">
-        <div class="col-6">
-            <div class="card dashboard-small-card p-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="dashboard-small-label">Entregas</span>
-                    <span class="dashboard-small-icon">♻️</span>
-                </div>
-                <h2 class="dashboard-small-value mb-0">@Model.Entregas</h2>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="card dashboard-small-card p-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="dashboard-small-label">Puntos</span>
-                    <span class="dashboard-small-icon">🪙</span>
-                </div>
-                <h2 class="dashboard-small-value mb-0">@Model.Puntos</h2>
-            </div>
-        </div>
-    </section>
-
-    <section class="dashboard-map-card mb-3">
-        <div class="dashboard-map-header px-4 pt-4">
-            <div>
-                <h2 class="h5 mb-1">Recorrido en tiempo real</h2>
-                <p class="mb-0 text-white-50">Sigue el camión en ruta</p>
-            </div>
-            <a class="dashboard-map-link" href="#">Ver mapa</a>
-        </div>
-        <div class="dashboard-map-preview">
-            <div class="dashboard-map-pin">📍</div>
-        </div>
-        <div class="dashboard-map-footer p-4 bg-white rounded-4 mt-n4 mx-3 mb-3 shadow-sm">
-            <div class="d-flex align-items-center gap-3">
-                <div class="dashboard-map-badge">🚚</div>
-                <div>
-                    <strong>@Model.RecolectorNombre</strong>
-                    <p class="mb-0 text-muted">@Model.RecolectorDireccion</p>
-                </div>
-            </div>
-            <div class="mt-3 text-muted"><small>@Model.Distancia</small></div>
-        </div>
-    </section>
-
-    <section class="dashboard-impact row g-3 mb-5">
-        <div class="col-md-4">
-            <div class="dashboard-impact-card p-3">
-                <p class="mb-2">CO₂ ahorrado</p>
-                <h3>@Model.Co2AhoradoKg kg</h3>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="dashboard-impact-card p-3">
-                <p class="mb-2">Árboles salvados</p>
-                <h3>@Model.ArbolesSalvados</h3>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="dashboard-impact-card p-3">
-                <p class="mb-2">Agua ahorrada</p>
-                <h3>@Model.AguaAhorradaL L</h3>
-            </div>
-        </div>
-    </section>
 </div>
+
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var baseLat = -12.0464;
+            var baseLng = -77.0428;
+            var map = L.map('map').setView([baseLat, baseLng], 14);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            var camionIcon = L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/512/6124/6124997.png',
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -40]
+            });
+
+            var marker = L.marker([baseLat, baseLng], { icon: camionIcon }).addTo(map);
+            marker.bindPopup("<b>Camión Recolector</b><br>Iniciando ruta...").openPopup();
+
+            function updateCamion() {
+                fetch('/api/camion')
+                    .then(response => response.json())
+                    .then(data => {
+                        var newLatLng = new L.LatLng(data.lat, data.lng);
+                        marker.setLatLng(newLatLng);
+                        marker.setPopupContent(`<b>${data.nombre}</b><br>${data.distancia}`);
+                        map.panTo(newLatLng);
+
+                        document.getElementById('camion-nombre').innerText = data.nombre;
+                        document.getElementById('camion-direccion').innerText = data.direccion;
+                        document.getElementById('camion-distancia').innerText = data.distancia;
+                        document.getElementById('camion-distancia-prog').innerText = data.distancia;
+                    })
+                    .catch(error => console.error("Error fetching camion:", error));
+            }
+
+            function updateStats() {
+                fetch('/api/stats')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('stat-totalKg').innerText = data.totalKg;
+                        document.getElementById('stat-entregas').innerText = data.entregas;
+                        document.getElementById('stat-puntos').innerText = data.puntos;
+                    })
+                    .catch(error => console.error("Error fetching stats:", error));
+            }
+
+            setInterval(() => {
+                updateCamion();
+                updateStats();
+            }, 6000);
+
+            updateCamion();
+            updateStats();
+        });
+    </script>
+}

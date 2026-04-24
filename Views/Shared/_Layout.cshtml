@@ -14,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark site-navbar">
             <div class="container-fluid">
-                <a class="navbar-brand site-brand" asp-area="" asp-controller="Home" asp-action="Index">Gris Reciclaje</a>
+                <a class="navbar-brand site-brand" asp-area="" asp-controller="Home" asp-action="Index">EcoRuta</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -33,9 +33,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Premios</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Profile">Perfil</a>
-                        </li>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Profile">Perfil</a>
+                            </li>
+                        }
                     </ul>
                     <div class="d-flex align-items-center gap-2">
                         <a class="btn btn-outline-light btn-sm" href="#">Soporte</a>
@@ -55,17 +58,82 @@
         <div class="container text-center">
             <div class="mb-3">
                 <a class="text-decoration-none" asp-controller="Home" asp-action="Index">
-                    <span class="fs-5 fw-bold" style="color: #166534;"><i class="bi bi-recycle me-2"></i>Gris Reciclaje</span>
+                    <span class="fs-5 fw-bold" style="color: #166534;"><i class="bi bi-recycle me-2"></i>EcoRuta</span>
                 </a>
             </div>
             <div class="mb-3 d-flex justify-content-center gap-4">
                 <a href="#" class="text-secondary text-decoration-none small hover-success">Sobre Nosotros</a>
-                <a href="#" class="text-secondary text-decoration-none small hover-success">Contacto</a>
+                <a href="#" class="text-secondary text-decoration-none small hover-success" data-bs-toggle="modal" data-bs-target="#contactoModal">Contacto</a>
                 <a asp-controller="Home" asp-action="Privacy" class="text-secondary text-decoration-none small hover-success">Privacidad</a>
             </div>
             <p class="mb-0 small">&copy; 2026 - Proyecto EcoRuta - Comprometidos con el planeta</p>
         </div>
     </footer>
+
+    <!-- Modal de Contacto -->
+    <div class="modal fade" id="contactoModal" tabindex="-1" aria-labelledby="contactoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header text-white" style="background-color: #166534;">
+                    <h5 class="modal-title" id="contactoModalLabel"><i class="bi bi-person-lines-fill me-2"></i>Contacto - EcoRuta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start p-4">
+                    <p class="text-muted mb-4">¿Tienes alguna pregunta o sugerencia? ¡Nos encantaría escucharte! Contáctanos a través de los siguientes medios:</p>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-building fs-5" style="color: #166534;"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block" style="line-height: 1;">Empresa</small>
+                                    <strong>EcoRuta</strong>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-envelope fs-5" style="color: #166534;"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block" style="line-height: 1;">Email</small>
+                                    <strong>contacto@ecoruta.com</strong>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-telephone fs-5" style="color: #166534;"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block" style="line-height: 1;">Teléfono</small>
+                                    <strong>+51 999 888 777</strong>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-geo-alt fs-5" style="color: #166534;"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block" style="line-height: 1;">Dirección</small>
+                                    <strong>Lima, Perú</strong>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
