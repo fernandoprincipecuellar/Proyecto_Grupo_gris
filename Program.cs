@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authentication.Google;
 var builder = WebApplication.CreateBuilder(args);
 
 // 🔥 DB
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("Default") 
+    ?? throw new InvalidOperationException("Connection string 'Default' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -34,6 +34,13 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// 🔥 APLICAR MIGRACIONES AUTOMÁTICAMENTE EN ARRANQUE
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 
 // 🔥 PIPELINE
 if (app.Environment.IsDevelopment())
