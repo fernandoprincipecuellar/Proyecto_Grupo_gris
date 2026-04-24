@@ -1,2 +1,4 @@
 bin/
-obj/
+obj/
+app.db
+appsettings.Development.json
