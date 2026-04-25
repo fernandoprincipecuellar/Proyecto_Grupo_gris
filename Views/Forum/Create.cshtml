@@ -1,0 +1,210 @@
+@model Proyecto_Grupo_gris.Models.ForumPost
+
+@{
+    ViewData["Title"] = "Nuevo Reporte";
+}
+
+<div class="forum-container" style="max-width: 500px;">
+    <div class="d-flex align-items-center mb-4">
+        <a asp-action="Index" class="text-success me-3 fs-4"><i class="bi bi-chevron-left"></i></a>
+        <h2 class="fw-bold m-0">Nuevo reporte</h2>
+    </div>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="new-report-form">
+        <div class="mb-4">
+            <label class="form-label fw-semibold small text-muted text-uppercase">Tipo de reporte</label>
+            <select asp-for="ReportType" class="form-select custom-select-lg">
+                <option value="" selected disabled>Seleccionar tipo</option>
+                <option value="Contaminación de agua">Contaminación de agua</option>
+                <option value="Botadero ilegal">Botadero ilegal</option>
+                <option value="Calidad del aire">Calidad del aire</option>
+                <option value="Tala de árboles">Tala de árboles</option>
+                <option value="Otro">Otro</option>
+            </select>
+            <span asp-validation-for="ReportType" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-semibold small text-muted text-uppercase">Descripción</label>
+            <textarea asp-for="Description" class="form-control custom-textarea" rows="4" placeholder="Describe el problema que encontraste..."></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-semibold small text-muted text-uppercase">Subir imagen</label>
+            <div class="upload-area" onclick="document.getElementById('imageUpload').click();">
+                <input type="file" id="imageUpload" name="imageFile" hidden accept="image/*" onchange="previewImage(this)" />
+                <div id="uploadPlaceholder">
+                    <div class="upload-icon-circle mb-2">
+                        <i class="bi bi-camera-fill"></i>
+                    </div>
+                    <p class="mb-1 fw-bold">Toca para subir foto</p>
+                    <p class="small text-muted m-0">JPG, PNG hasta 10MB</p>
+                </div>
+                <img id="imagePreview" src="#" alt="Preview" class="img-fluid rounded-3 d-none" />
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-semibold small text-muted text-uppercase">Ubicación</label>
+            <div class="location-card">
+                <div class="map-placeholder">
+                    <div class="map-marker">
+                        <div class="marker-dot"></div>
+                        <div class="marker-pulse"></div>
+                    </div>
+                </div>
+                <div class="location-info p-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-geo-alt-fill text-success fs-5"></i>
+                        <div>
+                            <p class="mb-0 fw-bold small">Usar ubicación actual</p>
+                            <p class="mb-0 text-muted smaller">Calle Principal 123, Madrid</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-link text-success text-decoration-none fw-bold small p-0">Cambiar</button>
+                </div>
+            </div>
+            <input type="hidden" asp-for="Location" value="Calle Principal 123, Madrid" />
+        </div>
+
+        <div class="mb-5">
+            <label class="form-label fw-semibold small text-muted text-uppercase">Nivel de urgencia</label>
+            <div class="urgency-selector">
+                <input type="radio" asp-for="Urgency" value="Baja" id="urgency-baja" class="btn-check" />
+                <label class="btn btn-outline-urgency" for="urgency-baja">Baja</label>
+
+                <input type="radio" asp-for="Urgency" value="Media" id="urgency-media" class="btn-check" checked />
+                <label class="btn btn-outline-urgency" for="urgency-media">Media</label>
+
+                <input type="radio" asp-for="Urgency" value="Alta" id="urgency-alta" class="btn-check" />
+                <label class="btn btn-outline-urgency" for="urgency-alta">Alta</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 py-3 rounded-4 fw-bold fs-5 shadow-sm">
+            Enviar reporte
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('imagePreview').classList.remove('d-none');
+                    document.getElementById('uploadPlaceholder').classList.add('d-none');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
+
+<style>
+    .custom-select-lg {
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        border-color: #e5e7eb;
+        font-size: 0.95rem;
+    }
+    .custom-textarea {
+        border-radius: 12px;
+        padding: 1rem;
+        border-color: #e5e7eb;
+        resize: none;
+    }
+    .upload-area {
+        border: 2px dashed #e5e7eb;
+        border-radius: 16px;
+        padding: 2.5rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #f9fafb;
+    }
+    .upload-area:hover {
+        border-color: #166534;
+        background: #f0fdf4;
+    }
+    .upload-icon-circle {
+        width: 60px;
+        height: 60px;
+        background: #bbf7d0;
+        color: #166534;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+    .location-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    .map-placeholder {
+        height: 180px;
+        background: #e5e7eb;
+        background-image: radial-gradient(#d1d5db 2px, transparent 2px);
+        background-size: 30px 30px;
+        position: relative;
+    }
+    .map-marker {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .marker-dot {
+        width: 16px;
+        height: 16px;
+        background: #166534;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        z-index: 2;
+        position: relative;
+    }
+    .marker-pulse {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        background: rgba(22, 101, 52, 0.2);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    @@keyframes pulse {
+        0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.8; }
+        100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+    }
+    .smaller { font-size: 0.75rem; }
+    
+    .urgency-selector {
+        display: flex;
+        gap: 0.75rem;
+    }
+    .btn-outline-urgency {
+        flex: 1;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 0.75rem;
+        background: white;
+        color: #4b5563;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .btn-check:checked + .btn-outline-urgency {
+        background: #f0fdf4;
+        border-color: #166534;
+        color: #166534;
+        box-shadow: inset 0 0 0 1px #166534;
+    }
+</style>

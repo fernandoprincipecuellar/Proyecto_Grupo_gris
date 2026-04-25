@@ -1,3 +1,5 @@
+@model IEnumerable<Proyecto_Grupo_gris.Models.ForumPost>
+
 @{
     ViewData["Title"] = "Foro Ambiental";
 }
@@ -9,103 +11,149 @@
             <p class="text-muted">Reportes y denuncias ambientales de la comunidad.</p>
         </div>
         <div class="d-none d-md-block">
-            <a href="#" class="btn btn-success rounded-pill px-4 py-2">
+            <a asp-action="Create" class="btn btn-success rounded-pill px-4 py-2">
                 <i class="bi bi-plus-lg me-2"></i>Nuevo reporte
             </a>
         </div>
     </div>
 
     <div class="forum-grid">
-        <!-- Reporte 1: Río contaminado -->
-        <div class="forum-card">
-            <div class="forum-card-img-wrapper">
-                <img src="~/images/forum/river.png" alt="Río contaminado" class="forum-card-img" />
-            </div>
-            <div class="forum-card-body">
-                <p class="forum-card-text">Encontré este río contaminado con desechos plásticos en mi distrito. Es urgente que las autoridades tomen acción para limpiar esta zona.</p>
-                <div class="forum-card-location">
-                    <i class="bi bi-geo-alt-fill text-success"></i> San Isidro, Lima
+        @if (Model != null && Model.Any())
+        {
+            foreach (var post in Model)
+            {
+                <div class="forum-card">
+                    <div class="forum-card-img-wrapper">
+                        @if (!string.IsNullOrEmpty(post.ImageUrl))
+                        {
+                            <img src="@post.ImageUrl" alt="@post.ReportType" class="forum-card-img" />
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center justify-content-center h-100 bg-secondary-subtle">
+                                <i class="bi bi-image fs-1 text-muted"></i>
+                            </div>
+                        }
+                    </div>
+                    <div class="forum-card-body">
+                        <p class="forum-card-text">@post.Description</p>
+                        <div class="forum-card-location">
+                            <i class="bi bi-geo-alt-fill text-success"></i> @post.Location
+                        </div>
+                        @if (!string.IsNullOrEmpty(post.Urgency))
+                        {
+                            <div class="mt-2">
+                                <span class="badge @(post.Urgency == "Alta" ? "bg-danger" : post.Urgency == "Media" ? "bg-warning text-dark" : "bg-info text-dark")">
+                                    @post.Urgency
+                                </span>
+                            </div>
+                        }
+                    </div>
+                    <div class="forum-card-footer">
+                        <div class="forum-footer-item">
+                            <i class="bi bi-chat-dots"></i> @post.CommentsCount
+                        </div>
+                        <div class="forum-footer-item">
+                            <i class="bi bi-heart-fill"></i> @post.LikesCount
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <!-- Mock data if no real data exists -->
+            <!-- Reporte 1: Río contaminado -->
+            <div class="forum-card">
+                <div class="forum-card-img-wrapper">
+                    <img src="~/images/forum/river.png" alt="Río contaminado" class="forum-card-img" />
+                </div>
+                <div class="forum-card-body">
+                    <p class="forum-card-text">Encontré este río contaminado con desechos plásticos en mi distrito. Es urgente que las autoridades tomen acción para limpiar esta zona.</p>
+                    <div class="forum-card-location">
+                        <i class="bi bi-geo-alt-fill text-success"></i> San Isidro, Lima
+                    </div>
+                </div>
+                <div class="forum-card-footer">
+                    <div class="forum-footer-item">
+                        <i class="bi bi-chat-dots"></i> 12
+                    </div>
+                    <div class="forum-footer-item">
+                        <i class="bi bi-heart-fill"></i> 28
+                    </div>
                 </div>
             </div>
-            <div class="forum-card-footer">
-                <div class="forum-footer-item">
-                    <i class="bi bi-chat-dots"></i> 12
-                </div>
-                <div class="forum-footer-item">
-                    <i class="bi bi-heart-fill"></i> 28
-                </div>
-            </div>
-        </div>
 
-        <!-- Reporte 2: Botadero ilegal -->
-        <div class="forum-card">
-            <div class="forum-card-img-wrapper">
-                <img src="~/images/forum/dump.png" alt="Botadero ilegal" class="forum-card-img" />
-            </div>
-            <div class="forum-card-body">
-                <p class="forum-card-text">Botadero ilegal en plena vía pública. Los vecinos estamos organizándonos para reportar esto a la municipalidad.</p>
-                <div class="forum-card-location">
-                    <i class="bi bi-geo-alt-fill text-success"></i> Breña, Lima
+            <!-- Reporte 2: Botadero ilegal -->
+            <div class="forum-card">
+                <div class="forum-card-img-wrapper">
+                    <img src="~/images/forum/dump.png" alt="Botadero ilegal" class="forum-card-img" />
+                </div>
+                <div class="forum-card-body">
+                    <p class="forum-card-text">Botadero ilegal en plena vía pública. Los vecinos estamos organizándonos para reportar esto a la municipalidad.</p>
+                    <div class="forum-card-location">
+                        <i class="bi bi-geo-alt-fill text-success"></i> Breña, Lima
+                    </div>
+                </div>
+                <div class="forum-card-footer">
+                    <div class="forum-footer-item">
+                        <i class="bi bi-chat-dots"></i> 8
+                    </div>
+                    <div class="forum-footer-item">
+                        <i class="bi bi-heart-fill"></i> 15
+                    </div>
                 </div>
             </div>
-            <div class="forum-card-footer">
-                <div class="forum-footer-item">
-                    <i class="bi bi-chat-dots"></i> 8
-                </div>
-                <div class="forum-footer-item">
-                    <i class="bi bi-heart-fill"></i> 15
-                </div>
-            </div>
-        </div>
 
-        <!-- Reporte 3: Calidad del aire -->
-        <div class="forum-card">
-            <div class="forum-card-img-wrapper">
-                <img src="~/images/forum/air.png" alt="Contaminación aire" class="forum-card-img" />
-            </div>
-            <div class="forum-card-body">
-                <p class="forum-card-text">La calidad del aire ha empeorado mucho en esta zona. Necesitamos más espacios verdes y control de emisiones vehiculares.</p>
-                <div class="forum-card-location">
-                    <i class="bi bi-geo-alt-fill text-success"></i> La Victoria, Lima
+            <!-- Reporte 3: Calidad del aire -->
+            <div class="forum-card">
+                <div class="forum-card-img-wrapper">
+                    <img src="~/images/forum/air.png" alt="Contaminación aire" class="forum-card-img" />
+                </div>
+                <div class="forum-card-body">
+                    <p class="forum-card-text">La calidad del aire ha empeorado mucho en esta zona. Necesitamos más espacios verdes y control de emisiones vehiculares.</p>
+                    <div class="forum-card-location">
+                        <i class="bi bi-geo-alt-fill text-success"></i> La Victoria, Lima
+                    </div>
+                </div>
+                <div class="forum-card-footer">
+                    <div class="forum-footer-item">
+                        <i class="bi bi-chat-dots"></i> 22
+                    </div>
+                    <div class="forum-footer-item">
+                        <i class="bi bi-heart-fill"></i> 45
+                    </div>
                 </div>
             </div>
-            <div class="forum-card-footer">
-                <div class="forum-footer-item">
-                    <i class="bi bi-chat-dots"></i> 22
-                </div>
-                <div class="forum-footer-item">
-                    <i class="bi bi-heart-fill"></i> 45
-                </div>
-            </div>
-        </div>
 
-        <!-- Reporte 4: Tala de árboles -->
-        <div class="forum-card">
-            <div class="forum-card-img-wrapper">
-                <img src="~/images/forum/trees.png" alt="Tala de árboles" class="forum-card-img" />
-            </div>
-            <div class="forum-card-body">
-                <p class="forum-card-text">Están talando árboles en el parque sin autorización. Es importante preservar nuestras áreas verdes urbanas.</p>
-                <div class="forum-card-location">
-                    <i class="bi bi-geo-alt-fill text-success"></i> Miraflores, Lima
+            <!-- Reporte 4: Tala de árboles -->
+            <div class="forum-card">
+                <div class="forum-card-img-wrapper">
+                    <img src="~/images/forum/trees.png" alt="Tala de árboles" class="forum-card-img" />
+                </div>
+                <div class="forum-card-body">
+                    <p class="forum-card-text">Están talando árboles en el parque sin autorización. Es importante preservar nuestras áreas verdes urbanas.</p>
+                    <div class="forum-card-location">
+                        <i class="bi bi-geo-alt-fill text-success"></i> Miraflores, Lima
+                    </div>
+                </div>
+                <div class="forum-card-footer">
+                    <div class="forum-footer-item">
+                        <i class="bi bi-chat-dots"></i> 18
+                    </div>
+                    <div class="forum-footer-item">
+                        <i class="bi bi-heart-fill"></i> 30
+                    </div>
                 </div>
             </div>
-            <div class="forum-card-footer">
-                <div class="forum-footer-item">
-                    <i class="bi bi-chat-dots"></i> 18
-                </div>
-                <div class="forum-footer-item">
-                    <i class="bi bi-heart-fill"></i> 30
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
-<a href="#" class="forum-floating-btn d-md-none">
+<a asp-action="Create" class="forum-floating-btn d-md-none">
     <i class="bi bi-plus-lg"></i> Nuevo reporte
 </a>
 
-<a href="#" class="forum-floating-btn d-none d-md-flex">
+<a asp-action="Create" class="forum-floating-btn d-none d-md-flex">
     <i class="bi bi-plus-lg"></i> Nuevo reporte
 </a>
