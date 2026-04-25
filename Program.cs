@@ -34,6 +34,30 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddControllersWithViews();
 
+// 🔥 REDIS - Caché distribuida y sesiones
+var redisConnection = builder.Configuration.GetConnectionString("Redis");
+if (!string.IsNullOrEmpty(redisConnection) && !redisConnection.Contains("#{"))
+{
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = redisConnection;
+        options.InstanceName = "EcoRuta_";
+    });
+}
+else
+{
+    // Fallback a caché en memoria si Redis no está configurado
+    builder.Services.AddDistributedMemoryCache();
+}
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = ".EcoRuta.Session";
+});
+
 var app = builder.Build();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -74,6 +98,7 @@ app.UseRouting();
 // 🔥 IMPORTANTE (solo una vez)
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapStaticAssets();
 

@@ -1,20 +1,61 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Proyecto_Grupo_gris.Data;
 using Proyecto_Grupo_gris.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Proyecto_Grupo_gris.Controllers
 {
-    public class ForumController(ApplicationDbContext context, IWebHostEnvironment environment) : Controller
+    public class ForumController(ApplicationDbContext context, IWebHostEnvironment environment, IDistributedCache cache) : Controller
     {
+        private const string ForumCacheKey = "forum_posts";
+        private static readonly DistributedCacheEntryOptions CacheOptions = new()
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            SlidingExpiration = TimeSpan.FromMinutes(2)
+        };
+
         public async Task<IActionResult> Index()
         {
-            var posts = await context.ForumPosts
-                .Include(p => p.User)
-                .OrderByDescending(p => p.CreatedAt)
-                .ToListAsync();
+            List<ForumPost>? posts = null;
+
+            // Intentar obtener del caché Redis
+            try
+            {
+                var cachedData = await cache.GetStringAsync(ForumCacheKey);
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    posts = JsonSerializer.Deserialize<List<ForumPost>>(cachedData);
+                }
+            }
+            catch
+            {
+                // Si Redis falla, seguimos con la DB
+            }
+
+            // Si no hay caché, consultar la DB y guardar en caché
+            if (posts == null)
+            {
+                posts = await context.ForumPosts
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToListAsync();
+
+                try
+                {
+                    var serialized = JsonSerializer.Serialize(posts);
+                    await cache.SetStringAsync(ForumCacheKey, serialized, CacheOptions);
+                }
+                catch
+                {
+                    // Si Redis falla al escribir, no pasa nada
+                }
+            }
+
+            // Necesitamos el UserId para el botón de eliminar, 
+            // así que pasamos los posts con esa info
             return View(posts);
         }
 
@@ -59,6 +100,10 @@ namespace Proyecto_Grupo_gris.Controllers
             post.CreatedAt = DateTime.UtcNow;
             context.Add(post);
             await context.SaveChangesAsync();
+
+            // Invalidar caché para que el nuevo post aparezca
+            await InvalidateForumCacheAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -90,7 +135,23 @@ namespace Proyecto_Grupo_gris.Controllers
 
             context.ForumPosts.Remove(post);
             await context.SaveChangesAsync();
+
+            // Invalidar caché tras eliminar
+            await InvalidateForumCacheAsync();
+
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task InvalidateForumCacheAsync()
+        {
+            try
+            {
+                await cache.RemoveAsync(ForumCacheKey);
+            }
+            catch
+            {
+                // Si Redis no está disponible, no pasa nada
+            }
         }
     }
 }
