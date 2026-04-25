@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Grupo_gris.Data;
 using Proyecto_Grupo_gris.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Proyecto_Grupo_gris.Controllers
 {
@@ -9,20 +11,27 @@ namespace Proyecto_Grupo_gris.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            var posts = await context.ForumPosts.OrderByDescending(p => p.CreatedAt).ToListAsync();
+            var posts = await context.ForumPosts
+                .Include(p => p.User)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
             return View(posts);
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ForumPost post, IFormFile? imageFile)
         {
-            // For location, if it's empty, use a default for the mockup look
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            post.UserId = userId;
+
             if (string.IsNullOrEmpty(post.Location))
             {
                 post.Location = "Ubicación actual";
@@ -32,7 +41,6 @@ namespace Proyecto_Grupo_gris.Controllers
             {
                 string uploadsFolder = Path.Combine(environment.WebRootPath, "images/forum");
                 
-                // Ensure directory exists
                 if (!Directory.Exists(uploadsFolder))
                 {
                     Directory.CreateDirectory(uploadsFolder);
@@ -50,6 +58,37 @@ namespace Proyecto_Grupo_gris.Controllers
 
             post.CreatedAt = DateTime.UtcNow;
             context.Add(post);
+            await context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var post = await context.ForumPosts.FindAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (post.UserId != userId)
+            {
+                return Forbid();
+            }
+
+            if (!string.IsNullOrEmpty(post.ImageUrl) && !post.ImageUrl.Contains("river.png") && !post.ImageUrl.Contains("dump.png") && !post.ImageUrl.Contains("air.png") && !post.ImageUrl.Contains("trees.png"))
+            {
+                var filePath = Path.Combine(environment.WebRootPath, post.ImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            context.ForumPosts.Remove(post);
             await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

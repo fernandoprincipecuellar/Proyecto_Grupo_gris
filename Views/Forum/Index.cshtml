@@ -1,7 +1,9 @@
+@using System.Security.Claims
 @model IEnumerable<Proyecto_Grupo_gris.Models.ForumPost>
 
 @{
     ViewData["Title"] = "Foro Ambiental";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="forum-container">
@@ -36,18 +38,30 @@
                         }
                     </div>
                     <div class="forum-card-body">
-                        <p class="forum-card-text">@post.Description</p>
-                        <div class="forum-card-location">
-                            <i class="bi bi-geo-alt-fill text-success"></i> @post.Location
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge @(post.Urgency == "Alta" ? "bg-danger" : post.Urgency == "Media" ? "bg-warning text-dark" : "bg-info text-dark")">
+                                @post.Urgency
+                            </span>
+                            
+                            @if (post.UserId == currentUserId && !string.IsNullOrEmpty(currentUserId))
+                            {
+                                <form asp-action="Delete" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este reporte?');">
+                                    <input type="hidden" name="id" value="@post.Id" />
+                                    <button type="submit" class="btn btn-link text-danger p-0 fs-5 lh-1" title="Eliminar reporte">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>
+                                </form>
+                            }
                         </div>
-                        @if (!string.IsNullOrEmpty(post.Urgency))
-                        {
-                            <div class="mt-2">
-                                <span class="badge @(post.Urgency == "Alta" ? "bg-danger" : post.Urgency == "Media" ? "bg-warning text-dark" : "bg-info text-dark")">
-                                    @post.Urgency
-                                </span>
+                        
+                        <p class="forum-card-text">@post.Description</p>
+                        
+                        <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                            <div class="forum-card-location m-0">
+                                <i class="bi bi-geo-alt-fill text-success"></i> @post.Location
                             </div>
-                        }
+                            <small class="text-muted">@post.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</small>
+                        </div>
                     </div>
                     <div class="forum-card-footer">
                         <div class="forum-footer-item">
@@ -62,88 +76,12 @@
         }
         else
         {
-            <!-- Mock data if no real data exists -->
-            <!-- Reporte 1: Río contaminado -->
-            <div class="forum-card">
-                <div class="forum-card-img-wrapper">
-                    <img src="~/images/forum/river.png" alt="Río contaminado" class="forum-card-img" />
-                </div>
-                <div class="forum-card-body">
-                    <p class="forum-card-text">Encontré este río contaminado con desechos plásticos en mi distrito. Es urgente que las autoridades tomen acción para limpiar esta zona.</p>
-                    <div class="forum-card-location">
-                        <i class="bi bi-geo-alt-fill text-success"></i> San Isidro, Lima
-                    </div>
-                </div>
-                <div class="forum-card-footer">
-                    <div class="forum-footer-item">
-                        <i class="bi bi-chat-dots"></i> 12
-                    </div>
-                    <div class="forum-footer-item">
-                        <i class="bi bi-heart-fill"></i> 28
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reporte 2: Botadero ilegal -->
-            <div class="forum-card">
-                <div class="forum-card-img-wrapper">
-                    <img src="~/images/forum/dump.png" alt="Botadero ilegal" class="forum-card-img" />
-                </div>
-                <div class="forum-card-body">
-                    <p class="forum-card-text">Botadero ilegal en plena vía pública. Los vecinos estamos organizándonos para reportar esto a la municipalidad.</p>
-                    <div class="forum-card-location">
-                        <i class="bi bi-geo-alt-fill text-success"></i> Breña, Lima
-                    </div>
-                </div>
-                <div class="forum-card-footer">
-                    <div class="forum-footer-item">
-                        <i class="bi bi-chat-dots"></i> 8
-                    </div>
-                    <div class="forum-footer-item">
-                        <i class="bi bi-heart-fill"></i> 15
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reporte 3: Calidad del aire -->
-            <div class="forum-card">
-                <div class="forum-card-img-wrapper">
-                    <img src="~/images/forum/air.png" alt="Contaminación aire" class="forum-card-img" />
-                </div>
-                <div class="forum-card-body">
-                    <p class="forum-card-text">La calidad del aire ha empeorado mucho en esta zona. Necesitamos más espacios verdes y control de emisiones vehiculares.</p>
-                    <div class="forum-card-location">
-                        <i class="bi bi-geo-alt-fill text-success"></i> La Victoria, Lima
-                    </div>
-                </div>
-                <div class="forum-card-footer">
-                    <div class="forum-footer-item">
-                        <i class="bi bi-chat-dots"></i> 22
-                    </div>
-                    <div class="forum-footer-item">
-                        <i class="bi bi-heart-fill"></i> 45
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reporte 4: Tala de árboles -->
-            <div class="forum-card">
-                <div class="forum-card-img-wrapper">
-                    <img src="~/images/forum/trees.png" alt="Tala de árboles" class="forum-card-img" />
-                </div>
-                <div class="forum-card-body">
-                    <p class="forum-card-text">Están talando árboles en el parque sin autorización. Es importante preservar nuestras áreas verdes urbanas.</p>
-                    <div class="forum-card-location">
-                        <i class="bi bi-geo-alt-fill text-success"></i> Miraflores, Lima
-                    </div>
-                </div>
-                <div class="forum-card-footer">
-                    <div class="forum-footer-item">
-                        <i class="bi bi-chat-dots"></i> 18
-                    </div>
-                    <div class="forum-footer-item">
-                        <i class="bi bi-heart-fill"></i> 30
-                    </div>
+            <div class="col-12 text-center py-5">
+                <div class="bg-white rounded-4 p-5 shadow-sm border border-dashed">
+                    <i class="bi bi-chat-square-text display-1 text-success opacity-25 mb-4"></i>
+                    <h3 class="fw-bold">No hay reportes aún</h3>
+                    <p class="text-muted">Sé el primero en compartir un incidente ambiental en tu comunidad.</p>
+                    <a asp-action="Create" class="btn btn-success rounded-pill px-4 mt-3">Crear primer reporte</a>
                 </div>
             </div>
         }
