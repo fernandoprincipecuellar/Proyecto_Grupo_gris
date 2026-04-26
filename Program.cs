@@ -34,6 +34,15 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddControllersWithViews();
 
+// 🔥 CONFIGURACIÓN DE SESIONES
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -69,7 +78,11 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // Asegurarse de que esté antes de Routing si es necesario, aunque MapStaticAssets se encarga de lo nuevo
 app.UseRouting();
+
+// 🔥 ACTIVAR SESIONES
+app.UseSession();
 
 // 🔥 IMPORTANTE (solo una vez)
 app.UseAuthentication();

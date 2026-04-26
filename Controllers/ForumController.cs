@@ -11,6 +11,9 @@ namespace Proyecto_Grupo_gris.Controllers
     {
         public async Task<IActionResult> Index()
         {
+            // LEER COOKIE: Obtener la preferencia de diseño (Grid o List)
+            ViewBag.ViewMode = Request.Cookies["ForumViewMode"] ?? "Grid";
+
             var posts = await context.ForumPosts
                 .Include(p => p.User)
                 .OrderByDescending(p => p.CreatedAt)
@@ -18,10 +21,25 @@ namespace Proyecto_Grupo_gris.Controllers
             return View(posts);
         }
 
+        // ACCIÓN PARA COOKIES: Cambiar el modo de vista
+        public IActionResult SetViewMode(string mode)
+        {
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(30); // Guardar por 30 días
+            Response.Cookies.Append("ForumViewMode", mode, option);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [Authorize]
         public IActionResult Create()
         {
-            return View();
+            // Recuperar el último tipo de reporte usado de la SESIÓN y pasarlo al Modelo
+            var model = new ForumPost
+            {
+                ReportType = HttpContext.Session.GetString("LastReportType")
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -59,6 +77,13 @@ namespace Proyecto_Grupo_gris.Controllers
             post.CreatedAt = DateTime.UtcNow;
             context.Add(post);
             await context.SaveChangesAsync();
+
+            // GUARDAR EN SESIÓN: Recordar el tipo de reporte para el próximo post
+            if (!string.IsNullOrEmpty(post.ReportType))
+            {
+                HttpContext.Session.SetString("LastReportType", post.ReportType);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

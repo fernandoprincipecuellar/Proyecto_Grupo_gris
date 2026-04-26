@@ -12,14 +12,28 @@
             <h1 class="display-5 fw-bold text-success mb-1">Foro Comunitario</h1>
             <p class="text-muted">Reportes y denuncias ambientales de la comunidad.</p>
         </div>
-        <div class="d-none d-md-block">
-            <a asp-action="Create" class="btn btn-success rounded-pill px-4 py-2">
-                <i class="bi bi-plus-lg me-2"></i>Nuevo reporte
-            </a>
+        <div class="d-flex align-items-center gap-3">
+            <!-- Botones de Cambio de Vista (COOKIES) -->
+            <div class="btn-group bg-white rounded-pill shadow-sm p-1 border">
+                <a href="@Url.Action("SetViewMode", "Forum", new { mode = "Grid" })" 
+                   class="btn btn-sm rounded-pill px-3 @(ViewBag.ViewMode == "Grid" ? "btn-success" : "btn-light text-muted")">
+                    <i class="bi bi-grid-fill"></i>
+                </a>
+                <a href="@Url.Action("SetViewMode", "Forum", new { mode = "List" })" 
+                   class="btn btn-sm rounded-pill px-3 @(ViewBag.ViewMode == "List" ? "btn-success" : "btn-light text-muted")">
+                    <i class="bi bi-list-ul"></i>
+                </a>
+            </div>
+            
+            <div class="d-none d-md-block">
+                <a asp-action="Create" class="btn btn-success rounded-pill px-4 py-2">
+                    <i class="bi bi-plus-lg me-2"></i>Nuevo reporte
+                </a>
+            </div>
         </div>
     </div>
 
-    <div class="forum-grid">
+    <div class="@(ViewBag.ViewMode == "List" ? "forum-list-mode" : "forum-grid")">
         @if (Model != null && Model.Any())
         {
             foreach (var post in Model)
@@ -92,6 +106,40 @@
     <i class="bi bi-plus-lg"></i> Nuevo reporte
 </a>
 
-<a asp-action="Create" class="forum-floating-btn d-none d-md-flex">
-    <i class="bi bi-plus-lg"></i> Nuevo reporte
-</a>
+
+<style>
+    .forum-list-mode {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .forum-list-mode .forum-card {
+        flex-direction: row;
+        height: auto;
+        min-height: 150px;
+    }
+
+    .forum-list-mode .forum-card-img-wrapper {
+        width: 250px;
+        height: auto;
+    }
+
+    .forum-list-mode .forum-card-footer {
+        flex-direction: column;
+        justify-content: center;
+        border-top: 0;
+        border-left: 1px solid #eee;
+        padding: 0 1.5rem;
+    }
+
+    @@media (max-width: 768px) {
+        .forum-list-mode .forum-card {
+            flex-direction: column;
+        }
+        .forum-list-mode .forum-card-img-wrapper {
+            width: 100%;
+            height: 200px;
+        }
+    }
+</style>
