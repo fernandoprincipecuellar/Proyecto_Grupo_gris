@@ -15,7 +15,16 @@
                 <span class="auth-brand-name">EcoRuta</span>
             </div>
 
-            <h1 class="auth-title">Bienvenidos</h1>
+            <h1 class="auth-title">
+                @if (!string.IsNullOrEmpty(ViewBag.UserName))
+                {
+                    <span>¡Hola de nuevo, @ViewBag.UserName!</span>
+                }
+                else
+                {
+                    <span>Bienvenidos</span>
+                }
+            </h1>
 
             <!-- Login Form -->
             <form asp-action="Login" method="post" class="auth-form">

@@ -19,56 +19,92 @@
         </div>
     </div>
 
+    @if (ViewBag.LastVisitedPost != null)
+    {
+        var lastPost = (Proyecto_Grupo_gris.Models.ForumPost)ViewBag.LastVisitedPost;
+        <div class="last-visited-section mb-5">
+            <h4 class="fw-bold mb-3 text-success">
+                <i class="bi bi-clock-history me-2"></i>Último foro revisado
+            </h4>
+            <a asp-action="Details" asp-route-id="@lastPost.Id" class="text-decoration-none">
+                <div class="last-visited-card card border-0 shadow-sm rounded-4 overflow-hidden d-flex flex-row align-items-center">
+                    <div class="last-visited-img-wrapper" style="width: 150px; height: 100px; flex-shrink: 0;">
+                        @if (!string.IsNullOrEmpty(lastPost.ImageUrl))
+                        {
+                            <img src="@lastPost.ImageUrl" alt="@lastPost.ReportType" class="w-100 h-100 object-fit-cover" />
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center justify-content-center h-100 bg-secondary-subtle">
+                                <i class="bi bi-image text-muted"></i>
+                            </div>
+                        }
+                    </div>
+                    <div class="p-3">
+                        <span class="badge bg-success-subtle text-success mb-1">@lastPost.ReportType</span>
+                        <h6 class="fw-bold text-dark mb-1">@(lastPost.Description?.Length > 60 ? lastPost.Description.Substring(0, 60) + "..." : lastPost.Description)</h6>
+                        <small class="text-muted">
+                            <i class="bi bi-geo-alt-fill text-success"></i> @lastPost.Location
+                        </small>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+
     <div class="forum-grid">
         @if (Model != null && Model.Any())
         {
             foreach (var post in Model)
             {
-                <div class="forum-card">
-                    <div class="forum-card-img-wrapper">
-                        @if (!string.IsNullOrEmpty(post.ImageUrl))
-                        {
-                            <img src="@post.ImageUrl" alt="@post.ReportType" class="forum-card-img" />
-                        }
-                        else
-                        {
-                            <div class="d-flex align-items-center justify-content-center h-100 bg-secondary-subtle">
-                                <i class="bi bi-image fs-1 text-muted"></i>
-                            </div>
-                        }
-                    </div>
-                    <div class="forum-card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge @(post.Urgency == "Alta" ? "bg-danger" : post.Urgency == "Media" ? "bg-warning text-dark" : "bg-info text-dark")">
-                                @post.Urgency
-                            </span>
-                            
-                            @if (post.UserId == currentUserId && !string.IsNullOrEmpty(currentUserId))
+                <div class="forum-card-wrapper position-relative">
+                    <a asp-action="Details" asp-route-id="@post.Id" class="stretched-link"></a>
+                    <div class="forum-card">
+                        <div class="forum-card-img-wrapper">
+                            @if (!string.IsNullOrEmpty(post.ImageUrl))
                             {
-                                <form asp-action="Delete" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este reporte?');">
-                                    <input type="hidden" name="id" value="@post.Id" />
-                                    <button type="submit" class="btn btn-link text-danger p-0 fs-5 lh-1" title="Eliminar reporte">
-                                        <i class="bi bi-trash3-fill"></i>
-                                    </button>
-                                </form>
+                                <img src="@post.ImageUrl" alt="@post.ReportType" class="forum-card-img" />
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center h-100 bg-secondary-subtle">
+                                    <i class="bi bi-image fs-1 text-muted"></i>
+                                </div>
                             }
                         </div>
-                        
-                        <p class="forum-card-text">@post.Description</p>
-                        
-                        <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
-                            <div class="forum-card-location m-0">
-                                <i class="bi bi-geo-alt-fill text-success"></i> @post.Location
+                        <div class="forum-card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge @(post.Urgency == "Alta" ? "bg-danger" : post.Urgency == "Media" ? "bg-warning text-dark" : "bg-info text-dark")">
+                                    @post.Urgency
+                                </span>
+                                
+                                @if (post.UserId == currentUserId && !string.IsNullOrEmpty(currentUserId))
+                                {
+                                    <form asp-action="Delete" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este reporte?');" class="position-relative z-3">
+                                        <input type="hidden" name="id" value="@post.Id" />
+                                        <button type="submit" class="btn btn-link text-danger p-0 fs-5 lh-1" title="Eliminar reporte">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </form>
+                                }
                             </div>
-                            <small class="text-muted">@post.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</small>
+                            
+                            <p class="forum-card-text">@post.Description</p>
+                            
+                            <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                                <div class="forum-card-location m-0">
+                                    <i class="bi bi-geo-alt-fill text-success"></i> @post.Location
+                                </div>
+                                <small class="text-muted">@post.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="forum-card-footer">
-                        <div class="forum-footer-item">
-                            <i class="bi bi-chat-dots"></i> @post.CommentsCount
-                        </div>
-                        <div class="forum-footer-item">
-                            <i class="bi bi-heart-fill"></i> @post.LikesCount
+                        <div class="forum-card-footer">
+                            <div class="forum-footer-item">
+                                <i class="bi bi-chat-dots"></i> @post.CommentsCount
+                            </div>
+                            <div class="forum-footer-item">
+                                <i class="bi bi-heart-fill"></i> @post.LikesCount
+                            </div>
                         </div>
                     </div>
                 </div>

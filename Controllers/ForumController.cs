@@ -54,9 +54,31 @@ namespace Proyecto_Grupo_gris.Controllers
                 }
             }
 
-            // Necesitamos el UserId para el botón de eliminar, 
-            // así que pasamos los posts con esa info
+            // Obtener el último foro revisado de la sesión
+            var lastVisitedJson = HttpContext.Session.GetString("LastVisitedPost");
+            if (!string.IsNullOrEmpty(lastVisitedJson))
+            {
+                ViewBag.LastVisitedPost = JsonSerializer.Deserialize<ForumPost>(lastVisitedJson);
+            }
+
             return View(posts);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var post = await context.ForumPosts
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            // Guardar en sesión como el último visitado
+            var serialized = JsonSerializer.Serialize(post);
+            HttpContext.Session.SetString("LastVisitedPost", serialized);
+
+            return View(post);
         }
 
         [Authorize]

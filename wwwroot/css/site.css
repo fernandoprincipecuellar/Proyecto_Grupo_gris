@@ -816,3 +816,32 @@ body {
         font-size: 0.9rem;
     }
 }
+
+/* New Forum Styles */
+.forum-card-wrapper {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.forum-card-wrapper:hover {
+    transform: scale(1.02);
+    z-index: 10;
+}
+
+.last-visited-card {
+    background: white;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(22, 101, 52, 0.1) !important;
+}
+
+.last-visited-card:hover {
+    box-shadow: 0 10px 30px rgba(22, 101, 52, 0.1) !important;
+    transform: translateY(-3px);
+}
+
+.last-visited-img-wrapper img {
+    object-fit: cover;
+}
+
+.z-3 {
+    z-index: 3;
+}

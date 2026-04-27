@@ -21,8 +21,12 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Login(string? returnUrl = null)
     {
+        var email = Request.Cookies["UserEmail"];
+        ViewBag.UserName = Request.Cookies["UserName"];
+        
         return View(new LoginViewModel
         {
+            Email = email ?? string.Empty,
             ReturnUrl = returnUrl ?? Url.Content("~/")
         });
     }
@@ -46,6 +50,8 @@ public class AccountController : Controller
         var result = await _signInManager.PasswordSignInAsync(user, model.Password, isPersistent: false, lockoutOnFailure: false);
         if (result.Succeeded)
         {
+            // Guardar cookies de usuario para pre-rellenar (30 días)
+            SetUserCookies(model.Email);
             return LocalRedirect(model.ReturnUrl ?? Url.Content("~/"));
         }
 
@@ -93,6 +99,7 @@ public async Task<IActionResult> Register(RegisterViewModel model)
 
     if (result.Succeeded)
     {
+        SetUserCookies(model.Email);
         await _signInManager.SignInAsync(user, isPersistent: false);
         return RedirectToAction("Index", "Home");
     }
@@ -144,6 +151,9 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
             
             if (!claims.Any(c => c.Type == "Picture") && !string.IsNullOrEmpty(picture))
                 await _userManager.AddClaimAsync(existingUser, new Claim("Picture", picture));
+            
+            // Guardar cookies de usuario
+            SetUserCookies(existingUser.Email!, name);
         }
         return RedirectToAction("Index", "Home");
     }
@@ -169,6 +179,7 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
         if (!string.IsNullOrEmpty(picture))
             await _userManager.AddClaimAsync(user, new Claim("Picture", picture));
 
+        SetUserCookies(user.Email!, name);
         await _signInManager.SignInAsync(user, false);
         return RedirectToAction("Index", "Home");
     }
@@ -176,4 +187,20 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
     return RedirectToAction("Login");
 }
 
+    private void SetUserCookies(string email, string? name = null)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTimeOffset.Now.AddDays(30),
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        };
+
+        Response.Cookies.Append("UserEmail", email, cookieOptions);
+        if (!string.IsNullOrEmpty(name))
+        {
+            Response.Cookies.Append("UserName", name, cookieOptions);
+        }
+    }
 }
