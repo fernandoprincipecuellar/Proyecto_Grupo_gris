@@ -1,13 +1,23 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Proyecto_Grupo_gris.Api.Mappings;
+using Proyecto_Grupo_gris.Api.Repositories;
+using Proyecto_Grupo_gris.Api.Repositories.Interfaces;
+using Proyecto_Grupo_gris.Api.Services;
+using Proyecto_Grupo_gris.Api.Services.Interfaces;
 using Proyecto_Grupo_gris.Data;
-using Microsoft.AspNetCore.Authentication.Google;
+using Proyecto_Grupo_gris.Models;
 using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 // 🔥 DB
-var connectionString = builder.Configuration.GetConnectionString("Default") 
+var connectionString = configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Connection string 'Default' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -16,26 +26,124 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // 🔥 IDENTITY
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 8;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>();
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
-// 🔥 GOOGLE LOGIN (AQUÍ VA, NO ABAJO)
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
+// 🔥 AUTHENTICATION JWT + COOKIES
+var jwtSettings = configuration.GetSection("JwtSettings");
+var jwtKey = jwtSettings["Secret"] ?? throw new InvalidOperationException("JwtSettings:Secret no configurado.");
+var issuer = jwtSettings["Issuer"] ?? "EcoRutApi";
+var audience = jwtSettings["Audience"] ?? "EcoRutClients";
+var tokenValidationParameters = new TokenValidationParameters
+{
+    ValidateIssuer = true,
+    ValidIssuer = issuer,
+    ValidateAudience = true,
+    ValidAudience = audience,
+    ValidateLifetime = true,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+    ValidateIssuerSigningKey = true,
+    ClockSkew = TimeSpan.FromMinutes(2)
+};
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.TokenValidationParameters = tokenValidationParameters;
+})
+.AddGoogle("Google", options =>
+{
+    options.ClientId = configuration["Authentication:Google:ClientId"] ?? string.Empty;
+    options.ClientSecret = configuration["Authentication:Google:ClientSecret"] ?? string.Empty;
+    options.SignInScheme = IdentityConstants.ExternalScheme;
+    options.SaveTokens = true;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ApiAccess", policy =>
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+              .RequireAuthenticatedUser());
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+});
+
+// 🔥 AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+// 🔥 HttpClient for external services
+builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<IGoogleMapsService, GoogleMapsService>();
+builder.Services.AddHttpClient<IWeatherService, WeatherService>();
+
+// 🔥 Repositorios y servicios API
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IEcoRouteRepository, EcoRouteRepository>();
+builder.Services.AddScoped<IForumPostRepository, ForumPostRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IEcoRouteService, EcoRouteService>();
+builder.Services.AddScoped<IForumPostService, ForumPostService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+
+// 🔥 Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
-        var googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
-        options.ClientId = googleAuthNSection["ClientId"] ?? throw new InvalidOperationException("Google ClientId no configurado.");
-        options.ClientSecret = googleAuthNSection["ClientSecret"] ?? throw new InvalidOperationException("Google ClientSecret no configurado.");
-        options.CallbackPath = "/signin-google";
+        Title = "EcoRut API",
+        Version = "v1",
+        Description = "API REST para usuarios, rutas ecológicas, foro y comentarios"
     });
 
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Ingresa JWT con el prefijo Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 // 🔥 REDIS - Caché distribuida y sesiones
-var redisConnection = builder.Configuration.GetConnectionString("Redis");
+var redisConnection = configuration.GetConnectionString("Redis");
 if (!string.IsNullOrEmpty(redisConnection) && !redisConnection.Contains("#{"))
 {
     // Si la cadena viene en formato URI (redis:// o rediss://), la parseamos al formato de StackExchange.Redis
@@ -74,7 +182,6 @@ if (!string.IsNullOrEmpty(redisConnection) && !redisConnection.Contains("#{"))
 }
 else
 {
-    // Fallback a caché en memoria si Redis no está configurado
     builder.Services.AddDistributedMemoryCache();
 }
 
@@ -97,7 +204,7 @@ if (!System.IO.File.Exists(mlnetPath))
 }
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | 
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                        ForwardedHeaders.XForwardedProto
 });
 
@@ -105,6 +212,9 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
     try
     {
         db.Database.Migrate();
@@ -114,11 +224,20 @@ using (var scope = app.Services.CreateScope())
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "Ocurrió un error al migrar la base de datos. Si estás en local, verifica que PostgreSQL esté en ejecución.");
     }
+
+    await IdentityDataSeeder.SeedRolesAsync(roleManager);
+    await IdentityDataSeeder.SeedAdminUserAsync(userManager, roleManager, configuration);
 }
 
 // 🔥 PIPELINE
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "EcoRut API v1");
+        options.RoutePrefix = "swagger";
+    });
     app.UseMigrationsEndPoint();
 }
 else
@@ -130,7 +249,6 @@ else
 app.UseHttpsRedirection();
 app.UseRouting();
 
-// 🔥 IMPORTANTE (solo una vez)
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
@@ -145,5 +263,7 @@ app.MapControllerRoute(
 app.MapRazorPages()
    .WithStaticAssets();
 
-app.Run();
+app.MapControllers();
+
+await app.RunAsync();
 

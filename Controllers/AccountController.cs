@@ -9,10 +9,10 @@ namespace Proyecto_Grupo_gris.Controllers;
 [AllowAnonymous]
 public class AccountController : Controller
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+    public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -89,10 +89,11 @@ public async Task<IActionResult> Register(RegisterViewModel model)
         return View(model);
     }
 
-    var user = new IdentityUser
+    var user = new ApplicationUser
     {
         UserName = model.Email,
-        Email = model.Email
+        Email = model.Email,
+        Nombre = model.Email
     };
 
     var result = await _userManager.CreateAsync(user, model.Password);
@@ -161,10 +162,11 @@ public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null)
     if (email == null)
         return RedirectToAction("Login");
 
-    var user = new IdentityUser
+    var user = new ApplicationUser
     {
         UserName = email,
-        Email = email
+        Email = email,
+        Nombre = name ?? email
     };
 
     var result = await _userManager.CreateAsync(user);

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Proyecto_Grupo_gris.Data;
@@ -11,9 +12,11 @@ using Proyecto_Grupo_gris.Data;
 namespace Proyecto_Grupo_gris.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260528075831_AddExternalIntegrations")]
+    partial class AddExternalIntegrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -353,68 +356,6 @@ namespace Proyecto_Grupo_gris.Data.Migrations
                     b.ToTable("EcoRoutes");
                 });
 
-            modelBuilder.Entity("Proyecto_Grupo_gris.Models.ForumComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Sentiment")
-                        .HasColumnType("text");
-
-                    b.Property<float>("SentimentConfidence")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ForumComments");
-                });
-
-            modelBuilder.Entity("Proyecto_Grupo_gris.Models.ForumLike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ForumLikes");
-                });
-
             modelBuilder.Entity("Proyecto_Grupo_gris.Models.ForumPost", b =>
                 {
                     b.Property<int>("Id")
@@ -510,7 +451,6 @@ namespace Proyecto_Grupo_gris.Data.Migrations
                         .IsRequired();
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("Proyecto_Grupo_gris.Models.Comment", b =>
                 {
                     b.HasOne("Proyecto_Grupo_gris.Models.ApplicationUser", "Author")
@@ -543,40 +483,6 @@ namespace Proyecto_Grupo_gris.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
-=======
-            modelBuilder.Entity("Proyecto_Grupo_gris.Models.ForumComment", b =>
-                {
-                    b.HasOne("Proyecto_Grupo_gris.Models.ForumPost", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Proyecto_Grupo_gris.Models.ForumLike", b =>
-                {
-                    b.HasOne("Proyecto_Grupo_gris.Models.ForumPost", "Post")
-                        .WithMany("Likes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
->>>>>>> origin/main
                 });
 
             modelBuilder.Entity("Proyecto_Grupo_gris.Models.ForumPost", b =>
@@ -588,7 +494,6 @@ namespace Proyecto_Grupo_gris.Data.Migrations
                     b.Navigation("User");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("Proyecto_Grupo_gris.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Comments");
@@ -601,13 +506,6 @@ namespace Proyecto_Grupo_gris.Data.Migrations
             modelBuilder.Entity("Proyecto_Grupo_gris.Models.EcoRoute", b =>
                 {
                     b.Navigation("Comments");
-=======
-            modelBuilder.Entity("Proyecto_Grupo_gris.Models.ForumPost", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
->>>>>>> origin/main
                 });
 #pragma warning restore 612, 618
         }

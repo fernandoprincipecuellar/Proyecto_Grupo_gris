@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Proyecto_Grupo_gris.Api.Services.Interfaces;
 using Proyecto_Grupo_gris.Data;
 using Proyecto_Grupo_gris.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,9 @@ using System.Text.Json;
 
 namespace Proyecto_Grupo_gris.Controllers
 {
-    public class ForumController(ApplicationDbContext context, IWebHostEnvironment environment, IDistributedCache cache) : Controller
+    public class ForumController(ApplicationDbContext context, IWebHostEnvironment environment, IDistributedCache cache, ICloudinaryService cloudinaryService) : Controller
     {
+        private readonly ICloudinaryService _cloudinaryService = cloudinaryService;
         private const string ForumCacheKey = "forum_posts";
         private static readonly DistributedCacheEntryOptions CacheOptions = new()
         {
@@ -118,21 +120,18 @@ namespace Proyecto_Grupo_gris.Controllers
 
             if (imageFile != null && imageFile.Length > 0)
             {
-                string uploadsFolder = Path.Combine(environment.WebRootPath, "images/forum");
-                
-                if (!Directory.Exists(uploadsFolder))
+                try
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    var uploadedUrl = await _cloudinaryService.UploadImageAsync(imageFile, "forum_posts");
+                    if (!string.IsNullOrEmpty(uploadedUrl))
+                    {
+                        post.ImageUrl = uploadedUrl;
+                    }
                 }
-
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                catch
                 {
-                    await imageFile.CopyToAsync(fileStream);
+                    // Si Cloudinary falla, continuamos sin bloquear al usuario.
                 }
-                post.ImageUrl = "/images/forum/" + uniqueFileName;
             }
 
             post.CreatedAt = DateTime.UtcNow;
