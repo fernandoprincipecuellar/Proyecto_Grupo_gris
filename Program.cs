@@ -225,8 +225,16 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Ocurrió un error al migrar la base de datos. Si estás en local, verifica que PostgreSQL esté en ejecución.");
     }
 
-    await IdentityDataSeeder.SeedRolesAsync(roleManager);
-    await IdentityDataSeeder.SeedAdminUserAsync(userManager, roleManager, configuration);
+    try
+    {
+        await IdentityDataSeeder.SeedRolesAsync(roleManager);
+        await IdentityDataSeeder.SeedAdminUserAsync(userManager, roleManager, configuration);
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Error seeding identity data.");
+    }
 }
 
 // 🔥 PIPELINE
