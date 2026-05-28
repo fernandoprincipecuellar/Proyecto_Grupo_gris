@@ -16,17 +16,17 @@ public class UserRepository : IUserRepository
 
     public async Task<ApplicationUser?> GetByIdAsync(string id)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        return await _context.AspNetUsers.FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<ApplicationUser?> GetByEmailAsync(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        return await _context.AspNetUsers.FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<IEnumerable<ApplicationUser>> GetAllAsync(int page, int pageSize, string? search)
     {
-        var query = _context.Users.AsNoTracking();
+        var query = _context.AspNetUsers.AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -45,7 +45,7 @@ public class UserRepository : IUserRepository
 
     public async Task<int> CountAsync(string? search)
     {
-        var query = _context.Users.AsNoTracking();
+        var query = _context.AspNetUsers.AsNoTracking();
         if (!string.IsNullOrWhiteSpace(search))
         {
             query = query.Where(u => (u.Email != null && u.Email.Contains(search))
@@ -59,21 +59,21 @@ public class UserRepository : IUserRepository
 
     public async Task<ApplicationUser> AddAsync(ApplicationUser user)
     {
-        await _context.Users.AddAsync(user);
+        await _context.AspNetUsers.AddAsync(user);
         await _context.SaveChangesAsync();
         return user;
     }
 
     public async Task<ApplicationUser> UpdateAsync(ApplicationUser user)
     {
-        _context.Users.Update(user);
+        _context.AspNetUsers.Update(user);
         await _context.SaveChangesAsync();
         return user;
     }
 
     public async Task DeleteAsync(ApplicationUser user)
     {
-        _context.Users.Remove(user);
+        _context.AspNetUsers.Remove(user);
         await _context.SaveChangesAsync();
     }
 }
