@@ -7,4 +7,6 @@ namespace Proyecto_Grupo_gris.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
 {
     public DbSet<ForumPost> ForumPosts { get; set; }
+    public DbSet<ForumComment> ForumComments { get; set; }
+    public DbSet<ForumLike> ForumLikes { get; set; }
 }

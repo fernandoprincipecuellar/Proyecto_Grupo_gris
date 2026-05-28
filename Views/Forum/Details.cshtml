@@ -68,6 +68,45 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Sección de Comentarios -->
+                    <div class="mt-5 border-top pt-4">
+                        <h4 class="fw-bold mb-4">Comentarios (@Model.CommentsCount)</h4>
+                        @if (Model.Comments != null && Model.Comments.Any())
+                        {
+                            <div class="d-grid gap-3">
+                                @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+                                {
+                                    <div class="p-3 bg-light rounded-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-bold text-dark">
+                                                <i class="bi bi-person-circle me-1"></i> @(comment.User?.UserName ?? "Usuario")
+                                            </span>
+                                            <small class="text-muted">@comment.CreatedAt.ToLocalTime().ToString("g")</small>
+                                        </div>
+                                        <p class="mb-2">@comment.Text</p>
+                                        @{
+                                            var sentLabel = string.IsNullOrWhiteSpace(comment.Sentiment) ? "Neutro" : comment.Sentiment;
+                                            var sentBadge = sentLabel == "Positivo" ? "bg-success" :
+                                                            sentLabel == "Negativo" ? "bg-danger" : "bg-warning text-dark";
+                                            var sentIcon  = sentLabel == "Positivo" ? "bi-emoji-smile-fill" :
+                                                            sentLabel == "Negativo" ? "bi-emoji-frown-fill" : "bi-emoji-neutral-fill";
+                                        }
+                                        <div>
+                                            <span class="badge @sentBadge">
+                                                <i class="bi @sentIcon me-1"></i>
+                                                Análisis (@sentLabel): @comment.SentimentConfidence.ToString("0.0")%
+                                            </span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,14 +120,25 @@
                             <i class="bi bi-heart-fill text-danger"></i>
                             <span class="fw-bold">@Model.LikesCount Likes</span>
                         </div>
-                        <button class="btn btn-outline-danger btn-sm rounded-pill px-3">Me gusta</button>
+                        <form asp-action="Like" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                <i class="bi bi-hand-thumbs-up me-1"></i>Me gusta
+                            </button>
+                        </form>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-chat-dots-fill text-primary"></i>
-                            <span class="fw-bold">@Model.CommentsCount Comentarios</span>
+                    <div class="p-3 bg-light rounded-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-chat-dots-fill text-primary"></i>
+                                <span class="fw-bold">@Model.CommentsCount Comentarios</span>
+                            </div>
                         </div>
-                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3">Comentar</button>
+                        <form asp-action="AddComment" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="text" name="commentText" class="form-control form-control-sm rounded-pill" placeholder="Escribe un comentario..." required />
+                            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">Enviar</button>
+                        </form>
                     </div>
                 </div>
             </div>

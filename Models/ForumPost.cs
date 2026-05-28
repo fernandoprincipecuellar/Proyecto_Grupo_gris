@@ -27,5 +27,8 @@ namespace Proyecto_Grupo_gris.Models
         
         public int CommentsCount { get; set; } = 0;
         public int LikesCount { get; set; } = 0;
+
+        public virtual ICollection<ForumComment> Comments { get; set; } = new List<ForumComment>();
+        public virtual ICollection<ForumLike> Likes { get; set; } = new List<ForumLike>();
     }
 }

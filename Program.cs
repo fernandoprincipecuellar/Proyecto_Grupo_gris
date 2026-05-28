@@ -88,6 +88,13 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
+// 🔥 ENTRENAR MODELO ML.NET (SOLO SI NO EXISTE)
+string mlnetPath = System.IO.Path.Combine("ML", "SentimentAnalysis", "SentimentAnalysis.mlnet");
+if (!System.IO.File.Exists(mlnetPath))
+{
+    try { Proyecto_Grupo_gris.ML.SentimentAnalysis.SentimentAnalysisTraining.TrainModel(); } 
+    catch (Exception e) { Console.WriteLine("Error entrenando ML: " + e.Message); }
+}
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | 

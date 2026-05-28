@@ -45,7 +45,11 @@ namespace Proyecto_Grupo_gris.Controllers
 
                 try
                 {
-                    var serialized = JsonSerializer.Serialize(posts);
+                    var jsonOptions = new JsonSerializerOptions
+                    {
+                        ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+                    };
+                    var serialized = JsonSerializer.Serialize(posts, jsonOptions);
                     await cache.SetStringAsync(ForumCacheKey, serialized, CacheOptions);
                 }
                 catch
@@ -67,6 +71,8 @@ namespace Proyecto_Grupo_gris.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var post = await context.ForumPosts
+                .Include(p => p.Comments).ThenInclude(c => c.User)
+                .Include(p => p.Likes)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (post == null)
@@ -74,8 +80,12 @@ namespace Proyecto_Grupo_gris.Controllers
                 return NotFound();
             }
 
-            // Guardar en sesión como el último visitado
-            var serialized = JsonSerializer.Serialize(post);
+            // Guardar en sesión como el último visitado (Ignorando referencias circulares)
+            var jsonOptions = new JsonSerializerOptions
+            {
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+            };
+            var serialized = JsonSerializer.Serialize(post, jsonOptions);
             HttpContext.Session.SetString("LastVisitedPost", serialized);
 
             return View(post);
@@ -99,6 +109,12 @@ namespace Proyecto_Grupo_gris.Controllers
             {
                 post.Location = "Ubicación actual";
             }
+
+            // Análisis de Sentimiento con ML.NET para definir urgencia del Post
+            var sentiment = Proyecto_Grupo_gris.ML.SentimentAnalysis.SentimentAnalysisConsumption.Predict(post.Description ?? "");
+            post.Urgency = sentiment.Sentiment == "Negativo" ? "Alta" : (sentiment.Sentiment == "Neutro" ? "Media" : "Baja");
+            Console.WriteLine($"[ML.NET] Post analizado: Sentimiento={sentiment.Sentiment}, Confianza={sentiment.ConfidencePercentage}% -> Urgencia={post.Urgency}");
+
 
             if (imageFile != null && imageFile.Length > 0)
             {
@@ -174,6 +190,58 @@ namespace Proyecto_Grupo_gris.Controllers
             {
                 // Si Redis no está disponible, no pasa nada
             }
+        }
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Like(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var post = await context.ForumPosts.Include(p => p.Likes).FirstOrDefaultAsync(p => p.Id == id);
+            
+            if (post != null && userId != null)
+            {
+                var existingLike = post.Likes.FirstOrDefault(l => l.UserId == userId);
+                if (existingLike == null)
+                {
+                    var newLike = new ForumLike { PostId = id, UserId = userId };
+                    context.ForumLikes.Add(newLike);
+                    post.LikesCount++;
+                    await context.SaveChangesAsync();
+                    await InvalidateForumCacheAsync();
+                }
+            }
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddComment(int id, string commentText)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var post = await context.ForumPosts.FindAsync(id);
+            
+            if (post != null && !string.IsNullOrWhiteSpace(commentText))
+            {
+                // Análisis de sentimiento para el comentario
+                var sentimentResult = Proyecto_Grupo_gris.ML.SentimentAnalysis.SentimentAnalysisConsumption.Predict(commentText);
+                
+                var newComment = new ForumComment
+                {
+                    PostId = id,
+                    UserId = userId,
+                    Text = commentText,
+                    Sentiment = sentimentResult.Sentiment,
+                    SentimentConfidence = sentimentResult.ConfidencePercentage
+                };
+                
+                context.ForumComments.Add(newComment);
+                post.CommentsCount++;
+                await context.SaveChangesAsync();
+                await InvalidateForumCacheAsync();
+            }
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 }
