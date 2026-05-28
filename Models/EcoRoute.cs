@@ -18,8 +18,15 @@ namespace Proyecto_Grupo_gris.Models
         [Required]
         public string EndLocation { get; set; } = string.Empty;
 
+        public string StartCoordinates { get; set; } = string.Empty;
+        public string EndCoordinates { get; set; } = string.Empty;
+        public string MapUrl { get; set; } = string.Empty;
         public double DistanceKm { get; set; }
         public string Difficulty { get; set; } = string.Empty;
+        public string WeatherCondition { get; set; } = string.Empty;
+        public double WeatherTemperatureC { get; set; }
+        public int WeatherHumidity { get; set; }
+        public double WeatherWindSpeed { get; set; }
         public bool IsPublished { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

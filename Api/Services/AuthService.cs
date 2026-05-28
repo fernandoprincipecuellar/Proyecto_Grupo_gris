@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Proyecto_Grupo_gris.Api.DTOs.Auth;
 using Proyecto_Grupo_gris.Api.DTOs.Users;
-using Proyecto_Grupo_gris.Api.Repositories.Interfaces;
 using Proyecto_Grupo_gris.Api.Services.Interfaces;
 using Proyecto_Grupo_gris.Models;
 
@@ -33,6 +32,30 @@ public class AuthService : IAuthService
             throw new InvalidOperationException("Credenciales inválidas.");
         }
 
+        var roles = await _userManager.GetRolesAsync(user);
+        var token = GenerateToken(user, roles);
+
+        return new AuthResponseDto
+        {
+            AccessToken = token,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["JwtSettings:ExpiresMinutes"] ?? "120")),
+            User = new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email ?? string.Empty,
+                Nombre = user.Nombre,
+                Bio = user.Bio,
+                AvatarUrl = user.AvatarUrl,
+                City = user.City,
+                Country = user.Country,
+                CreatedAt = user.CreatedAt,
+                Roles = roles.ToList()
+            }
+        };
+    }
+
+    public async Task<AuthResponseDto> AuthenticateExternalAsync(ApplicationUser user)
+    {
         var roles = await _userManager.GetRolesAsync(user);
         var token = GenerateToken(user, roles);
 

@@ -3,6 +3,7 @@ using Proyecto_Grupo_gris.Api.DTOs.Comments;
 using Proyecto_Grupo_gris.Api.DTOs.EcoRoutes;
 using Proyecto_Grupo_gris.Api.DTOs.Forum;
 using Proyecto_Grupo_gris.Api.DTOs.Users;
+using Proyecto_Grupo_gris.Api.DTOs.Weather;
 using Proyecto_Grupo_gris.Models;
 
 namespace Proyecto_Grupo_gris.Api.Mappings;
@@ -20,7 +21,14 @@ public class AutoMapperProfile : Profile
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
         CreateMap<EcoRoute, EcoRouteDto>()
-            .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom(src => src.CreatedBy != null ? src.CreatedBy.Nombre : string.Empty));
+            .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom(src => src.CreatedBy != null ? src.CreatedBy.Nombre : string.Empty))
+            .ForMember(dest => dest.Weather, opt => opt.MapFrom(src => new WeatherDto
+            {
+                Condition = src.WeatherCondition,
+                TemperatureC = src.WeatherTemperatureC,
+                Humidity = src.WeatherHumidity,
+                WindSpeed = src.WeatherWindSpeed
+            }));
         CreateMap<CreateEcoRouteDto, EcoRoute>();
         CreateMap<UpdateEcoRouteDto, EcoRoute>();
 

@@ -64,6 +64,13 @@ builder.Services.AddAuthentication(options =>
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     options.TokenValidationParameters = tokenValidationParameters;
+})
+.AddGoogle("Google", options =>
+{
+    options.ClientId = configuration["Authentication:Google:ClientId"] ?? string.Empty;
+    options.ClientSecret = configuration["Authentication:Google:ClientSecret"] ?? string.Empty;
+    options.SignInScheme = IdentityConstants.ExternalScheme;
+    options.SaveTokens = true;
 });
 
 builder.Services.AddAuthorization(options =>
@@ -77,6 +84,11 @@ builder.Services.AddAuthorization(options =>
 // 🔥 AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
+// 🔥 HttpClient for external services
+builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<IGoogleMapsService, GoogleMapsService>();
+builder.Services.AddHttpClient<IWeatherService, WeatherService>();
+
 // 🔥 Repositorios y servicios API
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEcoRouteRepository, EcoRouteRepository>();
@@ -88,6 +100,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEcoRouteService, EcoRouteService>();
 builder.Services.AddScoped<IForumPostService, ForumPostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 // 🔥 Swagger
 builder.Services.AddEndpointsApiExplorer();

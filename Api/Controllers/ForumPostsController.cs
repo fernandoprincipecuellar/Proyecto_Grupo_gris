@@ -11,10 +11,12 @@ namespace Proyecto_Grupo_gris.Api.Controllers;
 public class ForumPostsController : ControllerBase
 {
     private readonly IForumPostService _service;
+    private readonly ICloudinaryService _cloudinaryService;
 
-    public ForumPostsController(IForumPostService service)
+    public ForumPostsController(IForumPostService service, ICloudinaryService cloudinaryService)
     {
         _service = service;
+        _cloudinaryService = cloudinaryService;
     }
 
     [HttpGet]
@@ -36,9 +38,15 @@ public class ForumPostsController : ControllerBase
 
     [HttpPost]
     [Authorize(Policy = "ApiAccess")]
-    public async Task<IActionResult> Create([FromBody] CreateForumPostDto request)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Create([FromForm] CreateForumPostDto request, IFormFile? imageFile)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        if (imageFile != null && imageFile.Length > 0)
+        {
+            request.ImageUrl = await _cloudinaryService.UploadImageAsync(imageFile, "forum_posts");
+        }
 
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId)) return Unauthorized();

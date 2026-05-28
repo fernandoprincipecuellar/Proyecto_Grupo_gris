@@ -19,9 +19,6 @@ public class UpdateEcoRouteDto
     [Required]
     public string EndLocation { get; set; } = string.Empty;
 
-    [Range(0.1, 1000)]
-    public double DistanceKm { get; set; }
-
     public string Difficulty { get; set; } = "Moderate";
     public bool IsPublished { get; set; }
 }
