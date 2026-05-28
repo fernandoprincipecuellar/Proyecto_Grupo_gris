@@ -9,4 +9,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ForumPost> ForumPosts { get; set; }
     public DbSet<EcoRoute> EcoRoutes { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<ForumComment> ForumComments { get; set; }
+    public DbSet<ForumLike> ForumLikes { get; set; }
 }

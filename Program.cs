@@ -146,6 +146,34 @@ builder.Services.AddRazorPages();
 var redisConnection = configuration.GetConnectionString("Redis");
 if (!string.IsNullOrEmpty(redisConnection) && !redisConnection.Contains("#{"))
 {
+    // Si la cadena viene en formato URI (redis:// o rediss://), la parseamos al formato de StackExchange.Redis
+    if (redisConnection.StartsWith("redis://", StringComparison.OrdinalIgnoreCase) || 
+        redisConnection.StartsWith("rediss://", StringComparison.OrdinalIgnoreCase))
+    {
+        try
+        {
+            var uri = new Uri(redisConnection);
+            var host = uri.Host;
+            var port = uri.Port;
+            var userInfo = uri.UserInfo;
+            var password = userInfo.Contains(':') ? userInfo.Split(':')[1] : userInfo;
+            var isSsl = redisConnection.StartsWith("rediss://", StringComparison.OrdinalIgnoreCase);
+            
+            redisConnection = $"{host}:{port},password={password},ssl={isSsl},abortConnect=false";
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error parseando la URL de Redis: {ex.Message}");
+        }
+    }
+    else if (!redisConnection.Contains("abortConnect="))
+    {
+        // Añadir abortConnect=false si no está presente en la cadena directa
+        redisConnection = redisConnection.Contains(",") 
+            ? $"{redisConnection},abortConnect=false" 
+            : $"{redisConnection}:6379,abortConnect=false";
+    }
+
     builder.Services.AddStackExchangeRedisCache(options =>
     {
         options.Configuration = redisConnection;
@@ -167,6 +195,13 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
+// 🔥 ENTRENAR MODELO ML.NET (SOLO SI NO EXISTE)
+string mlnetPath = System.IO.Path.Combine("ML", "SentimentAnalysis", "SentimentAnalysis.mlnet");
+if (!System.IO.File.Exists(mlnetPath))
+{
+    try { Proyecto_Grupo_gris.ML.SentimentAnalysis.SentimentAnalysisTraining.TrainModel(); } 
+    catch (Exception e) { Console.WriteLine("Error entrenando ML: " + e.Message); }
+}
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor |
