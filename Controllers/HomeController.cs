@@ -37,6 +37,18 @@ public class HomeController : Controller
     }
 
     [Microsoft.AspNetCore.Authorization.Authorize]
+    public async Task<IActionResult> Premios()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        
+        // Puntos simulados para la demostración
+        ViewBag.UserName = user?.Nombre ?? user?.Email ?? "Usuario";
+        ViewBag.Puntos = 2450; 
+        
+        return View();
+    }
+
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public IActionResult Profile()
     {
         return View();

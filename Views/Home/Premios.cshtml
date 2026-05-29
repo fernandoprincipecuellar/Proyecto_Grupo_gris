@@ -1,0 +1,170 @@
+@{
+    ViewData["Title"] = "Premios y Puntos";
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Puntos del Usuario y Ranking -->
+        <div class="col-lg-4">
+            <!-- Puntos -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4 text-white" style="background: linear-gradient(135deg, #166534 0%, #22c55e 100%);">
+                <div class="card-body p-4 text-center">
+                    <h5 class="fw-bold mb-3 opacity-75">Tus EcoPuntos</h5>
+                    <div class="display-3 fw-bold mb-2">
+                        <i class="bi bi-star-fill text-warning me-2"></i>@ViewBag.Puntos
+                    </div>
+                    <p class="mb-0 fw-medium">¡Sigue reciclando para subir de nivel!</p>
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 pt-4 pb-0">
+                    <h5 class="fw-bold text-dark"><i class="bi bi-trophy-fill text-warning me-2"></i>Top Recicladores</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush rounded-bottom-4">
+                        <div class="list-group-item d-flex align-items-center p-3 bg-light border-0 border-bottom border-light">
+                            <span class="badge bg-warning rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">1</span>
+                            <div class="me-auto">
+                                <h6 class="mb-0 fw-bold">María Gómez</h6>
+                                <small class="text-muted">Nivel EcoHero</small>
+                            </div>
+                            <span class="fw-bold text-success">5,200 pts</span>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center p-3 border-0 border-bottom border-light">
+                            <span class="badge bg-secondary rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">2</span>
+                            <div class="me-auto">
+                                <h6 class="mb-0 fw-bold">Carlos Ruiz</h6>
+                                <small class="text-muted">Nivel Activista</small>
+                            </div>
+                            <span class="fw-bold text-success">4,850 pts</span>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center p-3 bg-light border-0 border-bottom border-light">
+                            <span class="badge text-white rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="background-color: #cd7f32; width: 35px; height: 35px;">3</span>
+                            <div class="me-auto">
+                                <h6 class="mb-0 fw-bold">Ana López</h6>
+                                <small class="text-muted">Nivel Activista</small>
+                            </div>
+                            <span class="fw-bold text-success">4,100 pts</span>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center p-3 border-0 border-bottom border-light">
+                            <span class="badge bg-light text-dark rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">4</span>
+                            <div class="me-auto">
+                                <h6 class="mb-0 fw-bold">Juan Pérez</h6>
+                                <small class="text-muted">Nivel Avanzado</small>
+                            </div>
+                            <span class="fw-bold text-success">3,200 pts</span>
+                        </div>
+                        <!-- Current User highlight -->
+                        <div class="list-group-item d-flex align-items-center p-3 border-0 bg-success-subtle">
+                            <span class="badge bg-success rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">12</span>
+                            <div class="me-auto">
+                                <h6 class="mb-0 fw-bold text-success">@ViewBag.UserName (Tú)</h6>
+                                <small class="text-success">Nivel Intermedio</small>
+                            </div>
+                            <span class="fw-bold text-success">@ViewBag.Puntos pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cupones -->
+        <div class="col-lg-8">
+            <h3 class="fw-bold mb-4 text-dark">Canjea tus puntos por recompensas</h3>
+            <div class="row g-4">
+                <!-- Cupón 1 -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
+                        <div class="bg-primary text-white p-4 text-center position-relative">
+                            <i class="bi bi-ticket-perforated display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
+                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">20% DSCTO</h2>
+                            <p class="mb-0 position-relative z-1 fw-medium">En productos ecológicos</p>
+                        </div>
+                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
+                            <h5 class="fw-bold text-dark">Supermercado EcoLife</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">Válido para compras mayores a S/50 en la sección de productos biodegradables.</p>
+                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
+                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 500 pts</span>
+                                <button class="btn btn-outline-primary rounded-pill px-4 fw-bold">Canjear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cupón 2 -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
+                        <div class="bg-danger text-white p-4 text-center position-relative">
+                            <i class="bi bi-cup-hot display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
+                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">2x1 CAFÉ</h2>
+                            <p class="mb-0 position-relative z-1 fw-medium">Llevando tu propio termo</p>
+                        </div>
+                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
+                            <h5 class="fw-bold text-dark">Cafetería El Grano Verde</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">Presenta este cupón junto con tu termo reutilizable y recibe un segundo café gratis.</p>
+                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
+                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 300 pts</span>
+                                <button class="btn btn-outline-danger rounded-pill px-4 fw-bold">Canjear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cupón 3 -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
+                        <div class="bg-info text-dark p-4 text-center position-relative">
+                            <i class="bi bi-bus-front display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
+                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">S/ 10 SALDO</h2>
+                            <p class="mb-0 position-relative z-1 fw-medium">En transporte público</p>
+                        </div>
+                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
+                            <h5 class="fw-bold text-dark">Línea Uno Metro</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">Recarga tu tarjeta del tren o metropolitano con S/ 10 de saldo promocional.</p>
+                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
+                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 1000 pts</span>
+                                <button class="btn btn-outline-info text-dark rounded-pill px-4 fw-bold">Canjear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cupón 4 -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
+                        <div class="text-white p-4 text-center position-relative" style="background-color: #2e1065;">
+                            <i class="bi bi-tree display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
+                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">ENTRADA</h2>
+                            <p class="mb-0 position-relative z-1 fw-medium">Parque o Reserva</p>
+                        </div>
+                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
+                            <h5 class="fw-bold text-dark">Reserva Ecológica</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">Entrada general gratuita para 1 persona en reservas afiliadas a EcoRuta.</p>
+                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
+                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 1500 pts</span>
+                                <button class="btn btn-outline-dark rounded-pill px-4 fw-bold" style="border-color: #2e1065; color: #2e1065;">Canjear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-dashed {
+        border-style: dashed !important;
+        border-color: #dee2e6 !important;
+    }
+    .coupon-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .coupon-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+</style>

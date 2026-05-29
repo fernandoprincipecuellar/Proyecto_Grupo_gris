@@ -26,6 +26,19 @@
                 }
             </h1>
 
+            <!-- Google Login -->
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mb-3">
+                <button type="submit" name="provider" value="Google" class="btn auth-btn-google w-100">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" width="20" alt="Google">
+                    Ingresar con Google
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>O INGRESA CON TU CORREO</span>
+            </div>
+
             <!-- Login Form -->
             <form asp-action="Login" method="post" class="auth-form">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>

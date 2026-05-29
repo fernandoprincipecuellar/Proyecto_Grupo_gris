@@ -82,12 +82,17 @@ namespace Proyecto_Grupo_gris.Controllers
                 return NotFound();
             }
 
-            // Guardar en sesión como el último visitado (Ignorando referencias circulares)
-            var jsonOptions = new JsonSerializerOptions
+            // Guardar en sesión como el último visitado (Solo las propiedades necesarias)
+            var lastVisited = new ForumPost
             {
-                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+                Id = post.Id,
+                ReportType = post.ReportType,
+                Description = post.Description,
+                Location = post.Location,
+                ImageUrl = post.ImageUrl
             };
-            var serialized = JsonSerializer.Serialize(post, jsonOptions);
+            
+            var serialized = JsonSerializer.Serialize(lastVisited);
             HttpContext.Session.SetString("LastVisitedPost", serialized);
 
             return View(post);

@@ -12,7 +12,7 @@ namespace Proyecto_Grupo_gris.Models
         public virtual ForumPost? Post { get; set; }
 
         public string? UserId { get; set; }
-        public virtual IdentityUser? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
         [Required]
         public string Text { get; set; } = string.Empty;
