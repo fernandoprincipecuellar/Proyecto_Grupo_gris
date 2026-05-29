@@ -144,7 +144,14 @@ builder.Services.AddRazorPages();
 
 // 🔥 REDIS - Caché distribuida y sesiones
 var redisConnection = configuration.GetConnectionString("Redis");
-if (!string.IsNullOrEmpty(redisConnection) && !redisConnection.Contains("#{"))
+
+// En entorno de desarrollo usamos caché en memoria para evitar depender
+// de un Redis remoto que pueda no estar disponible durante el desarrollo local.
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDistributedMemoryCache();
+}
+else if (!string.IsNullOrEmpty(redisConnection) && !redisConnection.Contains("#{"))
 {
     // Si la cadena viene en formato URI (redis:// o rediss://), la parseamos al formato de StackExchange.Redis
     if (redisConnection.StartsWith("redis://", StringComparison.OrdinalIgnoreCase) || 
