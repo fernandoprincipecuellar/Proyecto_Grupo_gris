@@ -7,333 +7,680 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
 <style>
-    .eco-dashboard {
-        background: #eef6f0;
-        min-height: 100vh;
+    :root {
+        --eco-bg: #f4fdf7;
+        --eco-card: rgba(255, 255, 255, 0.85);
+        --eco-border: rgba(255, 255, 255, 0.6);
+        --eco-primary: #059669;
+        --eco-primary-dark: #047857;
+        --eco-dark: #0f172a;
+        --eco-text: #334155;
+        --eco-muted: #64748b;
+        --eco-glow: rgba(5, 150, 105, 0.4);
     }
 
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--eco-bg);
+        background-image: 
+            radial-gradient(at 0% 0%, hsla(140,100%,94%,1) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, hsla(160,100%,94%,1) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, hsla(140,100%,96%,1) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, hsla(150,100%,96%,1) 0px, transparent 50%);
+        background-attachment: fixed;
+        color: var(--eco-text);
+    }
+
+    h1, h2, h3, h4, h5, h6, .navbar-brand {
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .eco-dashboard {
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Glassmorphism Card Base */
     .card-eco {
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
-        background: white;
+        border: 1px solid var(--eco-border);
+        border-radius: 24px;
+        background: var(--eco-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-eco:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px -15px rgba(5, 150, 105, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 
     /* Hero Left */
     .hero-panel {
-        padding: 2rem;
-        min-height: 320px;
+        padding: 2.5rem;
+        min-height: 380px;
         display: flex;
         flex-direction: column;
+        background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7));
     }
+
+    .hero-panel::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, transparent 60%);
+        z-index: -1;
+    }
+
     .hero-panel .badge-label {
         display: inline-block;
-        background: #e8f5e9;
-        color: #166534;
-        padding: 0.35rem 0.85rem;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        padding: 0.4rem 1rem;
         border-radius: 50px;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-    }
-    .hero-panel h1 {
-        font-size: 1.65rem;
+        font-size: 0.75rem;
         font-weight: 800;
-        color: #0f2d1d;
-        line-height: 1.2;
-        margin: 1rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        box-shadow: 0 4px 15px var(--eco-glow);
+        align-self: flex-start;
     }
+
+    .hero-panel h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--eco-dark);
+        line-height: 1.1;
+        margin: 1.5rem 0 1rem;
+        letter-spacing: -0.02em;
+    }
+
     .hero-panel p {
-        font-size: 0.85rem;
-        color: #6b7c6e;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        color: var(--eco-muted);
+        line-height: 1.6;
     }
+
     .truck-illustration {
         margin-top: auto;
         position: relative;
-        background: #e8f5e9;
-        border-radius: 16px;
-        padding: 1.25rem;
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        border-radius: 20px;
+        padding: 1.5rem;
         text-align: center;
+        border: 1px solid rgba(255,255,255,0.5);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.02);
     }
+
     .truck-illustration svg {
-        width: 120px;
+        width: 140px;
         height: auto;
+        filter: drop-shadow(0 10px 10px rgba(5, 150, 105, 0.2));
+        animation: float 6s ease-in-out infinite;
     }
+
+    @@keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+        100% { transform: translateY(0px); }
+    }
+
     .truck-label {
         position: absolute;
-        top: 10px;
-        left: 65px;
-        background: #166534;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--eco-dark);
         color: white;
-        padding: 0.2rem 0.7rem;
-        border-radius: 8px;
-        font-size: 0.7rem;
+        padding: 0.3rem 1rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
         font-weight: 700;
         display: flex;
         align-items: center;
-        gap: 0.3rem;
+        gap: 0.4rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
     /* Main stat card */
     .main-stat {
-        background: linear-gradient(145deg, #2e7d32 0%, #1b5e20 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         color: white;
-        padding: 2rem;
+        padding: 2.5rem;
         position: relative;
         overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
     }
+
+    .main-stat::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, var(--eco-primary) 0%, transparent 70%);
+        opacity: 0.3;
+        filter: blur(40px);
+    }
+
     .main-stat .recycle-watermark {
         position: absolute;
-        right: -10px;
-        top: -10px;
-        font-size: 7rem;
-        opacity: 0.08;
+        right: -20px;
+        top: -20px;
+        font-size: 10rem;
+        opacity: 0.03;
         color: white;
+        transform: rotate(15deg);
+        pointer-events: none;
     }
+
     .main-stat .stat-badge {
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: white;
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 0.3rem 0.8rem;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: #a7f3d0;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.4rem 1rem;
         border-radius: 50px;
+        backdrop-filter: blur(10px);
+        letter-spacing: 0.05em;
     }
+
     .main-stat .stat-number {
-        font-size: 3.2rem;
+        font-size: 4rem;
         font-weight: 800;
+        line-height: 1;
+        font-family: 'Outfit', sans-serif;
+        background: linear-gradient(to right, #ffffff, #a7f3d0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: 1rem;
+    }
+
+    .main-stat .progress-section {
+        margin-top: 2rem;
+    }
+
+    .main-stat .progress {
+        height: 12px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50px;
+        overflow: visible;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .main-stat .progress-bar {
+        background: linear-gradient(90deg, #10b981, #34d399);
+        border-radius: 50px;
+        position: relative;
+        box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+    }
+
+    .main-stat .progress-bar::after {
+        content: '';
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    /* Small stat cards */
+    .stat-mini {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        background: rgba(255,255,255,0.7);
+    }
+
+    .stat-mini-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #e0e7ff, #ede9fe);
+        color: #4f46e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8);
+    }
+
+    .stat-mini:nth-child(2) .stat-mini-icon {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #d97706;
+    }
+
+    .stat-mini-text .stat-label {
+        font-size: 0.8rem;
+        color: var(--eco-muted);
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .stat-mini-text h4 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-bottom: 0;
+        color: var(--eco-dark);
         line-height: 1.1;
     }
-    .main-stat .progress-section {
-        margin-top: 1.5rem;
-    }
-    .main-stat .progress {
-        height: 10px;
-        background: rgba(255,255,255,0.15);
-        border-radius: 10px;
-    }
-    .main-stat .progress-bar {
-        background: white;
-        border-radius: 10px;
+
+    .stat-mini-text .stat-sub {
+        font-size: 0.75rem;
+        color: var(--eco-primary);
+        font-weight: 600;
+        margin-top: 0.25rem;
     }
 
     /* Progress card right */
     .progress-panel {
-        padding: 2rem;
+        padding: 2.5rem;
+        background: rgba(255,255,255,0.7);
     }
+
     .progress-panel h3 {
-        color: #166534;
+        color: var(--eco-dark);
         font-weight: 800;
-        font-size: 1.55rem;
+        font-size: 1.8rem;
+        margin-top: 0.5rem;
     }
+
     .route-tracker {
         display: flex;
         align-items: center;
-        gap: 0;
-        margin-top: 1.5rem;
+        margin-top: 2.5rem;
+        position: relative;
     }
+
     .route-dot {
-        width: 22px;
-        height: 22px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
-        background: #166534;
+        background: var(--eco-primary);
         flex-shrink: 0;
-        box-shadow: 0 0 0 4px #c8e6c9;
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.2), 0 0 15px rgba(5, 150, 105, 0.4);
+        position: relative;
+        z-index: 2;
     }
+
+    .route-dot::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        background: white;
+        border-radius: 50%;
+    }
+
     .route-line {
         flex: 1;
-        height: 2px;
-        background: repeating-linear-gradient(90deg, #94a3b8 0px, #94a3b8 6px, transparent 6px, transparent 12px);
+        height: 4px;
+        background: linear-gradient(90deg, var(--eco-primary) 50%, #e2e8f0 50%);
+        background-size: 16px 100%;
+        animation: moveLine 1s linear infinite;
     }
+
+    @@keyframes moveLine {
+        from { background-position: 0 0; }
+        to { background-position: 16px 0; }
+    }
+
     .route-truck-end {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: #f8fafc;
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: white;
         border: 2px solid #e2e8f0;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-    }
-
-    /* Small stat cards */
-    .stat-mini {
-        padding: 1.25rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    .stat-mini-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
-        background: #f0fdf4;
-        color: #166534;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        flex-shrink: 0;
-    }
-    .stat-mini-text .stat-label {
-        font-size: 0.78rem;
-        color: #94a3b8;
-        margin-bottom: 0.15rem;
-        font-weight: 500;
-    }
-    .stat-mini-text h4 {
-        font-size: 1.6rem;
-        font-weight: 800;
-        margin-bottom: 0;
-        color: #0f2d1d;
-        line-height: 1.2;
-    }
-    .stat-mini-text .stat-sub {
-        font-size: 0.72rem;
-        color: #94a3b8;
-        margin-bottom: 0;
+        font-size: 1.4rem;
+        color: var(--eco-dark);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        z-index: 2;
     }
 
     /* Summary section */
     .summary-panel {
-        padding: 1.75rem;
+        padding: 2rem;
+        background: rgba(255,255,255,0.7);
     }
+
     .summary-panel .section-label {
-        font-size: 0.7rem;
-        font-weight: 700;
+        font-size: 0.75rem;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: #166534;
+        letter-spacing: 0.15em;
+        color: var(--eco-primary);
     }
+
     .summary-panel h2 {
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: #0f2d1d;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--eco-dark);
+        margin-bottom: 1.5rem;
     }
 
     /* Action buttons */
     .btn-action {
         width: 100%;
         text-align: left;
-        padding: 0.85rem 1rem;
-        border-radius: 14px;
-        margin-bottom: 0.6rem;
-        font-weight: 600;
-        font-size: 0.9rem;
+        padding: 1rem 1.2rem;
+        border-radius: 16px;
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
-        gap: 0.7rem;
-        transition: all 0.2s ease;
-        border: 1.5px solid #e2e8f0;
-        background: white;
-        color: #475569;
+        gap: 1rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.8);
+        background: rgba(255,255,255,0.6);
+        color: var(--eco-text);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     }
+
     .btn-action:hover {
-        background: #f0fdf4;
-        border-color: #166534;
-        color: #166534;
+        background: white;
+        transform: translateX(5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        color: var(--eco-dark);
     }
+
     .btn-action.primary {
-        background: #166534;
+        background: var(--eco-dark);
         color: white;
-        border-color: #166534;
+        border-color: var(--eco-dark);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
     }
+
     .btn-action.primary:hover {
-        background: #14532d;
+        background: #1e293b;
+        transform: translateY(-2px);
     }
+
     .btn-action .action-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.95rem;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
     }
+
     .btn-action.primary .action-icon {
-        background: rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.1);
     }
+
     .btn-action:not(.primary) .action-icon {
-        background: #f0fdf4;
-        color: #166534;
+        background: white;
+        color: var(--eco-primary);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     /* Tip card */
     .tip-card {
-        background: #f0fdf4;
-        padding: 1.5rem;
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        padding: 1.75rem;
         position: relative;
+        color: white;
+        border: none;
     }
+
+    .tip-card .text-success {
+        color: #a7f3d0 !important;
+    }
+
+    .tip-card .text-muted {
+        color: rgba(255,255,255,0.8) !important;
+    }
+
     .tip-card .tip-icon-bg {
         position: absolute;
-        bottom: 10px;
-        right: 15px;
-        font-size: 3rem;
-        opacity: 0.12;
-        color: #166534;
+        bottom: -10px;
+        right: 0px;
+        font-size: 5rem;
+        opacity: 0.1;
+        color: white;
+        transform: rotate(-15deg);
     }
 
     /* Map section */
     .map-section {
-        overflow: visible;
+        background: white;
+        padding: 0;
+        border-radius: 24px;
+        overflow: hidden;
     }
+
     .map-header {
-        padding: 1.25rem 1.5rem;
+        padding: 1.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #f1f5f9;
+        background: rgba(255,255,255,0.9);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
     }
+
     .map-wrapper {
         position: relative;
-        overflow: hidden;
-        border-radius: 0 0 20px 20px;
-    }
-    #map {
         height: 350px;
         width: 100%;
     }
+
+    #map {
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+    }
+
     .map-info-bar {
-        padding: 1rem 1.25rem;
-        margin: 0;
+        padding: 1.25rem 1.5rem;
         background: white;
-        border-top: 1px solid #f1f5f9;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        box-shadow: 0 -10px 20px rgba(0,0,0,0.02);
+        position: relative;
+        z-index: 2;
     }
+
     .map-info-bar .truck-badge {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
         background: #f0fdf4;
+        color: var(--eco-primary);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.15rem;
+        font-size: 1.5rem;
+        box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.2);
     }
+
     .distance-pill {
-        background: #f0fdf4;
-        color: #166534;
-        border: 1px solid #bbf7d0;
-        padding: 0.4rem 1rem;
+        background: var(--eco-dark);
+        color: white;
+        padding: 0.5rem 1.2rem;
         border-radius: 50px;
-        font-size: 0.78rem;
+        font-size: 0.85rem;
         font-weight: 700;
+        letter-spacing: 0.05em;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
+    }
+
+    /* Pulsing Markers for Simulation */
+    .home-pulse-container {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .home-pulse {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(16, 185, 129, 0.4);
+        animation: homeGlowPulse 2s infinite ease-out;
+    }
+    .home-marker-dot {
+        width: 28px;
+        height: 28px;
+        background: white;
+        border: 2px solid #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        z-index: 5;
+    }
+    @@keyframes homeGlowPulse {
+        0% { transform: scale(0.5); opacity: 1; }
+        100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    .truck-marker-container {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .truck-pulse {
+        position: absolute;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: rgba(59, 130, 246, 0.4);
+        animation: truckGlowPulse 2.5s infinite ease-out;
+    }
+    .truck-marker-dot {
+        width: 32px;
+        height: 32px;
+        background: #0f172a;
+        border: 2px solid #3b82f6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 5;
+    }
+    @@keyframes truckGlowPulse {
+        0% { transform: scale(0.5); opacity: 1; }
+        100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* Arrived state for the house icon in route tracker */
+    .route-truck-end.arrived {
+        border-color: var(--eco-primary) !important;
+        background: #f0fdf4 !important;
+        color: var(--eco-primary) !important;
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important;
+        animation: homeGlowPulse 2s infinite ease-out;
+    }
+
+    /* Floating instruction badge on map */
+    .map-instruction-badge {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.85);
+        color: white;
+        padding: 0.45rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        pointer-events: none;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        border: 1px solid rgba(255,255,255,0.15);
+        transition: opacity 0.4s ease;
+    }
+
+    /* GPS Alert Banner inside map */
+    .gps-alert {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(254, 243, 199, 0.95); /* Warm light amber */
+        color: #92400e; /* Dark amber text */
+        border: 1px solid #fde68a;
+        padding: 0.5rem 1.2rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 1000;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 90%;
+        transition: opacity 0.3s ease;
+    }
+    .btn-close-alert {
+        background: none;
+        border: none;
+        color: #92400e;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        transition: color 0.2s ease;
+    }
+    .btn-close-alert:hover {
+        color: #78350f;
     }
 </style>
 
 <div class="eco-dashboard py-4">
     <div class="container-fluid px-lg-5">
-        <div class="row g-4">
-
-            <!-- ═══════ COLUMNA IZQUIERDA ═══════ -->
-            <div class="col-lg-3">
+        
+        <!-- ==================== FILA 1: HERO & ESTADÍSTICAS ==================== -->
+        <div class="row g-4 mb-4">
+            
+            <!-- Columna Izquierda: Bienvenida y Consejo -->
+            <div class="col-lg-4 d-flex flex-column gap-4">
                 <!-- Hero Panel -->
-                <div class="card-eco hero-panel mb-4">
+                <div class="card-eco hero-panel flex-grow-1">
                     <span class="badge-label">Panel EcoRuta</span>
                     <h1>Controla tu ruta de reciclaje</h1>
                     <p>Monitorea entregas, puntos y el impacto ambiental desde un tablero simple, moderno y eficiente.</p>
@@ -355,49 +702,30 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Summary + Action Buttons -->
-                <div class="card-eco summary-panel mb-4">
-                    <p class="section-label mb-1">Resumen</p>
-                    <h2 class="mb-4">Bienvenido a tu reciclaje</h2>
-                    
-                    <button class="btn btn-action primary">
-                        <span class="action-icon"><i class="bi bi-geo-alt-fill"></i></span>
-                        Ver Mi Ruta
-                    </button>
-                    <button class="btn btn-action">
-                        <span class="action-icon"><i class="bi bi-clock-history"></i></span>
-                        Mi Historial
-                    </button>
-                    <button class="btn btn-action">
-                        <span class="action-icon"><i class="bi bi-gift"></i></span>
-                        Premios
-                    </button>
-                </div>
-
-                <!-- Eco Tip -->
-                <div class="card-eco tip-card">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-leaf text-success"></i>
-                        <span class="fw-bold text-success" style="font-size: 0.9rem;">Consejo eco</span>
-                    </div>
-                    <p class="small text-muted mb-0" style="line-height: 1.6;">Limpia y separa tus residuos para mejorar su reciclaje y generar más impacto positivo.</p>
-                    <i class="bi bi-recycle tip-icon-bg"></i>
-                </div>
             </div>
 
-            <!-- ═══════ COLUMNA CENTRAL ═══════ -->
-            <div class="col-lg-6">
+            <!-- Columna Derecha: Métricas Principales -->
+            <div class="col-lg-8 d-flex flex-column gap-4">
                 <!-- Tarjeta Principal de KG -->
-                <div class="card-eco main-stat mb-4">
+                <div class="card-eco main-stat flex-grow-1 d-flex flex-column justify-content-center">
                     <i class="bi bi-recycle recycle-watermark"></i>
-                    <span class="stat-badge d-inline-block mb-3">Esta semana</span>
-                    <div class="stat-number"><span id="stat-totalKg">@Model.ReciclajeTotalKg</span> kg</div>
-                    <p class="mb-0 mt-1 opacity-75" style="font-size: 0.95rem;">Reciclaje total</p>
-                    <div class="progress-section">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="stat-badge d-inline-block mb-3">Esta semana</span>
+                            <div class="stat-number"><span id="stat-totalKg">@Model.ReciclajeTotalKg</span> kg</div>
+                            <p class="mb-0 mt-1 opacity-75" style="font-size: 0.95rem;">Reciclaje total acumulado</p>
+                        </div>
+                        <div class="text-end d-none d-md-block">
+                            <div class="p-3 rounded-4" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15);">
+                                <i class="bi bi-graph-up-arrow fs-2 text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-section mt-auto pt-4">
                         <div class="d-flex justify-content-between small mb-2">
-                            <span class="opacity-75">+15% vs. semana anterior</span>
-                            <span class="fw-bold">75%</span>
+                            <span class="opacity-75">+15% de incremento vs. semana anterior</span>
+                            <span class="fw-bold text-white">75% Meta</span>
                         </div>
                         <div class="progress">
                             <div class="progress-bar" style="width: 75%"></div>
@@ -406,51 +734,73 @@
                 </div>
 
                 <!-- Mini Stats Row -->
-                <div class="row g-3 mb-4">
-                    <div class="col-6">
-                        <div class="card-eco stat-mini">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card-eco stat-mini h-100">
                             <div class="stat-mini-icon">
                                 <i class="bi bi-truck"></i>
                             </div>
                             <div class="stat-mini-text">
                                 <p class="stat-label">Entregas</p>
                                 <h4 id="stat-entregas">@Model.Entregas</h4>
-                                <p class="stat-sub">Totales</p>
+                                <p class="stat-sub">Servicios completados</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="card-eco stat-mini">
+                    <div class="col-md-6">
+                        <div class="card-eco stat-mini h-100">
                             <div class="stat-mini-icon">
                                 <i class="bi bi-star-fill"></i>
                             </div>
                             <div class="stat-mini-text">
                                 <p class="stat-label">Puntos</p>
                                 <h4 id="stat-puntos">@Model.Puntos</h4>
-                                <p class="stat-sub">Acumulados</p>
+                                <p class="stat-sub">Para canjear premios</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            
+        </div>
 
+        <!-- ==================== FILA 2: MAPA & ACCIONES ==================== -->
+        <div class="row g-4">
+            
+            <!-- Columna Izquierda: Mapa -->
+            <div class="col-lg-8">
                 <!-- Map Section -->
-                <div class="card-eco map-section">
+                <div class="card-eco map-section mb-0">
                     <div class="map-header">
                         <div>
-                            <h5 class="fw-bold mb-0" style="font-size: 1rem;">Recorrido en tiempo real</h5>
-                            <small class="text-muted">Sigue el camión en ruta</small>
+                            <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem;">Recorrido en tiempo real</h5>
+                            <small class="text-muted">Sigue la ubicación actual del camión recolector</small>
                         </div>
-                        <a href="#" class="text-success text-decoration-none small fw-bold">Ver mapa completo</a>
+                        <div class="d-flex gap-2">
+                            <button id="btn-re-simular" class="btn btn-sm btn-outline-success rounded-pill fw-bold px-3">
+                                <i class="bi bi-play-circle-fill me-1"></i> Reiniciar Ruta
+                            </button>
+                            <button id="btn-mi-gps" class="btn btn-sm btn-success rounded-pill fw-bold px-3 text-white">
+                                <i class="bi bi-geo-alt-fill me-1"></i> Usar mi GPS
+                            </button>
+                        </div>
                     </div>
-                    <div class="map-wrapper">
+                    <div class="map-wrapper" style="position: relative; height: 400px;">
                         <div id="map"></div>
+                        <div class="map-instruction-badge" id="map-tip">
+                            <i class="bi bi-info-circle-fill me-1 text-success"></i> Haz clic en cualquier parte del mapa para cambiar tu ubicación y ver la nueva ruta
+                        </div>
+                        <div id="gps-alert-banner" class="gps-alert" style="display: none;">
+                            <span id="gps-alert-text">Cargando ubicación...</span>
+                            <button id="btn-cerrar-alert" class="btn-close-alert">&times;</button>
+                        </div>
                     </div>
                     <div class="map-info-bar">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="truck-badge">🚚</div>
+                            <div class="truck-badge shadow-sm">🚚</div>
                             <div>
-                                <strong style="font-size: 0.88rem;" id="camion-nombre">@Model.RecolectorNombre</strong>
-                                <p class="mb-0 text-muted" style="font-size: 0.78rem;" id="camion-direccion">@Model.RecolectorDireccion</p>
+                                <strong style="font-size: 0.95rem; color: #0f172a;" id="camion-nombre">@Model.RecolectorNombre</strong>
+                                <p class="mb-0 text-muted" style="font-size: 0.85rem;" id="camion-direccion">@Model.RecolectorDireccion</p>
                             </div>
                         </div>
                         <span class="distance-pill" id="camion-distancia">@Model.Distancia</span>
@@ -458,23 +808,60 @@
                 </div>
             </div>
 
-            <!-- ═══════ COLUMNA DERECHA ═══════ -->
-            <div class="col-lg-3">
+            <!-- Columna Derecha: Acciones y Progreso -->
+            <div class="col-lg-4 d-flex flex-column gap-4">
+                
+                <!-- Progreso de la ruta -->
                 <div class="card-eco progress-panel">
-                    <p class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.1em;">En progreso</p>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <p class="text-uppercase text-muted fw-bold mb-0" style="font-size: 0.75rem; letter-spacing: 0.1em;">Estado del Servicio</p>
+                        <span class="badge bg-success bg-opacity-25 text-success rounded-pill">En curso</span>
+                    </div>
                     <h3 id="camion-distancia-prog">A 500 metros</h3>
-                    <p class="text-muted" style="font-size: 0.85rem;">Tu recolector está en camino.</p>
+                    <p class="text-muted" style="font-size: 0.9rem;">Tu recolector está cerca. Prepara tus materiales.</p>
                     
                     <div class="route-tracker">
                         <div class="route-dot"></div>
                         <div class="route-line"></div>
                         <div class="route-truck-end">
-                            <i class="bi bi-truck text-muted"></i>
+                            <i class="bi bi-house-door text-muted"></i>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <!-- Acciones Rápidas -->
+                <div class="card-eco summary-panel flex-grow-1">
+                    <p class="section-label mb-2">Acciones Rápidas</p>
+                    <h2 class="mb-4" style="font-size: 1.25rem;">¿Qué deseas hacer?</h2>
+                    
+                    <button class="btn btn-action primary">
+                        <span class="action-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                        Reportar un problema
+                    </button>
+                    <button class="btn btn-action">
+                        <span class="action-icon"><i class="bi bi-clock-history"></i></span>
+                        Historial de recolecciones
+                    </button>
+                    <button class="btn btn-action">
+                        <span class="action-icon"><i class="bi bi-gift"></i></span>
+                        Catálogo de Premios
+                    </button>
+                </div>
+
+                <!-- Eco Tip -->
+                <div class="card-eco tip-card mt-auto">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="bg-white bg-opacity-25 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width:32px; height:32px;">
+                            <i class="bi bi-lightbulb-fill text-white"></i>
+                        </div>
+                        <span class="fw-bold text-white" style="font-size: 0.95rem;">Eco-Tip del Día</span>
+                    </div>
+                    <p class="text-white text-opacity-75 mb-0" style="font-size: 0.9rem; line-height: 1.5;">Limpia y aplasta tus botellas de plástico para ahorrar espacio y facilitar el trabajo de los recicladores.</p>
+                    <i class="bi bi-recycle tip-icon-bg"></i>
+                </div>
+
+            </div>
+            
         </div>
     </div>
 </div>
@@ -483,59 +870,500 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var baseLat = -12.0464;
-            var baseLng = -77.0428;
-            var map = L.map('map').setView([baseLat, baseLng], 14);
+            // Default User location (Lima Centro fallback)
+            var userLat = -12.046374;
+            var userLng = -77.042793;
+
+            // Initialize map centered on default location
+            var map = L.map('map').setView([userLat, userLng], 14);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
-            var camionIcon = L.icon({
-                iconUrl: 'https://cdn-icons-png.flaticon.com/512/6124/6124997.png',
+            // Custom Premium Glowing Markers using Leaflet divIcon
+            var homeIcon = L.divIcon({
+                className: 'custom-home-icon',
+                html: `<div class="home-pulse-container">
+                         <div class="home-pulse"></div>
+                         <div class="home-marker-dot">🏠</div>
+                       </div>`,
                 iconSize: [40, 40],
-                iconAnchor: [20, 40],
-                popupAnchor: [0, -40]
+                iconAnchor: [20, 20]
             });
 
-            var marker = L.marker([baseLat, baseLng], { icon: camionIcon }).addTo(map);
-            marker.bindPopup("<b>Camión Recolector</b><br>Iniciando ruta...").openPopup();
+            var truckIcon = L.divIcon({
+                className: 'custom-truck-icon',
+                html: `<div class="truck-marker-container">
+                         <div class="truck-pulse"></div>
+                         <div class="truck-marker-dot">🚚</div>
+                       </div>`,
+                iconSize: [42, 42],
+                iconAnchor: [21, 21]
+            });
 
-            function updateCamion() {
-                fetch('/api/camion')
-                    .then(response => response.json())
-                    .then(data => {
-                        var newLatLng = new L.LatLng(data.lat, data.lng);
-                        marker.setLatLng(newLatLng);
-                        marker.setPopupContent(`<b>${data.nombre}</b><br>${data.distancia}`);
-                        map.panTo(newLatLng);
+            // Final destination icon & marker (declared early to avoid race conditions)
+            var finalIcon = L.divIcon({
+                className: 'custom-final-icon',
+                html: `<div class="final-flag-container"><div class="final-flag">🏁</div></div>`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
 
-                        document.getElementById('camion-nombre').innerText = data.nombre;
-                        document.getElementById('camion-direccion').innerText = data.direccion;
-                        document.getElementById('camion-distancia').innerText = data.distancia;
-                        document.getElementById('camion-distancia-prog').innerText = data.distancia;
-                    })
-                    .catch(error => console.error("Error fetching camion:", error));
+            var finalMarker = null;
+
+            // Markers and Path variables
+            var userMarker = L.marker([userLat, userLng], { icon: homeIcon }).addTo(map);
+            userMarker.bindPopup("<b>Tu Ubicación (Casa)</b><br>Aquí llegará el camión.").openPopup();
+
+            var truckMarker = L.marker([userLat, userLng], { icon: truckIcon }).addTo(map);
+            truckMarker.bindPopup("<b>Camión Recolector</b><br>Buscando ruta...");
+
+            var routePolyline = L.polyline([], {
+                color: '#10b981',
+                weight: 4,
+                opacity: 0.65,
+                dashArray: '8, 12'
+            }).addTo(map);
+
+            var routeCoordinates = [];
+            var currentIndex = 0;
+            var simulationInterval = null;
+            var simulationSessionId = 0;
+
+            // Location alert handlers
+            function showLocationAlert(message) {
+                var alertBanner = document.getElementById('gps-alert-banner');
+                var alertText = document.getElementById('gps-alert-text');
+                if (alertBanner && alertText) {
+                    alertText.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> ${message}`;
+                    alertBanner.style.display = 'flex';
+                    alertBanner.style.opacity = '1';
+                }
             }
 
-            function updateStats() {
+            function hideLocationAlert() {
+                var alertBanner = document.getElementById('gps-alert-banner');
+                if (alertBanner) {
+                    alertBanner.style.opacity = '0';
+                    setTimeout(function() {
+                        alertBanner.style.display = 'none';
+                    }, 300);
+                }
+            }
+
+            // Helper to interpolate points smoothly for fluid marker movement
+            function interpolatePoints(p1, p2, steps) {
+                var points = [];
+                for (var i = 0; i <= steps; i++) {
+                    var t = i / steps;
+                    var lat = p1[0] + (p2[0] - p1[0]) * t;
+                    var lng = p1[1] + (p2[1] - p1[1]) * t;
+                    points.push([lat, lng]);
+                }
+                return points;
+            }
+
+            // Fallback grid route generator (if routing API fails or is offline)
+            function generateMockRoute(start, end) {
+                var lat1 = start[0], lng1 = start[1];
+                var lat2 = end[0], lng2 = end[1];
+                var dLat = lat2 - lat1;
+                var dLng = lng2 - lng1;
+
+                var c1 = [lat1 + dLat * 0.35, lng1];
+                var c2 = [lat1 + dLat * 0.35, lng1 + dLng * 0.7];
+                var c3 = [lat2, lng1 + dLng * 0.7];
+
+                var path = [];
+                path = path.concat(interpolatePoints(start, c1, 20));
+                path = path.concat(interpolatePoints(c1, c2, 20));
+                path = path.concat(interpolatePoints(c2, c3, 20));
+                path = path.concat(interpolatePoints(c3, end, 20));
+
+                var uniquePath = [];
+                for (var i = 0; i < path.length; i++) {
+                    if (i === 0 || path[i][0] !== path[i-1][0] || path[i][1] !== path[i-1][1]) {
+                        uniquePath.push(path[i]);
+                    }
+                }
+                return uniquePath;
+            }
+
+            // Fetch real driving route from free public OSRM API
+            // Accepts either (startPoint, endPoint, callback) or (waypointsArray, callback)
+            function getRealStreetRoute(start, end, callback) {
+                var waypoints = null;
+                var cb = callback;
+
+                // Allow signature: getRealStreetRoute(waypointsArray, callback)
+                if (typeof cb === 'undefined' && typeof end === 'function') {
+                    cb = end;
+                }
+
+                // If called with a single array of waypoints as first arg
+                if (Array.isArray(start) && start.length > 0 && Array.isArray(start[0])) {
+                    waypoints = start; // e.g. [[lat1,lng1],[lat2,lng2],[lat3,lng3]]
+                } else {
+                    // legacy signature: (startPoint, endPoint, callback)
+                    waypoints = [start, end];
+                }
+
+                // Build OSRM coordinates string (expects lng,lat pairs separated by ';')
+                var coordPairs = waypoints.map(function(pt) {
+                    var lat = pt[0], lng = pt[1];
+                    return lng + ',' + lat;
+                }).join(';');
+
+                var url = `https://router.project-osrm.org/route/v1/driving/${coordPairs}?overview=full&geometries=geojson`;
+
+                console.debug("OSRM request:", url);
+
+                fetch(url)
+                    .then(response => {
+                        console.debug('OSRM response status:', response.status, 'ok:', response.ok);
+                        if (!response.ok) throw new Error('OSRM network response not ok: ' + response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.debug('OSRM payload:', data && data.code, data && data.routes && data.routes.length);
+                        if (data && (data.code === 'Ok' || data.code === 'OK' || data.routes) && data.routes && data.routes.length > 0) {
+                            var rawCoords = data.routes[0].geometry.coordinates.map(function (c) {
+                                return [c[1], c[0]]; // convert [lng, lat] to [lat, lng]
+                            });
+
+                            // Smooth the route by interpolating micro-steps between each street vertex
+                            var smoothed = [];
+                            for (var i = 0; i < rawCoords.length - 1; i++) {
+                                var p1 = rawCoords[i];
+                                var p2 = rawCoords[i+1];
+                                // 5 steps per segment to prevent jumping/teleporting
+                                smoothed = smoothed.concat(interpolatePoints(p1, p2, 5));
+                            }
+
+                            // Clean duplicate adjacent points
+                            var finalCoords = [];
+                            for (var j = 0; j < smoothed.length; j++) {
+                                if (j === 0 || smoothed[j][0] !== smoothed[j-1][0] || smoothed[j][1] !== smoothed[j-1][1]) {
+                                    finalCoords.push(smoothed[j]);
+                                }
+                            }
+                            cb(finalCoords);
+                        } else {
+                            console.warn("OSRM returned empty routes or code!=Ok. Falling back to grid route.", data);
+                            cb(generateMockRoute(waypoints[0], waypoints[waypoints.length-1]));
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error calling OSRM server. Falling back to grid route:", error);
+                        cb(generateMockRoute(waypoints[0], waypoints[waypoints.length-1]));
+                    });
+            }
+
+            // Core simulation loop — Start → Home (pass through) → Final destination
+            function startSimulation() {
+                if (simulationInterval) {
+                    clearInterval(simulationInterval);
+                }
+
+                simulationSessionId++;
+                var currentSession = simulationSessionId;
+
+                // Remove old final destination marker if exists
+                if (finalMarker) { map.removeLayer(finalMarker); finalMarker = null; }
+
+                // Reset UI
+                document.querySelector('.route-truck-end').classList.remove('arrived');
+                document.querySelector('.progress-panel p.text-muted').innerText = "Calculando ruta real por calles...";
+
+                // ── Point A: random start ~1km away from user ──
+                var angleStart = Math.random() * Math.PI * 2;
+                var startLat = userLat + Math.sin(angleStart) * (0.007 + Math.random() * 0.003);
+                var startLng = userLng + Math.cos(angleStart) * (0.007 + Math.random() * 0.003);
+
+                // ── Point C: final destination ~600m past user in different direction ──
+                var angleEnd = angleStart + Math.PI * (0.6 + Math.random() * 0.8);
+                var endLat   = userLat + Math.sin(angleEnd) * (0.004 + Math.random() * 0.003);
+                var endLng   = userLng + Math.cos(angleEnd) * (0.004 + Math.random() * 0.003);
+
+                // Show final destination flag marker
+                finalMarker = L.marker([endLat, endLng], { icon: finalIcon }).addTo(map);
+                finalMarker.bindPopup("<b>Destino Final del Camión</b><br>Fin de la ruta de recolección.");
+
+                // Place truck at start
+                truckMarker.setLatLng([startLat, startLng]);
+                truckMarker.setPopupContent("<b>Camión Recolector</b><br>Calculando ruta real...");
+                document.getElementById('camion-direccion').innerText = "Trazando ruta por calles reales...";
+
+                // Phase-tracking variables (declared HERE so setInterval closure captures them)
+                var passedHome       = false;
+                var homePassedAlerted = false;
+                var frozenForPassby  = false;
+
+                // Fetch 3-point OSRM route: Start → User Home → Final
+                getRealStreetRoute(
+                    [[startLat, startLng], [userLat, userLng], [endLat, endLng]],
+                    function (allCoords) {
+                        // Guard against race conditions (user clicked again while fetching)
+                        if (currentSession !== simulationSessionId) return;
+
+                        // Ensure we have a usable route; if OSRM returned nothing, fall back
+                        if (!allCoords || !Array.isArray(allCoords) || allCoords.length === 0) {
+                            console.warn('Received empty route from OSRM, using generated mock route.');
+                            allCoords = generateMockRoute([startLat, startLng], [endLat, endLng]);
+                        }
+
+                        routeCoordinates = allCoords;
+                        routePolyline.setLatLngs(routeCoordinates);
+
+                        // Fit map to show all 3 key points if we have coordinates
+                        try {
+                            if (routeCoordinates.length > 0) {
+                                map.fitBounds(L.latLngBounds([
+                                    [startLat, startLng],
+                                    [userLat,  userLng],
+                                    [endLat,   endLng]
+                                ]), { padding: [60, 60] });
+                            }
+                        } catch (err) {
+                            console.warn('Failed to fit bounds:', err);
+                        }
+
+                        currentIndex = 0;
+
+                        simulationInterval = setInterval(function () {
+
+                            // ─── Route finished ───
+                            if (currentIndex >= routeCoordinates.length) {
+                                clearInterval(simulationInterval);
+                                truckMarker.setLatLng([endLat, endLng]);
+                                truckMarker.bindPopup("<b>Fin de Ruta</b><br>El camión completó su recorrido.").openPopup();
+                                document.querySelector('.route-truck-end').classList.add('arrived');
+                                document.getElementById('camion-distancia').innerText = "✅ Ruta completa";
+                                document.getElementById('camion-distancia-prog').innerText = "Ruta finalizada";
+                                document.getElementById('camion-direccion').innerText = "Ruta de recolección completada";
+                                document.querySelector('.route-line').style.background = 'linear-gradient(90deg, var(--eco-primary) 100%, #e2e8f0 100%)';
+                                document.querySelector('.progress-panel p.text-muted').innerHTML = "✅ <b>El camión completó su ruta.</b> Gracias por participar en EcoRuta.";
+                                return;
+                            }
+
+                            // ─── Frozen: truck paused at your door ───
+                            if (frozenForPassby) { currentIndex++; return; }
+
+                            var currentPos = routeCoordinates[currentIndex];
+                            // Debug trace for simulation progress
+                            console.debug('Sim step', { currentIndex: currentIndex, routeLen: routeCoordinates.length, currentPos: currentPos });
+                            truckMarker.setLatLng(currentPos);
+
+                            // Progress bar
+                            var progress = (currentIndex / (routeCoordinates.length - 1)) * 100;
+                            document.querySelector('.route-line').style.background =
+                                'linear-gradient(90deg, var(--eco-primary) ' + progress + '%, #e2e8f0 ' + progress + '%)';
+
+                            var distToHome = Math.round(map.distance([userLat, userLng], currentPos));
+                            console.debug('Distance to home (m):', distToHome);
+
+                            // ══════════════════════════════════════════
+                            // FASE 1 — Camión se acerca a tu ubicación
+                            // ══════════════════════════════════════════
+                            if (!passedHome) {
+                                document.getElementById('camion-distancia').innerText = "A " + distToHome + " m";
+                                document.getElementById('camion-distancia-prog').innerText = "A " + distToHome + " metros";
+                                truckMarker.setPopupContent("<b>Camión Recolector</b><br>Distancia a tu casa: " + distToHome + " m");
+
+                                if (distToHome > 850) {
+                                    document.getElementById('camion-direccion').innerText = "En ruta principal por calles...";
+                                    document.querySelector('.progress-panel p.text-muted').innerText = "El recolector está en camino. Alista tus plásticos y botellas.";
+                                } else if (distToHome > 450) {
+                                    document.getElementById('camion-direccion').innerText = "Transitando por avenidas aledañas...";
+                                    document.querySelector('.progress-panel p.text-muted').innerText = "El recolector está doblando esquinas hacia tu zona.";
+                                } else if (distToHome > 150) {
+                                    document.getElementById('camion-direccion').innerText = "Ingresando a tu cuadra...";
+                                    document.querySelector('.progress-panel p.text-muted').innerText = "¡Muy cerca! Prepara tus materiales en la puerta.";
+                                } else {
+                                    document.getElementById('camion-direccion').innerText = "Casi frente a tu casa...";
+                                    document.querySelector('.progress-panel p.text-muted').innerText = "¡A la vista! Sal con tus residuos reciclables.";
+                                }
+
+                                // ── AT THE DOOR (dentro de 40m) ──
+                                if (distToHome <= 40 && !homePassedAlerted) {
+                                    homePassedAlerted = true;
+                                    passedHome        = true;
+                                    frozenForPassby   = true;
+
+                                    document.getElementById('camion-direccion').innerText = "Frente a tu casa";
+                                    document.getElementById('camion-distancia').innerText = "¡Aquí!";
+                                    document.getElementById('camion-distancia-prog').innerText = "¡Frente a tu casa!";
+                                    document.querySelector('.progress-panel p.text-muted').innerHTML = "🏠 <b>¡El camión está frente a tu casa!</b> Entrega tus materiales ahora.";
+                                    truckMarker.setPopupContent("<b>¡Frente a tu casa!</b><br>Entrega tus materiales reciclables.").openPopup();
+
+                                    // Pausa 2.5s en la puerta, luego sigue
+                                    setTimeout(function () {
+                                        frozenForPassby = false;
+                                        document.getElementById('camion-direccion').innerText = "El camión ya pasó por su ubicación";
+                                        document.getElementById('camion-distancia').innerText = "Pasó ✓";
+                                        document.getElementById('camion-distancia-prog').innerText = "Ya pasó por tu casa";
+                                        document.querySelector('.progress-panel p.text-muted').innerHTML = "🚚 <b>El camión ya pasó por su ubicación.</b> Continuando ruta de recolección...";
+                                        truckMarker.setPopupContent("<b>Camión Recolector</b><br>Siguiendo ruta al destino final.");
+                                    }, 2500);
+                                }
+
+                            // ══════════════════════════════════════════
+                            // FASE 2 — Camión se aleja hacia destino final
+                            // ══════════════════════════════════════════
+                            } else {
+                                var distToEnd = Math.round(map.distance([endLat, endLng], currentPos));
+                                document.getElementById('camion-distancia').innerText = "Pasó ✓";
+                                document.getElementById('camion-distancia-prog').innerText = "Ya pasó por tu casa";
+                                document.getElementById('camion-direccion').innerText = "Continuando ruta (" + distToEnd + " m al destino)";
+                                truckMarker.setPopupContent("<b>Camión Recolector</b><br>A " + distToEnd + " m del destino final.");
+                            }
+
+                            currentIndex++;
+                        }, 350);
+                    }
+                );
+            }
+
+            // Browser GPS detection with IP Fallback
+            function detectUserLocation() {
+                var gpsOptions = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
+
+                if (!navigator.geolocation) {
+                    showLocationAlert("Tu navegador no soporta GPS. Detectando ubicación por red (IP)...");
+                    fetchIPLocation();
+                    return;
+                }
+
+                // GPS requires a secure context (HTTPS or localhost) in modern browsers
+                var isSecureContext = window.isSecureContext || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                if (!isSecureContext) {
+                    showLocationAlert("GPS desactivado por seguridad (requiere HTTPS o localhost). Detectando por IP...");
+                    fetchIPLocation();
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        userLat = position.coords.latitude;
+                        userLng = position.coords.longitude;
+
+                        userMarker.setLatLng([userLat, userLng]);
+                        userMarker.bindPopup("<b>Tu Ubicación (GPS)</b><br>Precisión exacta de tu casa.").openPopup();
+                        
+                        map.setView([userLat, userLng], 15);
+                        startSimulation();
+
+                        hideLocationAlert();
+
+                        var tip = document.getElementById('map-tip');
+                        if (tip) tip.style.opacity = '0';
+                    },
+                    function (error) {
+                        console.warn("GPS detection failed, code: " + error.code);
+                        var msg = "No pudimos acceder a tu GPS. Detectando ubicación aproximada por red...";
+                        if (error.code === error.PERMISSION_DENIED) {
+                            msg = "Permiso de GPS denegado. Detectando ubicación por red (IP). Habilita el GPS para precisión exacta.";
+                        }
+                        showLocationAlert(msg);
+                        fetchIPLocation();
+                    },
+                    gpsOptions
+                );
+            }
+
+            // Fetch approximate location using free IP Geolocation API
+            function fetchIPLocation() {
+                fetch('https://ipapi.co/json/')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.latitude && data.longitude) {
+                            userLat = data.latitude;
+                            userLng = data.longitude;
+
+                            userMarker.setLatLng([userLat, userLng]);
+                            userMarker.bindPopup(`<b>Tu Ubicación aproximada (IP)</b><br>Ciudad: ${data.city || 'Desconocida'}`).openPopup();
+
+                            map.setView([userLat, userLng], 14);
+                            startSimulation();
+
+                            // Show network badge in UI address
+                            document.getElementById('camion-direccion').innerText = `Ubicación detectada: ${data.city || 'Tu red'}, ${data.country_name || ''}`;
+                        } else {
+                            useFinalFallback();
+                        }
+                    })
+                    .catch(err => {
+                        console.warn("IP Geolocation API failed. Using final fallback:", err);
+                        useFinalFallback();
+                    });
+            }
+
+            function useFinalFallback() {
+                // Keep default Lima Centro coordinates
+                userMarker.setLatLng([userLat, userLng]);
+                userMarker.bindPopup("<b>Ubicación de Simulación</b><br>Haz clic en cualquier punto del mapa para ubicar tu casa.").openPopup();
+                map.setView([userLat, userLng], 14);
+                startSimulation();
+            }
+
+            // Map interactive clicks to relocate house
+            map.on('click', function (e) {
+                userLat = e.latlng.lat;
+                userLng = e.latlng.lng;
+
+                userMarker.setLatLng([userLat, userLng]);
+                userMarker.bindPopup("<b>Ubicación Seleccionada</b><br>El camión vendrá aquí.").openPopup();
+
+                startSimulation();
+
+                var tip = document.getElementById('map-tip');
+                if (tip) tip.style.opacity = '0';
+            });
+
+            // Button Event Listeners
+            document.getElementById('btn-re-simular').addEventListener('click', function (e) {
+                e.preventDefault();
+                startSimulation();
+            });
+
+            document.getElementById('btn-mi-gps').addEventListener('click', function (e) {
+                e.preventDefault();
+                detectUserLocation();
+            });
+
+            // Close Alert button event listener
+            var btnCerrarAlert = document.getElementById('btn-cerrar-alert');
+            if (btnCerrarAlert) {
+                btnCerrarAlert.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    hideLocationAlert();
+                });
+            }
+
+            // Fade instruction tip
+            setTimeout(function () {
+                var tip = document.getElementById('map-tip');
+                if (tip) tip.style.opacity = '0';
+            }, 9000);
+
+            // Start location discovery on load
+            detectUserLocation();
+
+            // Fetch actual weekly stats from database/backend
+            function updateBackendStats() {
                 fetch('/api/stats')
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('stat-totalKg').innerText = data.totalKg;
-                        document.getElementById('stat-entregas').innerText = data.entregas;
-                        document.getElementById('stat-puntos').innerText = data.puntos;
+                        if (data) {
+                            if (data.totalKg) document.getElementById('stat-totalKg').innerText = data.totalKg;
+                            if (data.entregas) document.getElementById('stat-entregas').innerText = data.entregas;
+                            if (data.puntos) document.getElementById('stat-puntos').innerText = data.puntos;
+                        }
                     })
                     .catch(error => console.error("Error fetching stats:", error));
             }
-
-            setInterval(() => {
-                updateCamion();
-                updateStats();
-            }, 6000);
-
-            updateCamion();
-            updateStats();
+            updateBackendStats();
         });
     </script>
 }
