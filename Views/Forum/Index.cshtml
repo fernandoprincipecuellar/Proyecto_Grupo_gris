@@ -1,5 +1,5 @@
 @using System.Security.Claims
-@model IEnumerable<Proyecto_Grupo_gris.Models.ForumPost>
+@model IEnumerable<Proyecto_Grupo_gris.Api.DTOs.Forum.ForumPostDto>
 
 @{
     ViewData["Title"] = "Foro Ambiental";
@@ -21,7 +21,7 @@
 
     @if (ViewBag.LastVisitedPost != null)
     {
-        var lastPost = (Proyecto_Grupo_gris.Models.ForumPost)ViewBag.LastVisitedPost;
+        var lastPost = (Proyecto_Grupo_gris.Api.DTOs.Forum.ForumPostDto)ViewBag.LastVisitedPost;
         <div class="last-visited-section mb-5">
             <h4 class="fw-bold mb-3 text-success">
                 <i class="bi bi-clock-history me-2"></i>Último foro revisado

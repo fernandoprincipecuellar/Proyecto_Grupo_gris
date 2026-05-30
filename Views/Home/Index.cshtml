@@ -669,6 +669,17 @@
     .btn-close-alert:hover {
         color: #78350f;
     }
+
+    /* Noticias panel styles */
+    .map-news { margin-top: 20px; padding: 18px; border-radius:12px; }
+    .map-news h6 { color: #0b5e3b; font-weight: 800; margin-bottom:12px; }
+    .map-news .news-item { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; padding:10px; border-radius:10px; background:#f7fff9; }
+    .map-news .news-thumb { width:76px; height:56px; border-radius:8px; overflow:hidden; background:linear-gradient(180deg,#f3faf4,#ffffff); display:flex; align-items:center; justify-content:center; flex:0 0 76px; }
+    .map-news .news-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .map-news .news-content a { display:block; font-weight:700; color:#0b5e3b; text-decoration:none; word-break:break-word; }
+    .map-news .news-content a:hover { text-decoration:underline; color:#065f46; }
+    .map-news .news-meta { color:#6c757d; font-size:0.82rem; margin-top:6px; }
+    @@media (max-width:767px) { .map-news .news-thumb { display:none; } }
 </style>
 
 <div class="eco-dashboard py-4">
@@ -804,6 +815,25 @@
                             </div>
                         </div>
                         <span class="distance-pill" id="camion-distancia">@Model.Distancia</span>
+                    </div>
+                    <!-- Notation / Legend section: populated from API -->
+                    <div id="map-notation" class="map-notation mt-3 p-3 bg-white rounded-3 shadow-sm" style="display:flex; gap:12px; align-items:center;">
+                        <div class="notation-icon" style="font-size:1.6rem;">🚚</div>
+                        <div>
+                            <div style="font-weight:600; color:#0f172a;" id="notation-name">@Model.RecolectorNombre</div>
+                            <div class="text-muted" style="font-size:0.9rem;" id="notation-desc">@Model.Distancia — @Model.RecolectorDireccion</div>
+                        </div>
+                        <div style="margin-left:auto; text-align:right;">
+                            <div class="text-success" id="notation-status">En ruta</div>
+                            <small class="text-muted" id="notation-updated">Actualizado ahora</small>
+                        </div>
+                    </div>
+                    <!-- News related to environment -->
+                    <div id="map-news" class="map-news mt-3" style="margin-top:18px; margin-bottom:18px; padding:12px; background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(16,185,129,0.06);">
+                        <h6 class="mb-2" style="font-weight:700;">Noticias ambientales</h6>
+                        <ul id="map-news-list" class="list-unstyled mb-0" style="margin:0; padding:0;">
+                            <li class="text-muted">Cargando noticias...</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -1364,6 +1394,114 @@
                     .catch(error => console.error("Error fetching stats:", error));
             }
             updateBackendStats();
+
+            // ── Notation / Legend: poll backend for truck info and update UI ──
+            function fetchCamionInfo() {
+                fetch('/api/camion')
+                    .then(resp => resp.json())
+                    .then(data => {
+                        if (!data) return;
+                        var nameEl = document.getElementById('notation-name');
+                        var descEl = document.getElementById('notation-desc');
+                        var statusEl = document.getElementById('notation-status');
+                        var updatedEl = document.getElementById('notation-updated');
+                        var distanciaEl = document.getElementById('camion-distancia');
+                        var direccionEl = document.getElementById('camion-direccion');
+
+                        if (nameEl) nameEl.innerText = data.nombre || 'Camión Recolector';
+                        if (descEl) descEl.innerText = (data.distancia ? data.distancia + ' · ' : '') + (data.direccion || 'Sin dirección');
+                        if (distanciaEl && data.distancia) distanciaEl.innerText = data.distancia;
+                        if (direccionEl && data.direccion) direccionEl.innerText = data.direccion;
+
+                        // Simple heuristic for status
+                        var status = 'En ruta';
+                        if (data.distancia && (data.distancia.toString().toLowerCase().includes('ruta completa') || data.distancia.toString().toLowerCase().includes('aquí') || data.distancia.toString().toLowerCase().includes('pasó'))) {
+                            status = 'Finalizado';
+                        } else if (data.distancia && data.distancia.toString().toLowerCase().includes('m')) {
+                            status = 'En ruta';
+                        }
+                        if (statusEl) statusEl.innerText = status;
+
+                        if (updatedEl) {
+                            var now = new Date();
+                            updatedEl.innerText = 'Actualizado ' + now.toLocaleTimeString();
+                        }
+                    })
+                    .catch(err => console.warn('Error fetching /api/camion:', err));
+            }
+
+            // Start polling the camion API every 4s to keep the notation fresh
+            fetchCamionInfo();
+            setInterval(fetchCamionInfo, 4000);
+
+            // Fetch environment news and populate list (refresh every 5 minutes)
+            function fetchEnvNews() {
+                fetch('/api/news')
+                    .then(r => r.json())
+                    .then(items => {
+                        var list = document.getElementById('map-news-list');
+                        if (!list) return;
+                        list.innerHTML = '';
+                        if (!items || items.length === 0) {
+                            list.innerHTML = '<li class="text-muted">No se encontraron noticias.</li>';
+                            return;
+                        }
+                        // Mostrar máximo 4 titulares y truncar si son muy largos
+                        items.slice(0,4).forEach(function(it) {
+                            var li = document.createElement('li');
+                            li.className = 'news-item';
+
+                            // Thumb container (shows placeholder if no image)
+                            var thumb = document.createElement('div');
+                            thumb.className = 'news-thumb';
+                            if (it.image) {
+                                var img = document.createElement('img');
+                                img.src = it.image;
+                                img.alt = it.title || 'Imagen noticia';
+                                thumb.appendChild(img);
+                            } else {
+                                // Simple placeholder: small leaf emoji centered
+                                thumb.innerHTML = '<div style="font-size:22px;">🌿</div>';
+                            }
+
+                            var content = document.createElement('div');
+                            content.className = 'news-content';
+                            var a = document.createElement('a');
+                            a.href = it.link || '#';
+                            a.target = '_blank';
+                            a.rel = 'noopener noreferrer';
+                            var title = it.title || '(sin título)';
+                            if (title.length > 110) title = title.substring(0, 107) + '...';
+                            a.innerText = title;
+
+                            var meta = document.createElement('div');
+                            meta.className = 'news-meta';
+                            var src = (it.source || '').replace(/^https?:\/\//, '').replace(/\/.*/, '');
+                            var date = it.pubDate ? new Date(it.pubDate).toLocaleString() : '';
+                            var location = it.location || it.area || '';
+                            var parts = [];
+                            if (location) parts.push(location);
+                            if (src) parts.push(src);
+                            if (date) parts.push(date);
+                            meta.innerText = parts.join(' · ');
+
+                            content.appendChild(a);
+                            content.appendChild(meta);
+
+                            // Append thumb + content
+                            li.appendChild(thumb);
+                            li.appendChild(content);
+                            list.appendChild(li);
+                        });
+                    })
+                    .catch(err => {
+                        var list = document.getElementById('map-news-list');
+                        if (list) list.innerHTML = '<li class="text-muted">Error cargando noticias.</li>';
+                        console.warn('Error fetching /api/news', err);
+                    });
+            }
+            fetchEnvNews();
+            setInterval(fetchEnvNews, 5 * 60 * 1000);
         });
     </script>
 }
