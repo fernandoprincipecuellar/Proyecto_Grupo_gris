@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Proyecto_Grupo_gris.Api.Services.Interfaces;
+using Proyecto_Grupo_gris.Api.DTOs.Forum;
 using Proyecto_Grupo_gris.Data;
 using Proyecto_Grupo_gris.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ namespace Proyecto_Grupo_gris.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<ForumPost>? posts = null;
+            List<ForumPostDto>? posts = null;
 
             // Intentar obtener del caché Redis
             try
@@ -30,7 +31,7 @@ namespace Proyecto_Grupo_gris.Controllers
                 var cachedData = await cache.GetStringAsync(ForumCacheKey);
                 if (!string.IsNullOrEmpty(cachedData))
                 {
-                    posts = JsonSerializer.Deserialize<List<ForumPost>>(cachedData);
+                    posts = JsonSerializer.Deserialize<List<ForumPostDto>>(cachedData);
                 }
             }
             catch
@@ -42,7 +43,22 @@ namespace Proyecto_Grupo_gris.Controllers
             if (posts == null)
             {
                 posts = await context.ForumPosts
+                    .AsNoTracking()
                     .OrderByDescending(p => p.CreatedAt)
+                    .Select(p => new ForumPostDto
+                    {
+                        Id = p.Id,
+                        ReportType = p.ReportType ?? string.Empty,
+                        Description = p.Description ?? string.Empty,
+                        ImageUrl = p.ImageUrl,
+                        Location = p.Location,
+                        Urgency = p.Urgency,
+                        UserId = p.UserId ?? string.Empty,
+                        UserName = p.User != null ? p.User.UserName ?? string.Empty : string.Empty,
+                        CreatedAt = p.CreatedAt,
+                        CommentsCount = p.CommentsCount,
+                        LikesCount = p.LikesCount
+                    })
                     .ToListAsync();
 
                 try
@@ -64,7 +80,7 @@ namespace Proyecto_Grupo_gris.Controllers
             var lastVisitedJson = HttpContext.Session.GetString("LastVisitedPost");
             if (!string.IsNullOrEmpty(lastVisitedJson))
             {
-                ViewBag.LastVisitedPost = JsonSerializer.Deserialize<ForumPost>(lastVisitedJson);
+                ViewBag.LastVisitedPost = JsonSerializer.Deserialize<ForumPostDto>(lastVisitedJson);
             }
 
             return View(posts);
@@ -83,15 +99,20 @@ namespace Proyecto_Grupo_gris.Controllers
             }
 
             // Guardar en sesión como el último visitado (Solo las propiedades necesarias)
-            var lastVisited = new ForumPost
+            var lastVisited = new ForumPostDto
             {
                 Id = post.Id,
-                ReportType = post.ReportType,
-                Description = post.Description,
+                ReportType = post.ReportType ?? string.Empty,
+                Description = post.Description ?? string.Empty,
                 Location = post.Location,
-                ImageUrl = post.ImageUrl
+                ImageUrl = post.ImageUrl,
+                UserId = post.UserId ?? string.Empty,
+                UserName = post.User != null ? post.User.UserName ?? string.Empty : string.Empty,
+                CreatedAt = post.CreatedAt,
+                CommentsCount = post.CommentsCount,
+                LikesCount = post.LikesCount
             };
-            
+
             var serialized = JsonSerializer.Serialize(lastVisited);
             HttpContext.Session.SetString("LastVisitedPost", serialized);
 

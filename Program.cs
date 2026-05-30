@@ -12,6 +12,9 @@ using Proyecto_Grupo_gris.Api.Services.Interfaces;
 using Proyecto_Grupo_gris.Data;
 using Proyecto_Grupo_gris.Models;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.IO.Compression;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -142,6 +145,23 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// 🔥 Response compression to reduce payload size
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+    {
+        "application/json",
+        "text/html",
+        "text/css",
+        "application/javascript",
+        "text/javascript",
+        "image/svg+xml"
+    });
+});
+builder.Services.Configure<BrotliCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+
 // 🔥 REDIS - Caché distribuida y sesiones
 var redisConnection = configuration.GetConnectionString("Redis");
 
@@ -262,6 +282,7 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseResponseCompression();
 app.UseRouting();
 
 app.UseAuthentication();
