@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.SemanticKernel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -104,6 +105,18 @@ builder.Services.AddScoped<IEcoRouteService, EcoRouteService>();
 builder.Services.AddScoped<IForumPostService, ForumPostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+
+// 🔥 Chat / Semantic Kernel con Ollama o Nube (OpenAI Compatible)
+builder.Services.AddHttpContextAccessor();
+var aiModel = configuration["OllamaChat:Model"] ?? "gemma3:4b";
+var aiEndpoint = configuration["OllamaChat:Endpoint"] ?? "http://localhost:11434/v1";
+var aiApiKey = configuration["OllamaChat:ApiKey"] ?? "ollama";
+
+builder.Services.AddOpenAIChatCompletion(
+    modelId: aiModel,
+    apiKey: aiApiKey,
+    endpoint: new Uri(aiEndpoint));
+builder.Services.AddScoped<Proyecto_Grupo_gris.Services.ChatService>();
 
 // 🔥 Swagger
 builder.Services.AddEndpointsApiExplorer();
