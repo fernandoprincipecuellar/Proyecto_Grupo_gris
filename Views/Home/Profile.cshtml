@@ -3,150 +3,208 @@
     var userPicture = User.FindFirst("Picture")?.Value ?? User.FindFirst("picture")?.Value ?? "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
     var userName = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "Usuario";
     var userPhone = User.FindFirst("Phone")?.Value ?? "+34 612 345 678";
-    var userCity = User.FindFirst("City")?.Value ?? "Madrid, España";
-    var userBio = User.FindFirst("Bio")?.Value ?? "Eco-entusiasta y conductora comprometida con el planeta desde 2023 🌿";
+    var userCity = User.FindFirst("City")?.Value ?? "Madrid, Espana";
+    var userBio = User.FindFirst("Bio")?.Value ?? "Eco-entusiasta y conductora comprometida con el planeta desde 2023";
 }
 
-<div class="profile-container py-4">
-    <!-- Header Section -->
-    <div class="profile-header-card">
-        <div class="profile-cover">
-            <img src="~/images/profile-cover.png" alt="Cover" class="profile-cover-img" />
-            <div class="position-absolute top-0 end-0 m-3 d-flex gap-2" style="z-index: 10;">
-                <a asp-action="EditProfile" class="btn btn-light btn-sm shadow-sm fw-bold border-0" style="border-radius: 10px; padding: 0.5rem 1rem;">
-                    <i class="bi bi-pencil-square me-2"></i>Editar Perfil
+<main class="pt-0">
+    <!-- Hero Banner -->
+    <div class="relative w-full h-72 md:h-96 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-container to-tertiary-container"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, rgba(0,250,190,0.4) 1px, transparent 0); background-size: 30px 30px;"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-secondary/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 animate-pulse-slow"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-secondary-container/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 animate-pulse-slow" style="animation-delay: 1.5s;"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop -mt-28 relative z-10">
+        <div class="flex flex-col md:flex-row items-end gap-6 pb-8">
+            <!-- Avatar -->
+            <div class="relative group">
+                <div class="absolute -inset-2 bg-gradient-to-br from-secondary to-secondary-container rounded-full opacity-0 group-hover:opacity-100 blur-lg transition-all duration-500"></div>
+                <div class="relative w-36 h-36 md:w-44 md:h-44 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-surface transition-all duration-500 group-hover:scale-105">
+                    <img class="w-full h-full object-cover" src="@userPicture" alt="Profile Picture" />
+                </div>
+                <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-secondary flex items-center justify-center shadow-lg border-2 border-white">
+                    <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">eco</span>
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 pb-2">
+                <h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-1 animate-fade-in-up">@userName</h1>
+                <p class="text-on-surface-variant font-body-lg text-body-lg max-w-2xl mb-3">@userBio</p>
+                <div class="flex items-center gap-4 text-sm text-on-surface-variant">
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-secondary text-base">location_on</span> @userCity</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-secondary text-base">calendar_today</span> Miembro desde 2023</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="pb-2 flex gap-3">
+                <a asp-action="EditProfile" class="group relative px-6 py-3 rounded-2xl bg-secondary text-white font-label-md text-label-md flex items-center gap-2 transition-all duration-300 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98] overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-secondary via-secondary to-on-secondary-fixed-variant opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <span class="relative material-symbols-outlined text-lg">edit</span>
+                    <span class="relative">Editar Perfil</span>
                 </a>
                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-danger btn-sm shadow-sm fw-bold border-0 px-3" style="border-radius: 10px; padding: 0.5rem 1rem;">
-                        <i class="bi bi-box-arrow-right"></i>
+                    <button type="submit" class="px-4 py-3 rounded-2xl bg-error/10 text-error font-label-md text-label-md flex items-center gap-2 transition-all duration-300 hover:bg-error/20 hover:shadow-lg active:scale-[0.98]">
+                        <span class="material-symbols-outlined text-lg">logout</span>
                     </button>
                 </form>
             </div>
         </div>
-        <div class="profile-avatar-wrapper">
-            <img src="@userPicture" 
-                 alt="Profile Picture" class="profile-avatar-img" />
-            
-            <div class="profile-header-info">
-                <h1 class="profile-name">@userName</h1>
-                <p class="profile-bio">@userBio</p>
+
+        <!-- Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 py-8">
+            <!-- Left Column -->
+            <div class="lg:col-span-4 space-y-6">
+                <!-- Info Card -->
+                <div class="glass-card p-7 rounded-3xl animate-fade-in-up">
+                    <h2 class="font-headline-md text-headline-md text-secondary mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-xl">info</span> Informacion
+                    </h2>
+                    <ul class="space-y-5">
+                        <li class="flex items-center gap-4 group">
+                            <div class="w-11 h-11 rounded-2xl bg-secondary/8 flex items-center justify-center shrink-0 group-hover:bg-secondary/15 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary text-xl">mail</span>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-label-md text-outline uppercase tracking-wider">Correo</p>
+                                <p class="font-body-md text-on-surface font-medium">maria.g@email.com</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <div class="w-11 h-11 rounded-2xl bg-secondary/8 flex items-center justify-center shrink-0 group-hover:bg-secondary/15 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary text-xl">call</span>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-label-md text-outline uppercase tracking-wider">Telefono</p>
+                                <p class="font-body-md text-on-surface font-medium">@userPhone</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <div class="w-11 h-11 rounded-2xl bg-secondary/8 flex items-center justify-center shrink-0 group-hover:bg-secondary/15 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary text-xl">location_on</span>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-label-md text-outline uppercase tracking-wider">Ciudad</p>
+                                <p class="font-body-md text-on-surface font-medium">@userCity</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <div class="w-11 h-11 rounded-2xl bg-secondary/8 flex items-center justify-center shrink-0 group-hover:bg-secondary/15 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary text-xl">calendar_today</span>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-label-md text-outline uppercase tracking-wider">Se unio</p>
+                                <p class="font-body-md text-on-surface font-medium">Junio de 2023</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Eco Impact Card -->
+                <div class="relative p-7 rounded-3xl overflow-hidden animate-fade-in-up" style="animation-delay: 0.15s; background: linear-gradient(135deg, #001915, #0f2e2a, #001915);">
+                    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(0,250,190,0.3) 1px, transparent 0); background-size: 20px 20px;"></div>
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-secondary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="material-symbols-outlined text-secondary-container text-2xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+                            <h3 class="font-headline-md text-headline-md text-white">Impacto Eco</h3>
+                        </div>
+                        <div class="flex items-baseline gap-2 mb-2">
+                            <span class="text-5xl font-bold text-secondary-container animate-float">1,240</span>
+                            <span class="text-secondary-container/60 font-label-md text-label-md">Kg</span>
+                        </div>
+                        <p class="text-inverse-primary/50 font-body-md text-sm">Materiales reciclados este ano</p>
+                        <div class="mt-4 flex gap-3">
+                            <div class="flex-1 p-3 rounded-xl bg-white/5 border border-white/5">
+                                <p class="text-secondary-container font-bold text-lg">+180</p>
+                                <p class="text-inverse-primary/40 text-[11px]">este mes</p>
+                            </div>
+                            <div class="flex-1 p-3 rounded-xl bg-white/5 border border-white/5">
+                                <p class="text-secondary-container font-bold text-lg">Nivel 5</p>
+                                <p class="text-inverse-primary/40 text-[11px]">logro</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- Right Column -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="glass-card p-7 rounded-3xl h-full animate-fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="font-headline-md text-headline-md text-secondary flex items-center gap-2">
+                            <span class="material-symbols-outlined text-xl">analytics</span> Actividad Reciente
+                        </h2>
+                        <button class="text-secondary font-label-md text-[13px] hover:text-on-secondary-fixed-variant transition-colors">Ver todo</button>
+                    </div>
+                    <div class="space-y-3">
+                        <!-- Activity 1 -->
+                        <div class="group flex items-center gap-5 p-4 rounded-2xl hover:bg-secondary/5 transition-all duration-300 border border-transparent hover:border-secondary/10 cursor-default">
+                            <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">recycling</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-body-lg font-semibold text-on-surface text-sm">Reciclaje de Plastico Completado</p>
+                                <p class="text-on-surface-variant text-sm truncate">Has reciclado 2.5kg de envases PET en el Punto Verde Centro.</p>
+                            </div>
+                            <div class="flex flex-col items-end gap-1 shrink-0">
+                                <span class="text-secondary font-bold text-sm">+50 pts</span>
+                                <span class="text-[11px] text-outline">Hace 2h</span>
+                            </div>
+                        </div>
+                        <!-- Activity 2 -->
+                        <div class="group flex items-center gap-5 p-4 rounded-2xl hover:bg-secondary/5 transition-all duration-300 border border-transparent hover:border-secondary/10 cursor-default">
+                            <div class="w-12 h-12 rounded-2xl bg-primary-container/50 flex items-center justify-center text-secondary shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-xl">location_on</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-body-lg font-semibold text-on-surface text-sm">Nuevo Punto Visitado</p>
+                                <p class="text-on-surface-variant text-sm truncate">Has registrado tu primera visita al Punto de Reciclaje "EcoPark Norte".</p>
+                            </div>
+                            <div class="flex flex-col items-end gap-1 shrink-0">
+                                <span class="text-secondary font-bold text-sm">+10 pts</span>
+                                <span class="text-[11px] text-outline">Ayer</span>
+                            </div>
+                        </div>
+                        <!-- Activity 3 -->
+                        <div class="group flex items-center gap-5 p-4 rounded-2xl hover:bg-secondary/5 transition-all duration-300 border border-transparent hover:border-secondary/10 cursor-default">
+                            <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-body-lg font-semibold text-on-surface text-sm">Insignia "Eco-Conductor del Mes"</p>
+                                <p class="text-on-surface-variant text-sm truncate">Felicidades! Has alcanzado el nivel 5 de contribucion comunitaria.</p>
+                            </div>
+                            <div class="flex flex-col items-end gap-1 shrink-0">
+                                <span class="text-secondary font-bold text-sm">Nivel 5</span>
+                                <span class="text-[11px] text-outline">Lunes</span>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Chart -->
+                    <div class="mt-10 pt-8 border-t border-outline-variant/30">
+                        <h3 class="font-label-md text-label-md text-outline uppercase tracking-wider mb-6">Tendencia de Reciclaje Mensual</h3>
+                        <div class="flex items-end justify-between h-36 gap-2">
+                            <div class="w-full rounded-t-lg transition-all duration-500 hover:opacity-80 cursor-pointer" style="height: 40%; background: linear-gradient(to top, rgba(0,108,80,0.15), rgba(0,250,190,0.1));"></div>
+                            <div class="w-full rounded-t-lg transition-all duration-500 hover:opacity-80 cursor-pointer" style="height: 60%; background: linear-gradient(to top, rgba(0,108,80,0.2), rgba(0,250,190,0.15));"></div>
+                            <div class="w-full rounded-t-lg transition-all duration-500 hover:opacity-80 cursor-pointer" style="height: 30%; background: linear-gradient(to top, rgba(0,108,80,0.1), rgba(0,250,190,0.08));"></div>
+                            <div class="w-full rounded-t-lg transition-all duration-500 hover:opacity-80 cursor-pointer" style="height: 80%; background: linear-gradient(to top, rgba(0,108,80,0.3), rgba(0,250,190,0.2));"></div>
+                            <div class="w-full rounded-t-lg transition-all duration-500 hover:opacity-80 cursor-pointer" style="height: 55%; background: linear-gradient(to top, rgba(0,108,80,0.25), rgba(0,250,190,0.18));"></div>
+                            <div class="w-full rounded-t-lg shadow-lg shadow-secondary/20 animate-glow-pulse" style="height: 95%; background: linear-gradient(to top, #006c50, #00fabe);"></div>
+                            <div class="w-full rounded-t-lg transition-all duration-500 hover:opacity-80 cursor-pointer" style="height: 45%; background: linear-gradient(to top, rgba(0,108,80,0.18), rgba(0,250,190,0.12));"></div>
+                        </div>
+                        <div class="flex justify-between mt-3 text-[11px] text-outline font-label-md">
+                            <span>Lun</span><span>Mar</span><span>Mie</span><span>Jue</span><span>Vie</span><span class="text-secondary font-bold">Sab</span><span>Dom</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-
     </div>
-
-    <div class="profile-grid">
-        <!-- Sidebar -->
-        <div class="profile-sidebar">
-            <div class="profile-side-card">
-                <h5 class="profile-card-title"><i class="bi bi-info-circle-fill"></i> Información</h5>
-                
-                <div class="info-item">
-                    <i class="bi bi-envelope-fill"></i>
-                    <div>
-                        <div class="small text-muted">Correo</div>
-                        <div class="fw-medium">maria.g@email.com</div>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <i class="bi bi-telephone-fill"></i>
-                    <div>
-                        <div class="small text-muted">Teléfono</div>
-                        <div class="fw-medium">@userPhone</div>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <i class="bi bi-geo-alt-fill"></i>
-                    <div>
-                        <div class="small text-muted">Ciudad</div>
-                        <div class="fw-medium">@userCity</div>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <i class="bi bi-calendar-check-fill"></i>
-                    <div>
-                        <div class="small text-muted">Se unió en</div>
-                        <div class="fw-medium">Junio de 2023</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="profile-side-card">
-                <h5 class="profile-card-title"><i class="bi bi-award-fill"></i> Logros</h5>
-                
-                <div class="d-flex align-items-center mb-3">
-                    <div class="bg-warning bg-opacity-10 p-2 rounded-3 me-3 text-warning">
-                        <i class="bi bi-trophy-fill fs-4"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold">Eco-Conductor del Mes</div>
-                        <div class="small text-muted">Menor huella de carbono</div>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-center">
-                    <div class="bg-success bg-opacity-10 p-2 rounded-3 me-3 text-success">
-                        <i class="bi bi-leaf-fill fs-4"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold">100 Viajes Verdes</div>
-                        <div class="small text-muted">Completados este año</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="profile-main-content">
-
-
-            <!-- Recent Activity -->
-            <div class="profile-side-card">
-                <h5 class="profile-card-title"><i class="bi bi-clock-history"></i> Actividad Reciente</h5>
-                
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="bi bi-recycle"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h6>Reciclaje de Plástico Completado</h6>
-                        <p>Has reciclado 2.5kg de envases PET en el Punto Verde Centro.</p>
-                        <small class="text-muted">Hace 2 horas</small>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="bi bi-geo-alt"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h6>Nuevo Punto de Reciclaje Visitado</h6>
-                        <p>Has registrado tu primera visita al Punto de Reciclaje "EcoPark Norte".</p>
-                        <small class="text-muted">Ayer a las 18:30</small>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="bi bi-star-fill text-warning"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h6>Reseña Publicada</h6>
-                        <p>Calificaste con 5 estrellas el servicio de recolección selectiva.</p>
-                        <small class="text-muted">Hace 3 días</small>
-                    </div>
-                </div>
-
-                <div class="text-center mt-3">
-                    <button class="btn btn-link text-success text-decoration-none fw-bold">Ver toda la actividad</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</main>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .chat-container {
+            height: calc(100vh - 160px);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glow-mint {
+            box-shadow: 0 0 15px rgba(0, 250, 190, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#00201c",
+                      "secondary": "#006c50",
+                      "on-secondary-fixed-variant": "#00513c",
+                      "on-primary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed-variant": "#2e4c48",
+                      "on-secondary-fixed": "#002116",
+                      "outline-variant": "#c1c8c6",
+                      "surface-container-low": "#f0f5f4",
+                      "on-secondary-container": "#006f52",
+                      "on-primary-container": "#779691",
+                      "error-container": "#ffdad6",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#0f2e2a",
+                      "on-background": "#171d1c",
+                      "inverse-primary": "#adcdc7",
+                      "tertiary": "#021816",
+                      "inverse-on-surface": "#edf2f1",
+                      "tertiary-fixed": "#cee8e4",
+                      "surface-tint": "#46645f",
+                      "secondary-container": "#00fabe",
+                      "on-tertiary-fixed": "#081f1d",
+                      "on-surface-variant": "#414847",
+                      "primary-fixed": "#c8e9e3",
+                      "on-surface": "#171d1c",
+                      "surface-container": "#eaefee",
+                      "primary": "#001915",
+                      "surface-bright": "#f5faf9",
+                      "tertiary-container": "#162d2b",
+                      "primary-fixed-dim": "#adcdc7",
+                      "surface-variant": "#dee3e3",
+                      "surface-dim": "#d6dbda",
+                      "background": "#f5faf9",
+                      "surface": "#f5faf9",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#00e1ab",
+                      "tertiary-fixed-dim": "#b3ccc8",
+                      "secondary-fixed": "#36ffc4",
+                      "outline": "#717977",
+                      "on-tertiary-container": "#7d9592",
+                      "on-tertiary-fixed-variant": "#344b48",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#2c3131",
+                      "surface-container-high": "#e4e9e8",
+                      "surface-container-highest": "#dee3e3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "unit": "4px",
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-md": ["Hanken Grotesk"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md overflow-hidden">
+<!-- Header / TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/20 shadow-sm h-20">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-headline-md tracking-tight text-secondary">EcoRuta</span>
+<div class="hidden md:flex gap-6 ml-10">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Inicio</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Foro</a>
+<a class="font-label-md text-label-md text-secondary font-bold border-b-2 border-secondary pb-1" href="#">Asistente</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Premios</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Perfil</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low/50 rounded-lg transition-transform active:scale-95">
+<span class="material-symbols-outlined text-secondary" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low/50 rounded-lg transition-transform active:scale-95">
+<span class="material-symbols-outlined text-secondary" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary/20">
+<img alt="Avatar de usuario EcoRuta" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWtCfeU58IAFnh5W2pEUKMKioqS0zk7P-_BBmJUeXo7Tcmzg4GMihS9mcn38VRdr-y3JXNRAM7GtTzkedYKsUuHJ33Mn-9Y0ghL7Id_4NrCjurwmSGhbf9a3zFauU8m1T9yL1VKtkuHXq7kE0Fqm5_7Ef7TBae2vPMfD2egoZcBfyIraLvuuCeWV7dp4U0OuBW0fi615Q1BG5nPADekFMmPrd2NAlQ4jgk6Ud6afqCNSXbEP3CpKw-HWk0TnOr6SIDIj2ubVXFGkg"/>
+</div>
+</div>
+</div>
+</header>
+<main class="relative pt-20 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+<!-- Background Animation Layer -->
+
+<!-- Chat Interface Canvas -->
+<section class="relative z-10 w-full max-w-4xl h-full flex flex-col px-margin-mobile md:px-margin-desktop py-8">
+<!-- AI Identity Header (Specific to Chat) -->
+<div class="glass-card rounded-xl p-6 mb-6 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-on-secondary-container glow-mint">
+<span class="material-symbols-outlined text-2xl" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary-fixed-dim rounded-full border-2 border-white animate-pulse"></div>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-secondary">EcoAsistente</h1>
+<p class="font-label-md text-label-md text-secondary-fixed-dim flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-secondary-fixed-dim rounded-full"></span>
+                            Activo
+                        </p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="text-on-surface-variant hover:text-secondary p-2 transition-colors">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary p-2 transition-colors">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+</button>
+</div>
+</div>
+<!-- Messages Window -->
+<div class="flex-1 overflow-y-auto scrollbar-hide space-y-gutter pb-32" id="chat-messages">
+<!-- AI Message -->
+<div class="flex gap-4 max-w-[85%]">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="eco">eco</span>
+</div>
+<div class="glass-card p-5 rounded-2xl rounded-tl-none shadow-sm">
+<p class="font-body-md text-body-md text-on-surface">
+                            ¡Hola! Soy tu asistente de EcoRuta. Estoy aquí para ayudarte a optimizar tus hábitos de reciclaje y encontrar los puntos de recogida más cercanos. ¿En qué puedo ayudarte hoy?
+                        </p>
+<span class="block mt-2 text-[10px] font-semibold text-outline tracking-wider uppercase">Ahora</span>
+</div>
+</div>
+<!-- Suggested Chips -->
+<div class="flex flex-wrap gap-2 py-2">
+<button class="glass-card px-4 py-2 rounded-full font-label-md text-label-md text-secondary hover:bg-secondary-container transition-all active:scale-95">
+                        ¿Cómo reciclar plástico?
+                    </button>
+<button class="glass-card px-4 py-2 rounded-full font-label-md text-label-md text-secondary hover:bg-secondary-container transition-all active:scale-95">
+                        Puntos limpios cerca de mí
+                    </button>
+<button class="glass-card px-4 py-2 rounded-full font-label-md text-label-md text-secondary hover:bg-secondary-container transition-all active:scale-95">
+                        Mis premios acumulados
+                    </button>
+</div>
+</div>
+<!-- Input Area -->
+<div class="fixed bottom-8 left-0 right-0 px-margin-mobile md:px-margin-desktop z-20">
+<div class="max-w-4xl mx-auto">
+<div class="glass-card p-2 pr-2 pl-6 rounded-full flex items-center shadow-xl border-secondary/10 group focus-within:ring-2 ring-secondary/20 transition-all">
+<input class="bg-transparent border-none focus:ring-0 flex-1 font-body-md text-on-surface placeholder:text-outline/60" id="chat-input" placeholder="Escribe tu consulta sobre reciclaje..." type="text"/>
+<div class="flex items-center gap-2">
+<button class="p-2 text-outline hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="attach_file">attach_file</span>
+</button>
+<button class="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform glow-mint shadow-lg" id="send-button">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-lg border-t border-white/20 h-16 flex items-center justify-around px-4 z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="text-[10px] font-bold">Foro</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="text-[10px] font-bold">Asistente</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="text-[10px] font-bold">Premios</span>
+</button>
+</nav>
+<script>
+        const input = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-button');
+        const messagesContainer = document.getElementById('chat-messages');
+
+        function addMessage(text, isUser = false) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex gap-4 ${isUser ? 'justify-end' : 'max-w-[85%]'}`;
+            
+            const messageHtml = isUser ? `
+                <div class="bg-secondary p-5 rounded-2xl rounded-tr-none shadow-md text-white">
+                    <p class="font-body-md text-body-md">${text}</p>
+                    <span class="block mt-2 text-[10px] font-semibold text-white/70 tracking-wider uppercase text-right">Tú</span>
+                </div>
+            ` : `
+                <div class="w-8 h-8 rounded-full bg-secondary-container flex-shrink-0 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-sm" data-icon="eco">eco</span>
+                </div>
+                <div class="glass-card p-5 rounded-2xl rounded-tl-none shadow-sm">
+                    <p class="font-body-md text-body-md text-on-surface">${text}</p>
+                    <span class="block mt-2 text-[10px] font-semibold text-outline tracking-wider uppercase">EcoAsistente</span>
+                </div>
+            `;
+            
+            wrapper.innerHTML = messageHtml;
+            messagesContainer.appendChild(wrapper);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        sendBtn.addEventListener('click', () => {
+            const val = input.value.trim();
+            if(val) {
+                addMessage(val, true);
+                input.value = '';
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    addMessage("¡Entendido! Estoy analizando la mejor forma de reciclar lo que mencionas. Recuerda que cada pequeña acción cuenta para un futuro más sostenible.");
+                }, 1000);
+            }
+        });
+
+        input.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') sendBtn.click();
+        });
+
+        // Horizontal scroll animation for chips on mobile if needed
+        const chips = document.querySelectorAll('button.px-4.py-2');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                addMessage(chip.innerText.trim(), true);
+                setTimeout(() => {
+                    addMessage("Esa es una excelente pregunta. Aquí tienes los detalles sobre " + chip.innerText.trim().toLowerCase() + "...");
+                }, 800);
+            });
+        });
+    </script>
+</body></html>

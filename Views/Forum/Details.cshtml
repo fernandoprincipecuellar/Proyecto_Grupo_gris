@@ -4,98 +4,100 @@
     ViewData["Title"] = "Detalles del Reporte";
 }
 
-<div class="container py-5">
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-action="Index" class="text-success text-decoration-none fw-bold">Foro</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Detalles del Reporte</li>
-        </ol>
+<div class="py-8 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <!-- Breadcrumb -->
+    <nav class="mb-6">
+        <div class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+            <a asp-action="Index" class="text-secondary hover:underline">Foro</a>
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+            <span>Detalles del Reporte</span>
+        </div>
     </nav>
 
-    <div class="row g-4">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <div class="details-img-container">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+        <!-- Main Content -->
+        <div class="lg:col-span-2">
+            <div class="glass-card rounded-3xl overflow-hidden">
+                <!-- Image -->
+                <div class="h-[450px] bg-surface-container-low">
                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
                     {
-                        <img src="@Model.ImageUrl" alt="@Model.ReportType" class="w-100 h-100 object-fit-cover" />
+                        <img src="@Model.ImageUrl" alt="@Model.ReportType" class="w-full h-full object-cover" />
                     }
                     else
                     {
-                        <div class="d-flex align-items-center justify-content-center h-100 bg-light">
-                            <i class="bi bi-image fs-1 text-muted"></i>
+                        <div class="w-full h-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-outline text-6xl">image</span>
                         </div>
                     }
                 </div>
-                <div class="card-body p-4 p-md-5">
-                    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-                        <span class="badge @(Model.Urgency == "Alta" ? "bg-danger" : Model.Urgency == "Media" ? "bg-warning text-dark" : "bg-info text-dark") fs-6 px-3 py-2 rounded-pill">
-                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Urgencia: @Model.Urgency
+                
+                <div class="p-6 md:p-8">
+                    <!-- Badges -->
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <span class="inline-flex items-center gap-1 px-4 py-2 rounded-full font-label-md text-label-md text-white @(Model.Urgency == "Alta" ? "bg-error" : Model.Urgency == "Media" ? "bg-amber-500" : "bg-secondary")">
+                            <span class="material-symbols-outlined text-sm">warning</span> Urgencia: @Model.Urgency
                         </span>
-                        <span class="badge bg-success-subtle text-success fs-6 px-3 py-2 rounded-pill">
-                            <i class="bi bi-tag-fill me-1"></i> @Model.ReportType
+                        <span class="inline-flex items-center gap-1 px-4 py-2 rounded-full font-label-md text-label-md bg-secondary/10 text-secondary">
+                            <span class="material-symbols-outlined text-sm">label</span> @Model.ReportType
                         </span>
                     </div>
 
-                    <h1 class="display-6 fw-bold mb-4">@Model.ReportType</h1>
+                    <h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-6">@Model.ReportType</h1>
                     
-                    <div class="mb-5">
-                        <h5 class="fw-bold text-muted text-uppercase small letter-spacing-1 mb-3">Descripción</h5>
-                        <p class="fs-5 lh-base">@Model.Description</p>
+                    <div class="mb-8">
+                        <h5 class="font-label-md text-label-md text-outline uppercase tracking-wider mb-3">Descripcion</h5>
+                        <p class="font-body-lg text-body-lg text-on-surface leading-relaxed">@Model.Description</p>
                     </div>
 
-                    <div class="row g-4 border-top pt-4">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="bg-success-subtle p-3 rounded-4 text-success">
-                                    <i class="bi bi-geo-alt-fill fs-3"></i>
-                                </div>
-                                <div>
-                                    <p class="text-muted small mb-0 fw-bold text-uppercase">Ubicación</p>
-                                    <p class="mb-0 fw-medium">@Model.Location</p>
-                                </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-outline-variant pt-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-secondary text-xl">location_on</span>
+                            </div>
+                            <div>
+                                <p class="text-xs font-label-md text-outline uppercase tracking-wider mb-0">Ubicacion</p>
+                                <p class="font-body-md text-on-surface m-0 font-medium">@Model.Location</p>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="bg-info-subtle p-3 rounded-4 text-info">
-                                    <i class="bi bi-calendar-event fs-3"></i>
-                                </div>
-                                <div>
-                                    <p class="text-muted small mb-0 fw-bold text-uppercase">Fecha del Reporte</p>
-                                    <p class="mb-0 fw-medium">@Model.CreatedAt.ToLocalTime().ToString("dd 'de' MMMM, yyyy")</p>
-                                </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-blue-500 text-xl">calendar_today</span>
+                            </div>
+                            <div>
+                                <p class="text-xs font-label-md text-outline uppercase tracking-wider mb-0">Fecha del Reporte</p>
+                                <p class="font-body-md text-on-surface m-0 font-medium">@Model.CreatedAt.ToLocalTime().ToString("dd 'de' MMMM, yyyy")</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Sección de Comentarios -->
-                    <div class="mt-5 border-top pt-4">
-                        <h4 class="fw-bold mb-4">Comentarios (@Model.CommentsCount)</h4>
+                    <!-- Comentarios -->
+                    <div class="mt-8 border-t border-outline-variant pt-8">
+                        <h4 class="font-headline-md text-headline-md mb-6">Comentarios (@Model.CommentsCount)</h4>
                         @if (Model.Comments != null && Model.Comments.Any())
                         {
-                            <div class="d-grid gap-3">
+                            <div class="space-y-4">
                                 @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
                                 {
-                                    <div class="p-3 bg-light rounded-4">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-bold text-dark">
-                                                <i class="bi bi-person-circle me-1"></i> @(comment.User?.UserName ?? "Usuario")
+                                    <div class="p-4 rounded-2xl bg-surface-container-low">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="font-bold text-on-surface flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">person</span> @(comment.User?.UserName ?? "Usuario")
                                             </span>
-                                            <small class="text-muted">@comment.CreatedAt.ToLocalTime().ToString("g")</small>
+                                            <span class="text-xs text-outline">@comment.CreatedAt.ToLocalTime().ToString("g")</span>
                                         </div>
-                                        <p class="mb-2">@comment.Text</p>
+                                        <p class="mb-2 text-on-surface">@comment.Text</p>
                                         @{
                                             var sentLabel = string.IsNullOrWhiteSpace(comment.Sentiment) ? "Neutro" : comment.Sentiment;
-                                            var sentBadge = sentLabel == "Positivo" ? "bg-success" :
-                                                            sentLabel == "Negativo" ? "bg-danger" : "bg-warning text-dark";
-                                            var sentIcon  = sentLabel == "Positivo" ? "bi-emoji-smile-fill" :
-                                                            sentLabel == "Negativo" ? "bi-emoji-frown-fill" : "bi-emoji-neutral-fill";
+                                            var sentColor = sentLabel == "Positivo" ? "bg-secondary/10 text-secondary" :
+                                                            sentLabel == "Negativo" ? "bg-error/10 text-error" : "bg-amber-500/10 text-amber-700";
+                                            var sentIcon  = sentLabel == "Positivo" ? "sentiment_satisfied" :
+                                                            sentLabel == "Negativo" ? "sentiment_dissatisfied" : "sentiment_neutral";
                                         }
                                         <div>
-                                            <span class="badge @sentBadge">
-                                                <i class="bi @sentIcon me-1"></i>
-                                                Análisis (@sentLabel): @comment.SentimentConfidence.ToString("0.0")%
+                                            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold @sentColor">
+                                                <span class="material-symbols-outlined text-sm">@sentIcon</span>
+                                                Analisis (@sentLabel): @comment.SentimentConfidence.ToString("0.0")%
                                             </span>
                                         </div>
                                     </div>
@@ -104,74 +106,64 @@
                         }
                         else
                         {
-                            <p class="text-muted">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                            <p class="text-on-surface-variant">No hay comentarios aun. Se el primero en comentar!</p>
                         }
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
-                <h5 class="fw-bold mb-4">Interacción</h5>
-                <div class="d-grid gap-3">
-                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-heart-fill text-danger"></i>
-                            <span class="fw-bold">@Model.LikesCount Likes</span>
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Interaccion -->
+            <div class="glass-card rounded-2xl p-6">
+                <h5 class="font-headline-md text-headline-md mb-4">Interaccion</h5>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-4 rounded-xl bg-surface-container-low">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                            <span class="font-bold">@Model.LikesCount Likes</span>
                         </div>
                         <form asp-action="Like" method="post">
                             <input type="hidden" name="id" value="@Model.Id" />
-                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
-                                <i class="bi bi-hand-thumbs-up me-1"></i>Me gusta
+                            <button type="submit" class="px-4 py-2 rounded-xl border border-error/20 text-error font-label-md text-label-md hover:bg-error/5 transition-colors flex items-center gap-1">
+                                <span class="material-symbols-outlined text-lg">thumb_up</span> Me gusta
                             </button>
                         </form>
                     </div>
-                    <div class="p-3 bg-light rounded-3">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-chat-dots-fill text-primary"></i>
-                                <span class="fw-bold">@Model.CommentsCount Comentarios</span>
-                            </div>
+                    <div class="p-4 rounded-xl bg-surface-container-low">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="material-symbols-outlined text-secondary">chat</span>
+                            <span class="font-bold">@Model.CommentsCount Comentarios</span>
                         </div>
-                        <form asp-action="AddComment" method="post" class="d-flex gap-2">
+                        <form asp-action="AddComment" method="post" class="flex gap-2">
                             <input type="hidden" name="id" value="@Model.Id" />
-                            <input type="text" name="commentText" class="form-control form-control-sm rounded-pill" placeholder="Escribe un comentario..." required />
-                            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">Enviar</button>
+                            <input type="text" name="commentText" class="flex-1 px-4 py-2 rounded-xl bg-white border border-outline-variant focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all text-sm" placeholder="Escribe un comentario..." required />
+                            <button type="submit" class="px-4 py-2 rounded-xl bg-secondary text-white font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors">
+                                <span class="material-symbols-outlined text-lg">send</span>
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                <div class="p-4 bg-success text-white">
-                    <h5 class="fw-bold mb-0">Acciones Rápidas</h5>
+            <!-- Acciones Rapidas -->
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="p-4 bg-secondary text-white">
+                    <h5 class="font-headline-md text-headline-md mb-0">Acciones Rapidas</h5>
                 </div>
-                <div class="list-group list-group-flush">
-                    <a asp-action="Index" class="list-group-item list-group-item-action py-3 d-flex align-items-center gap-3">
-                        <i class="bi bi-arrow-left text-success fs-5"></i> Volver al Foro
+                <div class="divide-y divide-outline-variant/30">
+                    <a asp-action="Index" class="flex items-center gap-3 p-4 hover:bg-surface-container-low transition-colors text-on-surface">
+                        <span class="material-symbols-outlined text-secondary">arrow_back</span> Volver al Foro
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-3 d-flex align-items-center gap-3">
-                        <i class="bi bi-share text-success fs-5"></i> Compartir Reporte
+                    <a href="#" class="flex items-center gap-3 p-4 hover:bg-surface-container-low transition-colors text-on-surface">
+                        <span class="material-symbols-outlined text-secondary">share</span> Compartir Reporte
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-3 d-flex align-items-center gap-3 text-danger">
-                        <i class="bi bi-flag fs-5"></i> Reportar Inconveniente
+                    <a href="#" class="flex items-center gap-3 p-4 hover:bg-surface-container-low transition-colors text-error">
+                        <span class="material-symbols-outlined">flag</span> Reportar Inconveniente
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .details-img-container {
-        height: 450px;
-        background: #f8f9fa;
-    }
-    .letter-spacing-1 {
-        letter-spacing: 1px;
-    }
-    .object-fit-cover {
-        object-fit: cover;
-    }
-</style>

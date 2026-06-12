@@ -3,168 +3,232 @@
     Layout = "_Layout";
 }
 
-<div class="container py-5">
-    <div class="row g-4">
-        <!-- Puntos del Usuario y Ranking -->
-        <div class="col-lg-4">
-            <!-- Puntos -->
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4 text-white" style="background: linear-gradient(135deg, #166534 0%, #22c55e 100%);">
-                <div class="card-body p-4 text-center">
-                    <h5 class="fw-bold mb-3 opacity-75">Tus EcoPuntos</h5>
-                    <div class="display-3 fw-bold mb-2">
-                        <i class="bi bi-star-fill text-warning me-2"></i>@ViewBag.Puntos
-                    </div>
-                    <p class="mb-0 fw-medium">¡Sigue reciclando para subir de nivel!</p>
-                </div>
-            </div>
+<!-- Hero Section -->
+<div class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-container to-tertiary-container"></div>
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, rgba(0,250,190,0.4) 1px, transparent 0); background-size: 30px 30px;"></div>
+    <div class="absolute top-0 right-1/4 w-72 h-72 bg-secondary/15 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute bottom-0 left-1/3 w-64 h-64 bg-secondary-container/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
 
-            <!-- Leaderboard -->
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-header bg-white border-0 pt-4 pb-0">
-                    <h5 class="fw-bold text-dark"><i class="bi bi-trophy-fill text-warning me-2"></i>Top Recicladores</h5>
-                </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush rounded-bottom-4">
-                        <div class="list-group-item d-flex align-items-center p-3 bg-light border-0 border-bottom border-light">
-                            <span class="badge bg-warning rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">1</span>
-                            <div class="me-auto">
-                                <h6 class="mb-0 fw-bold">María Gómez</h6>
-                                <small class="text-muted">Nivel EcoHero</small>
-                            </div>
-                            <span class="fw-bold text-success">5,200 pts</span>
-                        </div>
-                        <div class="list-group-item d-flex align-items-center p-3 border-0 border-bottom border-light">
-                            <span class="badge bg-secondary rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">2</span>
-                            <div class="me-auto">
-                                <h6 class="mb-0 fw-bold">Carlos Ruiz</h6>
-                                <small class="text-muted">Nivel Activista</small>
-                            </div>
-                            <span class="fw-bold text-success">4,850 pts</span>
-                        </div>
-                        <div class="list-group-item d-flex align-items-center p-3 bg-light border-0 border-bottom border-light">
-                            <span class="badge text-white rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="background-color: #cd7f32; width: 35px; height: 35px;">3</span>
-                            <div class="me-auto">
-                                <h6 class="mb-0 fw-bold">Ana López</h6>
-                                <small class="text-muted">Nivel Activista</small>
-                            </div>
-                            <span class="fw-bold text-success">4,100 pts</span>
-                        </div>
-                        <div class="list-group-item d-flex align-items-center p-3 border-0 border-bottom border-light">
-                            <span class="badge bg-light text-dark rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">4</span>
-                            <div class="me-auto">
-                                <h6 class="mb-0 fw-bold">Juan Pérez</h6>
-                                <small class="text-muted">Nivel Avanzado</small>
-                            </div>
-                            <span class="fw-bold text-success">3,200 pts</span>
-                        </div>
-                        <!-- Current User highlight -->
-                        <div class="list-group-item d-flex align-items-center p-3 border-0 bg-success-subtle">
-                            <span class="badge bg-success rounded-circle p-2 me-3 fs-6 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">12</span>
-                            <div class="me-auto">
-                                <h6 class="mb-0 fw-bold text-success">@ViewBag.UserName (Tú)</h6>
-                                <small class="text-success">Nivel Intermedio</small>
-                            </div>
-                            <span class="fw-bold text-success">@ViewBag.Puntos pts</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cupones -->
-        <div class="col-lg-8">
-            <h3 class="fw-bold mb-4 text-dark">Canjea tus puntos por recompensas</h3>
-            <div class="row g-4">
-                <!-- Cupón 1 -->
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
-                        <div class="bg-primary text-white p-4 text-center position-relative">
-                            <i class="bi bi-ticket-perforated display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
-                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">20% DSCTO</h2>
-                            <p class="mb-0 position-relative z-1 fw-medium">En productos ecológicos</p>
-                        </div>
-                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
-                            <h5 class="fw-bold text-dark">Supermercado EcoLife</h5>
-                            <p class="text-muted small mb-4 flex-grow-1">Válido para compras mayores a S/50 en la sección de productos biodegradables.</p>
-                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
-                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 500 pts</span>
-                                <button class="btn btn-outline-primary rounded-pill px-4 fw-bold">Canjear</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cupón 2 -->
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
-                        <div class="bg-danger text-white p-4 text-center position-relative">
-                            <i class="bi bi-cup-hot display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
-                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">2x1 CAFÉ</h2>
-                            <p class="mb-0 position-relative z-1 fw-medium">Llevando tu propio termo</p>
-                        </div>
-                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
-                            <h5 class="fw-bold text-dark">Cafetería El Grano Verde</h5>
-                            <p class="text-muted small mb-4 flex-grow-1">Presenta este cupón junto con tu termo reutilizable y recibe un segundo café gratis.</p>
-                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
-                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 300 pts</span>
-                                <button class="btn btn-outline-danger rounded-pill px-4 fw-bold">Canjear</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cupón 3 -->
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
-                        <div class="bg-info text-dark p-4 text-center position-relative">
-                            <i class="bi bi-bus-front display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
-                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">S/ 10 SALDO</h2>
-                            <p class="mb-0 position-relative z-1 fw-medium">En transporte público</p>
-                        </div>
-                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
-                            <h5 class="fw-bold text-dark">Línea Uno Metro</h5>
-                            <p class="text-muted small mb-4 flex-grow-1">Recarga tu tarjeta del tren o metropolitano con S/ 10 de saldo promocional.</p>
-                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
-                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 1000 pts</span>
-                                <button class="btn btn-outline-info text-dark rounded-pill px-4 fw-bold">Canjear</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cupón 4 -->
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm rounded-4 h-100 coupon-card overflow-hidden">
-                        <div class="text-white p-4 text-center position-relative" style="background-color: #2e1065;">
-                            <i class="bi bi-tree display-1 opacity-25 position-absolute" style="top: -10px; right: -10px;"></i>
-                            <h2 class="display-6 fw-bold mb-0 position-relative z-1">ENTRADA</h2>
-                            <p class="mb-0 position-relative z-1 fw-medium">Parque o Reserva</p>
-                        </div>
-                        <div class="card-body p-4 text-center border-top border-dashed border-2 d-flex flex-column">
-                            <h5 class="fw-bold text-dark">Reserva Ecológica</h5>
-                            <p class="text-muted small mb-4 flex-grow-1">Entrada general gratuita para 1 persona en reservas afiliadas a EcoRuta.</p>
-                            <div class="d-flex justify-content-between align-items-center px-2 mt-auto">
-                                <span class="fw-bold text-success fs-5"><i class="bi bi-star-fill me-1 text-warning"></i> 1500 pts</span>
-                                <button class="btn btn-outline-dark rounded-pill px-4 fw-bold" style="border-color: #2e1065; color: #2e1065;">Canjear</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="relative z-10 py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center">
+        <span class="material-symbols-outlined text-secondary-container text-5xl mb-4 block animate-float" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+        <h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-white mb-3 animate-fade-in-up">Centro de Recompensas</h1>
+        <p class="text-inverse-primary/60 font-body-lg text-body-lg max-w-xl mx-auto animate-fade-in-up" style="animation-delay: 0.1s;">Canjea tus EcoPuntos por beneficios exclusivos y sostenibles.</p>
     </div>
 </div>
 
-<style>
-    .border-dashed {
-        border-style: dashed !important;
-        border-color: #dee2e6 !important;
-    }
-    .coupon-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .coupon-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
-    }
-</style>
+<div class="py-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left Column: Stats & Ranking -->
+        <aside class="lg:col-span-4 space-y-6">
+            <!-- Points Card -->
+            <div class="relative p-8 rounded-3xl overflow-hidden animate-fade-in-up" style="background: linear-gradient(135deg, #006c50, #00513c, #001915);">
+                <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(circle at 1px 1px, rgba(0,250,190,0.4) 1px, transparent 0); background-size: 24px 24px;"></div>
+                <div class="absolute top-0 right-0 w-40 h-40 bg-secondary-container/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4"></div>
+                <div class="relative z-10 text-center">
+                    <span class="text-secondary-container/60 font-label-md text-[11px] uppercase tracking-[0.2em] block mb-3">Tus EcoPuntos</span>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-secondary-container text-4xl animate-float" style="font-variation-settings: 'FILL' 1;">eco</span>
+                        <h2 class="font-display-lg text-5xl text-white font-bold animate-fade-in-up" style="animation-delay: 0.2s;">@ViewBag.Puntos</h2>
+                    </div>
+                    <div class="w-full bg-white/10 h-2.5 rounded-full mb-4 overflow-hidden">
+                        <div class="h-full rounded-full animate-glow-pulse" style="width: 65%; background: linear-gradient(90deg, #00fabe, #36ffc4);"></div>
+                    </div>
+                    <p class="text-inverse-primary/50 font-body-md text-sm">Sigue reciclando para subir de nivel!</p>
+                </div>
+            </div>
+
+            <!-- Ranking Card -->
+            <div class="glass-card rounded-3xl p-6 animate-fade-in-up" style="animation-delay: 0.15s;">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+                        Top Recicladores
+                    </h3>
+                </div>
+                <div class="space-y-3">
+                    <!-- Top 1 -->
+                    <div class="flex items-center gap-4 p-3.5 rounded-2xl transition-all duration-300" style="background: linear-gradient(135deg, rgba(0,250,190,0.08), rgba(0,108,80,0.05)); border: 1px solid rgba(0,250,190,0.15);">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                            <span class="text-white font-bold text-xs">1</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-secondary text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md text-on-surface font-bold">Maria Gomez</p>
+                            <p class="text-[11px] text-on-surface-variant">5,200 pts</p>
+                        </div>
+                        <span class="material-symbols-outlined text-amber-500 text-xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                    </div>
+                    <!-- Top 2 -->
+                    <div class="flex items-center gap-4 p-3.5 rounded-2xl hover:bg-secondary/5 transition-all duration-300 border border-transparent hover:border-outline-variant/30">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center">
+                            <span class="text-white font-bold text-xs">2</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-surface-container-high flex items-center justify-center">
+                            <span class="material-symbols-outlined text-on-surface-variant text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md text-on-surface">Carlos Ruiz</p>
+                            <p class="text-[11px] text-on-surface-variant">4,850 pts</p>
+                        </div>
+                    </div>
+                    <!-- Top 3 -->
+                    <div class="flex items-center gap-4 p-3.5 rounded-2xl hover:bg-secondary/5 transition-all duration-300 border border-transparent hover:border-outline-variant/30">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center">
+                            <span class="text-white font-bold text-xs">3</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-surface-container-high flex items-center justify-center">
+                            <span class="material-symbols-outlined text-on-surface-variant text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md text-on-surface">Ana Lopez</p>
+                            <p class="text-[11px] text-on-surface-variant">4,100 pts</p>
+                        </div>
+                    </div>
+                    <!-- Current User -->
+                    <div class="flex items-center gap-4 p-3.5 rounded-2xl border border-secondary/20" style="background: linear-gradient(135deg, rgba(0,108,80,0.06), rgba(0,250,190,0.04));">
+                        <div class="w-8 h-8 rounded-xl bg-secondary flex items-center justify-center shadow-lg shadow-secondary/20">
+                            <span class="text-white font-bold text-xs">12</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-secondary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-sm">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md text-secondary font-bold">@ViewBag.UserName (Tu)</p>
+                            <p class="text-[11px] text-secondary">@ViewBag.Puntos pts</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Column: Rewards Grid -->
+        <section class="lg:col-span-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">Catalogo de Recompensas</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Beneficios exclusivos para eco-ciudadanos activos.</p>
+                </div>
+                <div class="flex gap-2">
+                    <span class="px-4 py-2 rounded-xl bg-secondary/10 text-secondary font-label-md text-[13px] font-bold">Todos</span>
+                    <span class="px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md text-[13px] transition-colors cursor-pointer">Supermercado</span>
+                    <span class="px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md text-[13px] transition-colors cursor-pointer">Transporte</span>
+                </div>
+            </div>
+
+            <!-- Reward Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Coupon 1 -->
+                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up">
+                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #006c50, #00513c, #001915);">
+                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(0,250,190,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
+                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">shopping_cart</span>
+                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider" style="background: linear-gradient(135deg, #00fabe, #006c50);">Super Ahorro</span>
+                        <div class="absolute bottom-4 right-4 text-right">
+                            <span class="text-2xl font-bold text-white">20%</span>
+                            <span class="block text-white/60 text-[10px]">DESCUENTO</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-headline-md text-headline-md text-primary mb-2">20% Dto. en EcoMercado</h4>
+                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Valido en toda la seccion de productos organicos y a granel.</p>
+                            <div class="flex items-center gap-2 mb-5">
+                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
+                                <span class="text-secondary font-bold font-label-md">500 EcoPuntos</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-base">shopping_cart</span>
+                            Canjear Cupon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Coupon 2 -->
+                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #8b5a2b, #5d3a1a, #3d2510);">
+                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,200,100,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
+                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">local_cafe</span>
+                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">Coffee Lover</span>
+                        <div class="absolute bottom-4 right-4 text-right">
+                            <span class="text-2xl font-bold text-white">2x1</span>
+                            <span class="block text-white/60 text-[10px]">PROMO</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-headline-md text-headline-md text-primary mb-2">2x1 en Cafe Especialidad</h4>
+                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Disfruta de un cafe premium con un amigo en GreenBeans.</p>
+                            <div class="flex items-center gap-2 mb-5">
+                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
+                                <span class="text-secondary font-bold font-label-md">300 EcoPuntos</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-base">local_cafe</span>
+                            Canjear Cupon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Coupon 3 -->
+                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #004d7a, #003d66, #002233);">
+                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(100,200,255,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
+                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">directions_transit</span>
+                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-blue-500/80 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">Transporte</span>
+                        <div class="absolute bottom-4 right-4 text-right">
+                            <span class="text-2xl font-bold text-white">10E</span>
+                            <span class="block text-white/60 text-[10px]">SALDO</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-headline-md text-headline-md text-primary mb-2">Saldo Transporte Publico</h4>
+                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Anade 10E de saldo a tu tarjeta de transporte metropolitana.</p>
+                            <div class="flex items-center gap-2 mb-5">
+                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
+                                <span class="text-secondary font-bold font-label-md">1000 EcoPuntos</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-base">directions_transit</span>
+                            Canjear Cupon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Coupon 4 -->
+                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #1a5c2e, #0d3d1c, #062010);">
+                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(100,255,150,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
+                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">forest</span>
+                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-emerald-600/80 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">Naturaleza</span>
+                        <div class="absolute bottom-4 right-4 text-right">
+                            <span class="text-2xl font-bold text-white">1 dia</span>
+                            <span class="block text-white/60 text-[10px]">ACCESO</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-headline-md text-headline-md text-primary mb-2">Entrada Parques Nacionales</h4>
+                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Pase de un dia para descubrir la biodiversidad de nuestras reservas.</p>
+                            <div class="flex items-center gap-2 mb-5">
+                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
+                                <span class="text-secondary font-bold font-label-md">1500 EcoPuntos</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-base">forest</span>
+                            Canjear Cupon
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

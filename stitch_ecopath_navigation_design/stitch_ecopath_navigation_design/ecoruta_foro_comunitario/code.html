@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .eco-gradient-bg {
+            background: radial-gradient(circle at 0% 0%, #f0f5f4 0%, #f5faf9 100%);
+        }
+        .active-nav-border {
+            position: relative;
+        }
+        .active-nav-border::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #006c50;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#00201c",
+                    "secondary": "#006c50",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#2e4c48",
+                    "on-secondary-fixed": "#002116",
+                    "outline-variant": "#c1c8c6",
+                    "surface-container-low": "#f0f5f4",
+                    "on-secondary-container": "#006f52",
+                    "on-primary-container": "#779691",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#0f2e2a",
+                    "on-background": "#171d1c",
+                    "inverse-primary": "#adcdc7",
+                    "tertiary": "#021816",
+                    "inverse-on-surface": "#edf2f1",
+                    "tertiary-fixed": "#cee8e4",
+                    "surface-tint": "#46645f",
+                    "secondary-container": "#00fabe",
+                    "on-tertiary-fixed": "#081f1d",
+                    "on-surface-variant": "#414847",
+                    "primary-fixed": "#c8e9e3",
+                    "on-surface": "#171d1c",
+                    "surface-container": "#eaefee",
+                    "primary": "#001915",
+                    "surface-bright": "#f5faf9",
+                    "tertiary-container": "#162d2b",
+                    "primary-fixed-dim": "#adcdc7",
+                    "surface-variant": "#dee3e3",
+                    "surface-dim": "#d6dbda",
+                    "background": "#f5faf9",
+                    "surface": "#f5faf9",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#00e1ab",
+                    "tertiary-fixed-dim": "#b3ccc8",
+                    "secondary-fixed": "#36ffc4",
+                    "outline": "#717977",
+                    "on-tertiary-container": "#7d9592",
+                    "on-tertiary-fixed-variant": "#344b48",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2c3131",
+                    "surface-container-high": "#e4e9e8",
+                    "surface-container-highest": "#dee3e3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "label-md": ["Hanken Grotesk"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container/30 eco-gradient-bg min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-container/80 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="font-display-lg text-display-lg tracking-tight text-secondary dark:text-secondary-fixed">EcoRuta</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Inicio</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="#">Foro</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Asistente</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Premios</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Perfil</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low/50 dark:hover:bg-surface-container-high/30 rounded-lg transition-colors group">
+<span class="material-symbols-outlined text-secondary group-active:scale-95 transition-transform" data-icon="notifications">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border-2 border-white">
+<img alt="Avatar de usuario EcoRuta" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJHK6ToCB-4rReNp4DAz8Qt53wDHncBXP6djKcaoGUEJ8bR5zYBLtk5idymnByPzTmpxKQCg4bc-YP_j8INur9f9j_NBRZfs9GezneMsCMRI9tGpUY94QPGtoyq40twGfLb3pEUjt36yC0zpnwS52YWkLxP5Aqn6rej_r4ekQGOQQkoZIMC8o4KvDiXKcFWH3EXpsP2-9fXwwFbcj17jEOkVNg0se-Tweh50NuRl3NXjfAKRZncgywlrbpST4wWxOPagvwjD-bIns"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Header & Action Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">Foro Comunitario</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Colabora con tu comunidad reportando incidentes ambientales y encontrando soluciones sostenibles juntos.</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-secondary text-on-secondary px-8 py-4 rounded-full font-label-md text-label-md shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all w-full md:w-auto">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Nuevo reporte
+            </button>
+</section>
+<!-- Search & Filters -->
+<div class="flex flex-wrap items-center gap-4 mb-8">
+<div class="flex-1 min-w-[280px] relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border-none ring-1 ring-outline-variant focus:ring-2 focus:ring-secondary rounded-xl py-3 pl-12 pr-4 font-body-md text-body-md transition-all outline-none" placeholder="Buscar reportes..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="px-6 py-3 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-secondary-container transition-colors">Recientes</button>
+<button class="px-6 py-3 rounded-xl bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md hover:bg-secondary-container transition-colors ring-1 ring-outline-variant">Urgentes</button>
+</div>
+</div>
+<!-- Reports Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Report Card 1 -->
+<article class="glass-card rounded-[2rem] overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-secondary/5 transition-all duration-500">
+<div class="aspect-[16/10] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A wide shot of a community park with plastic waste scattered near a wooden bench, lush green trees in the background under soft afternoon sunlight. The photography style is clean and focused, using the Eco-Modernist aesthetic with natural greens and high-tech clarity. The lighting is warm and natural, emphasizing the environmental concern in a professional, modern documentary style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrvb38vaBhKXw_U-Nz0YnDJE1vKszkLGl4qzP9MaqtaQq0QA_mhxTT-oVsojkxXA-E_y6ySm5bJlYKDn218iHnhk4FXjsZcijOTx3cAYneemu7lMMrR1YRPu_-WJDieLU9mNrZ_m4vMMp1grb1Yci5xes1MYXoRmiFM3sjfeQNhdS8Lrr36HA4jMUHcm8mD7FDu0wqHVOfoadMcPZnRr1fpPyLJCbn_lXQJUIjSSzXmTIjotgrCnrNpdDmMwW24_ekx6xyfZL9U6o"/>
+<div class="absolute top-4 right-4 bg-error text-on-error px-3 py-1 rounded-full text-label-md font-label-md">Urgente</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Hoy, 10:45 AM</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-3">Acumulación de residuos en Parque Central</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">Se ha detectado una gran cantidad de botellas de plástico y desechos orgánicos cerca de la entrada principal. Los contenedores de reciclaje están desbordados.</p>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="location_on">location_on</span>
+<span class="text-label-md font-label-md text-secondary">Zona Norte</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-label-md font-label-md">12</span>
+</div>
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="volunteer_activism" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<span class="text-label-md font-label-md">45</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Report Card 2 -->
+<article class="glass-card rounded-[2rem] overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-secondary/5 transition-all duration-500">
+<div class="aspect-[16/10] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Close up of a broken irrigation pipe in an urban community garden, water spilling onto a dry stone path with vibrant mint green sprouts emerging between the cracks. The scene is captured in high-detail with glassmorphic depth effects and a premium minimalist atmosphere. Sunlight filters through leaves creating a serene yet urgent environmental mood with natural forest green tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc485nuIoAEQs3quaYlw1JY0AqHVEql-b4mHeYsvlaSIE1PO7Sp-BtCFyYtG9C_InHV0m_6VgPqYH97got1_Rutaco_igNKnCotfklTcrhSyfQ0xKdTCfbQ-GiM4q761PfhFom_wQpGNrSfjqOPWGu8fmgb2nHw9dZ3VxO763wHC9uD7Mug-ZFmzvmP0yMktBQxf-qR1Hlf2RrdGjQIQdjZY2z2kOdXToRfHFGISQCnoqqp7ZRpZkGYlPtIEz3kg0Ov4E6vNWSiXU"/>
+<div class="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 rounded-full text-label-md font-label-md">En curso</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Ayer, 03:20 PM</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-3">Fuga de agua en Jardín Comunitario</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">La tubería principal de riego presenta una rotura significativa. Se está perdiendo mucha agua potable desde hace varias horas.</p>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="location_on">location_on</span>
+<span class="text-label-md font-label-md text-secondary">Calle Olivo 45</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-label-md font-label-md">8</span>
+</div>
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="volunteer_activism" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<span class="text-label-md font-label-md">22</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Report Card 3 -->
+<article class="glass-card rounded-[2rem] overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-secondary/5 transition-all duration-500">
+<div class="aspect-[16/10] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A clean, futuristic recycling station in an urban setting with distinct slots for paper, glass, and plastic, designed with minimalist aesthetics and sleek surfaces. The lighting is crisp and even, reflecting the high-tech efficiency of the Eco-Modernist brand. The background shows a modern streetscape with soft blurs, maintaining focus on the sustainable infrastructure with a palette of whites and mint greens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj-wymq8LlGctjgefaOqP9ISZHfvk617oJI0K6NaVNf-cvGEIC_ZyDKLil-P5r1BKF01mTPWZ9DTjq3x7vyF8of8RG3_TMDiCRrDPPFLnwxV4K63jUKPzFe4vtOqN_o9jPcu-kbhfdsFG7OjJPD_45hy6ysoUTWgNFwxy8aNAMl3GRByd9dN8nvIf8edmRGzZv8jIl0OYyBIgQuYNPRGpvCBv63bLw_DKAMMLfAP38aoKAjpcRN1UvxYj6S0X0DZaXOMTTtfhFmKY"/>
+<div class="absolute top-4 right-4 bg-primary-fixed text-primary px-3 py-1 rounded-full text-label-md font-label-md">Resuelto</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">23 Oct, 2024</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-3">Nuevos puntos de reciclaje inteligente</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">Se han instalado 5 nuevos contenedores con sensores de llenado automático. ¡Excelente iniciativa para mantener nuestro barrio limpio!</p>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="location_on">location_on</span>
+<span class="text-label-md font-label-md text-secondary">Avenida Libertad</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-label-md font-label-md">31</span>
+</div>
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="volunteer_activism" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<span class="text-label-md font-label-md">156</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination / Load More -->
+<div class="mt-16 flex justify-center">
+<button class="px-10 py-4 rounded-2xl bg-surface-container-low text-secondary font-label-md text-label-md hover:bg-secondary-container transition-all flex items-center gap-2 group">
+                Cargar más reportes
+                <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Floating Action Button (FAB) for Mobile -->
+<button class="md:hidden fixed bottom-6 right-6 w-16 h-16 rounded-full bg-secondary text-on-secondary shadow-2xl flex items-center justify-center z-40 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</button>
+<!-- Footer -->
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop bg-surface-container-lowest dark:bg-tertiary border-t border-outline-variant dark:border-outline">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 lg:flex lg:justify-between items-center gap-gutter">
+<div class="flex flex-col gap-2">
+<span class="font-headline-md text-headline-md text-secondary">EcoRuta</span>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 EcoRuta. Impulsando el reciclaje inteligente.</p>
+</div>
+<div class="flex flex-wrap gap-x-8 gap-y-4">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors font-body-md text-body-md" href="#">Contacto</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors font-body-md text-body-md" href="#">Términos Legales</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors font-body-md text-body-md" href="#">Privacidad</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors font-body-md text-body-md" href="#">Ayuda</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and subtle scroll effects
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+
+        // Hover effect for cards to add glow
+        document.querySelectorAll('article').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

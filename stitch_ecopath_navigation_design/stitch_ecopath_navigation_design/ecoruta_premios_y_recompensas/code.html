@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoRuta - Centro de Premios</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#00201c",
+                    "secondary": "#006c50",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#2e4c48",
+                    "on-secondary-fixed": "#002116",
+                    "outline-variant": "#c1c8c6",
+                    "surface-container-low": "#f0f5f4",
+                    "on-secondary-container": "#006f52",
+                    "on-primary-container": "#779691",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#0f2e2a",
+                    "on-background": "#171d1c",
+                    "inverse-primary": "#adcdc7",
+                    "tertiary": "#021816",
+                    "inverse-on-surface": "#edf2f1",
+                    "tertiary-fixed": "#cee8e4",
+                    "surface-tint": "#46645f",
+                    "secondary-container": "#00fabe",
+                    "on-tertiary-fixed": "#081f1d",
+                    "on-surface-variant": "#414847",
+                    "primary-fixed": "#c8e9e3",
+                    "on-surface": "#171d1c",
+                    "surface-container": "#eaefee",
+                    "primary": "#001915",
+                    "surface-bright": "#f5faf9",
+                    "tertiary-container": "#162d2b",
+                    "primary-fixed-dim": "#adcdc7",
+                    "surface-variant": "#dee3e3",
+                    "surface-dim": "#d6dbda",
+                    "background": "#f5faf9",
+                    "surface": "#f5faf9",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#00e1ab",
+                    "tertiary-fixed-dim": "#b3ccc8",
+                    "secondary-fixed": "#36ffc4",
+                    "outline": "#717977",
+                    "on-tertiary-container": "#7d9592",
+                    "on-tertiary-fixed-variant": "#344b48",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2c3131",
+                    "surface-container-high": "#e4e9e8",
+                    "surface-container-highest": "#dee3e3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "label-md": ["Hanken Grotesk"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f5faf9;
+            color: #171d1c;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(0, 108, 80, 0.05);
+        }
+        .reward-card:hover {
+            transform: translateY(-4px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glow-mint {
+            box-shadow: 0 0 15px rgba(54, 255, 196, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c8c6;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/20 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg tracking-tight text-secondary">EcoRuta</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Inicio</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Foro</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Asistente</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="#">Premios</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Perfil</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low/50 rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-secondary">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low/50 rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-secondary">settings</span>
+</button>
+<img alt="Avatar de usuario EcoRuta" class="w-10 h-10 rounded-full border-2 border-secondary/20" data-alt="A close-up professional portrait of a smiling young man with friendly features, set against a soft-focus minimalist office background. The lighting is bright and natural, consistent with a clean eco-modernist aesthetic. The image uses a soft palette of whites and subtle greens to maintain visual harmony with the overall sustainability theme of the application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAaE1Y6mjzSbZfIw3nbJJAxwtIzfNj7qKH_IFA8mpVZjVzGmvInKCqi1O2WwtIskyTCa_OlBwpbsTzhx8-Zh3yZMOMwLR2ev4Uq8XEssjphIr1ycXwWVNmrU64luR5doJPimEkJMk13LNV41U3EAgQKONeMaT9ZeYpHtv9aEegwu1L8keqE9Lfn5MVcVjOFs3Av6tWWeZib9_IGBA5f4cl1zpyA5aOH5_oRvG0rRBDNhvNT9GUysxOl9b90QHqtiA5YLdUcqvAJBw"/>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: User Stats & Ranking -->
+<aside class="lg:col-span-4 space-y-6">
+<!-- Points Card -->
+<div class="glass-card rounded-xl p-8 text-center relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-3xl group-hover:bg-secondary/10 transition-all"></div>
+<span class="text-on-secondary-fixed-variant font-label-md text-label-md uppercase tracking-widest block mb-2">Tus EcoPuntos</span>
+<div class="flex items-center justify-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+<h2 class="font-display-lg text-display-lg text-secondary">2450</h2>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full mb-4 overflow-hidden">
+<div class="bg-secondary-fixed-dim h-full rounded-full glow-mint" style="width: 65%;"></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Estás a <span class="font-bold text-secondary">550 pts</span> del siguiente nivel: Guardián del Bosque.</p>
+</div>
+<!-- Ranking Card -->
+<div class="glass-card rounded-xl p-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Top Recicladores</h3>
+<span class="material-symbols-outlined text-secondary">leaderboard</span>
+</div>
+<div class="space-y-4">
+<!-- Top 1 -->
+<div class="flex items-center gap-4 p-3 rounded-lg bg-secondary/5 border border-secondary/10">
+<span class="font-display-lg text-headline-md text-secondary/40 w-6 text-center">1</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Top 1" data-alt="A professional studio headshot of a radiant woman with a warm expression, characterized by soft, high-key lighting that emphasizes a bright, airy aesthetic. The background is a clean, neutral tone, ensuring the subject remains the focal point while adhering to a modern and sophisticated UI design language. The overall mood is positive and community-focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeGfM2h1SrJStdQv452K6ua3DInSEy-Zsji7zh5VJwO4UrNFGa9kkup2GVdB6UftlAzVMpR4KnWAP7w7wFeyb4U8BJn6_TWlQS5LWe1446z5uVyu9eyhU_e8atmS9SIqsgCbVk3r0QWXbbLoKKMhsZW4GpKdpqOUOcge8E4I8Km3sRs3ynruIE9_PwboaMtcy8UggqzwQmad9hCYfT2Xr5tdVuAx19x76PCU2Fml-e0oN7Z1HO8vnZry8n0FRV3-TWcdM84eEbTq4"/>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface font-bold">Elena R.</p>
+<p class="text-xs text-on-surface-variant">4820 pts</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<!-- Top 2 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="font-display-lg text-headline-md text-on-surface-variant/40 w-6 text-center">2</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Top 2" data-alt="A high-quality portrait of a man with a confident and kind gaze, lit with soft natural light that complements a minimalist design system. The visual style is premium and professional, with a clean background that integrates seamlessly into a modern digital environment. The color palette remains neutral with subtle warm tones to convey trust and community." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDptPIcaancStZsOdrxGj1lStKvPyefP2SgMybhNTxEbssDD9nUAb2942JzlxjflWQFmpfkPCKP1S15DzPaVBEn9GsKO2s7rlBo4yRhhnVWVZ_zvxUF25zB9cglPo07OBQAYqBGFdY1w3py0J6akvecpzzwxoM6H_ppbgxzwo_0-gEb_-XhmdB6aHp0FlAaGdWrK6muaLxuvS0SqhI7Vb8dnImYx8cx3p3kYJfPT56v8aZjpUzghBtkFY_-es2sn0S9kntpTrXLks4"/>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Carlos M.</p>
+<p class="text-xs text-on-surface-variant">3940 pts</p>
+</div>
+</div>
+<!-- Top 3 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="font-display-lg text-headline-md text-on-surface-variant/40 w-6 text-center">3</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Top 3" data-alt="A portrait of a professional woman looking forward with a friendly smile, captured in a bright studio setting. The lighting is diffused and even, creating a clean and modern look that fits a high-tech eco-conscious platform. The composition is centered and balanced, reflecting the organized and efficient nature of the application's interface design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNQ5RlrWGk2hCFFsWsEzujku5_NRNdScB0S1pPqwY2oJKP0TkTmYwN8mPOVn09XyOhyx3A0yCNKW1ejUANO3Y32UDoLmekpOHFGe6Hl_zbG5NkO3OQbaNtjzhsm5hKKGf3LZz6R1YygWSoz73BjOfGZqWQSaeI0CmRjn2DTFzIl2kn-EISgnC0DJKKGjdDqm3G_3qfWOBdtpv-6yfqX5hkSDdieUMPZFio0gMqpxGS10Q_jsaPCrh6xFzdMOu2XEImAn_kNL46L8M"/>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Lucía G.</p>
+<p class="text-xs text-on-surface-variant">3510 pts</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2 text-secondary font-label-md text-label-md hover:underline">Ver ranking completo</button>
+</div>
+</aside>
+<!-- Main Column: Rewards Grid -->
+<section class="lg:col-span-8">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">Catálogo de Recompensas</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Canjea tus puntos por beneficios exclusivos sostenibles.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-high rounded-full font-label-md text-label-md text-secondary hover:bg-secondary/10 transition-colors">Todos</button>
+<button class="px-4 py-2 bg-white rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors border border-outline-variant">Alimentación</button>
+<button class="px-4 py-2 bg-white rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors border border-outline-variant">Ocio</button>
+</div>
+</div>
+<!-- Reward Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Coupon 1: Supermarket -->
+<div class="reward-card glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="h-40 relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A vibrant and fresh supermarket aisle filled with colorful organic produce, focusing on crisp green vegetables and bright fruits. The lighting is professional and high-contrast, emphasizing freshness and health. The style is clean and modernist, with a focus on sustainable food choices, aligning with the brand's eco-friendly message and the premium feel of the user interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbjcvcCkcUOQN6H5UxwjYNM3B2RArYsNopTDi9wDHSc5bcyn-qZM4Wfu_t8-vOnGt8FFpjUQKjxNI-5pmya1D9BOXA4IY5007X3MP5ErFVqNXOs0mOoY9oIhrft0ncfDyZQcOdh_gL6w6keidNHzDEARZhHTvnXauuDQtJLhLBWVFNIFwFTPyAKV6-HuVWMJDovxGUZsZ5M9gHl97B6kBtl3ybhi2YqjhNytLImTHCkYA0zr1iVe2kSpFjXVlOuzONhr4mJzE8vD0"/>
+<span class="absolute top-4 left-4 z-20 bg-[#FF9800] text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">Súper Ahorro</span>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">15% Dto. en EcoMercado</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Válido en toda la sección de productos orgánicos y a granel.</p>
+<div class="flex items-center gap-2 mb-6 text-secondary font-bold">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span>800 EcoPuntos</span>
+</div>
+</div>
+<button class="w-full py-4 bg-secondary text-white rounded-xl font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+                                Canjear Cupón
+                            </button>
+</div>
+</div>
+<!-- Coupon 2: Coffee -->
+<div class="reward-card glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="h-40 relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A cozy, minimalist coffee shop interior with warm wooden textures and soft ambient lighting. A perfectly crafted latte sits on a marble table next to a green plant, embodying a serene and high-quality morning experience. The aesthetic is sophisticated and calm, reflecting a sustainable lifestyle and a premium digital experience with organic color tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAksXFxVwvv58y7JkyejFN9EwlfQGHAQ2y0Lq70sNLazoQUuHq_9BPXlrUTROe9SV8-i3-npLRyxQkwnxP_oa06CW0j_vVS2cEN0WCH_nLFWI76xAPcxdkClPnb9peKeWZ_47PC0_Nk-N_TtjnDYzS5EpRMb92Je-RosdFQDye_ELllYfnhUakq0oPe86_p6s5BbuwTT32B49JUMRClM2kRY9nQDmRwV1XkPAhzy_k3mHJB1F4gfqoGHL1ge0FdNTziWEbrN8EVdac"/>
+<span class="absolute top-4 left-4 z-20 bg-[#795548] text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">Coffee Lover</span>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">2x1 en Café Especialidad</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Disfruta de un café premium con un amigo en GreenBeans.</p>
+<div class="flex items-center gap-2 mb-6 text-secondary font-bold">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span>350 EcoPuntos</span>
+</div>
+</div>
+<button class="w-full py-4 bg-secondary text-white rounded-xl font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm">local_cafe</span>
+                                Canjear Cupón
+                            </button>
+</div>
+</div>
+<!-- Coupon 3: Transport -->
+<div class="reward-card glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="h-40 relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A futuristic and clean electric bus driving through a modern urban landscape with green parks in the background. The scene is bathed in bright daylight, highlighting the efficiency and eco-friendliness of city transport. The visual style is crisp and advanced, emphasizing a commitment to sustainability and a tech-forward urban lifestyle in line with a professional UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFc3JDdaQwO7QDJOAWtn3hmObD5i6xT8fk8B3VfxgNbukigEhTD5btbO1YA7d_lmL6500tvPK_vCUz7ctbErprCScrZ9Wjg0q1TkpeO4KdXseRVONJnb_aYTNJMXtvSzTNBLU09nFNnIu_jC_VoWngMU_yIUxTIAM-ujCZdtXKDUwPCOaZTmYx4doWfrDfpZJT2nMp__z5v70nYaOp7cAoDqPKBQSLAw-uNHN0RuOGOGScM6ZfW9VUWS8aUMZJU0uBbswdmU3npME"/>
+<span class="absolute top-4 left-4 z-20 bg-[#2196F3] text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">Transporte</span>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">Saldo Transporte Público</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Añade 10€ de saldo a tu tarjeta de transporte metropolitana.</p>
+<div class="flex items-center gap-2 mb-6 text-secondary font-bold">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span>1200 EcoPuntos</span>
+</div>
+</div>
+<button class="w-full py-4 bg-secondary text-white rounded-xl font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm">directions_transit</span>
+                                Canjear Cupón
+                            </button>
+</div>
+</div>
+<!-- Coupon 4: Parks -->
+<div class="reward-card glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="h-40 relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A breathtaking panoramic view of a lush national park, featuring majestic mountains, crystal-clear lakes, and dense green forests under a soft, golden sunset sky. The lighting is cinematic and warm, evoking a sense of wonder and connection to nature. This high-end landscape photography reinforces the brand's eco-modernist identity and focus on environmental stewardship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiOcaCwHISCyW0uNv5E0YmC6AZjqKQrHaahf8a3FbcNOP8S7ziTdJuHG8xpACqjy7muBODrV0hIhp8sEvjiFjlfBiIJj5Z2F-04JXMk3AkLKzQQWvNU6egjqMEP5Kf6Dl5MjEUpjjJaEpHmPjS1TFO5z6hN1Vmsw_uQj3D4qNa-KDGItCW4uT2Zj4bpgWOqqJaWJLarDe7U0flPfLxaNWYhYu3GagDC-0H082uFUWJWoTdl-5dWpH3x3NbNpXN1BkzIuKouyB3_8A"/>
+<span class="absolute top-4 left-4 z-20 bg-[#4CAF50] text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">Naturaleza</span>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">Entrada Parques Nacionales</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Pase de un día para descubrir la biodiversidad de nuestras reservas.</p>
+<div class="flex items-center gap-2 mb-6 text-secondary font-bold">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span>1500 EcoPuntos</span>
+</div>
+</div>
+<button class="w-full py-4 bg-secondary text-white rounded-xl font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm">forest</span>
+                                Canjear Cupón
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant w-full py-12 px-margin-mobile md:px-margin-desktop mt-20">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 lg:flex lg:justify-between items-center gap-gutter">
+<div class="flex flex-col gap-2">
+<span class="font-headline-md text-headline-md text-secondary">EcoRuta</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm">© 2024 EcoRuta. Impulsando el reciclaje inteligente para un futuro más verde y sostenible.</p>
+</div>
+<div class="flex flex-wrap gap-8">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Contacto</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Términos Legales</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Privacidad</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Ayuda</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+        document.querySelectorAll('.reward-card button').forEach(button => {
+            button.addEventListener('click', function() {
+                const originalContent = this.innerHTML;
+                this.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Procesando...';
+                this.classList.add('opacity-80');
+                this.disabled = true;
+
+                setTimeout(() => {
+                    this.innerHTML = '<span class="material-symbols-outlined">check_circle</span> ¡Canjeado!';
+                    this.classList.remove('bg-secondary');
+                    this.classList.add('bg-green-600');
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalContent;
+                        this.classList.remove('bg-green-600', 'opacity-80');
+                        this.classList.add('bg-secondary');
+                        this.disabled = false;
+                    }, 2000);
+                }, 1500);
+            });
+        });
+
+        // Simple scroll reveal for cards
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reward-card').forEach(card => {
+            card.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700', 'ease-out');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

@@ -146,6 +146,7 @@ namespace Proyecto_Grupo_gris.Controllers
 
             if (imageFile != null && imageFile.Length > 0)
             {
+                // Intentar Cloudinary primero
                 try
                 {
                     var uploadedUrl = await _cloudinaryService.UploadImageAsync(imageFile, "forum_posts");
@@ -156,7 +157,25 @@ namespace Proyecto_Grupo_gris.Controllers
                 }
                 catch
                 {
-                    // Si Cloudinary falla, continuamos sin bloquear al usuario.
+                    // Cloudinary falló, guardar localmente
+                }
+
+                // Si Cloudinary no funcionó, guardar archivo local
+                if (string.IsNullOrEmpty(post.ImageUrl))
+                {
+                    var uploadsDir = Path.Combine(environment.WebRootPath, "uploads", "forum_posts");
+                    Directory.CreateDirectory(uploadsDir);
+
+                    var ext = Path.GetExtension(imageFile.FileName);
+                    var fileName = $"{Guid.NewGuid()}{ext}";
+                    var filePath = Path.Combine(uploadsDir, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    post.ImageUrl = $"/uploads/forum_posts/{fileName}";
                 }
             }
 
@@ -187,7 +206,7 @@ namespace Proyecto_Grupo_gris.Controllers
                 return Forbid();
             }
 
-            if (!string.IsNullOrEmpty(post.ImageUrl) && !post.ImageUrl.Contains("river.png") && !post.ImageUrl.Contains("dump.png") && !post.ImageUrl.Contains("air.png") && !post.ImageUrl.Contains("trees.png"))
+            if (!string.IsNullOrEmpty(post.ImageUrl) && post.ImageUrl.StartsWith("/uploads/"))
             {
                 var filePath = Path.Combine(environment.WebRootPath, post.ImageUrl.TrimStart('/'));
                 if (System.IO.File.Exists(filePath))

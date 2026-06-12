@@ -1,7 +1,7 @@
 @model Proyecto_Grupo_gris.Models.LoginViewModel
 
 @{
-    ViewData["Title"] = "Iniciar Sesión";
+    ViewData["Title"] = "Iniciar Sesion";
     Layout = "_Layout";
 }
 
@@ -11,14 +11,14 @@
         <div class="auth-form-inner">
             <!-- Brand -->
             <div class="auth-brand">
-                <span class="auth-brand-icon"><i class="bi bi-recycle"></i></span>
+                <span class="material-symbols-outlined auth-brand-icon text-2xl">eco</span>
                 <span class="auth-brand-name">EcoRuta</span>
             </div>
 
             <h1 class="auth-title">
                 @if (!string.IsNullOrEmpty(ViewBag.UserName))
                 {
-                    <span>¡Hola de nuevo, @ViewBag.UserName!</span>
+                    <span>Hola de nuevo, @ViewBag.UserName!</span>
                 }
                 else
                 {
@@ -28,7 +28,7 @@
 
             <!-- Google Login -->
             <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mb-3">
-                <button type="submit" name="provider" value="Google" class="btn auth-btn-google w-100">
+                <button type="submit" name="provider" value="Google" class="auth-btn-google w-100">
                     <img src="https://developers.google.com/identity/images/g-logo.png" width="20" alt="Google">
                     Ingresar con Google
                 </button>
@@ -40,19 +40,19 @@
             </div>
 
             <!-- Login Form -->
-            <form asp-action="Login" method="post" class="auth-form">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-error mb-3 text-sm"></div>
 
                 <div class="auth-field-group">
                     <label asp-for="Email" class="auth-field-label"></label>
                     <input asp-for="Email" class="auth-field-input" placeholder="tu@correo.com" />
-                    <span asp-validation-for="Email" class="text-danger small"></span>
+                    <span asp-validation-for="Email" class="text-error text-xs"></span>
                 </div>
 
                 <div class="auth-field-group">
                     <label asp-for="Password" class="auth-field-label"></label>
                     <input asp-for="Password" class="auth-field-input" placeholder="••••••••" />
-                    <span asp-validation-for="Password" class="text-danger small"></span>
+                    <span asp-validation-for="Password" class="text-error text-xs"></span>
                 </div>
 
                 <div class="auth-options">
@@ -60,16 +60,16 @@
                         <input type="checkbox" name="RememberMe" />
                         <span>Recordarme</span>
                     </label>
-                    <a href="#" class="auth-forgot-link">Olvidé mi contraseña</a>
+                    <a href="#" class="auth-forgot-link">Olvide mi contrasena</a>
                 </div>
 
                 <input asp-for="ReturnUrl" type="hidden" />
-                <button type="submit" class="btn auth-btn-submit w-100">Ingresar</button>
+                <button type="submit" class="auth-btn-submit">Ingresar</button>
             </form>
 
             <p class="auth-switch-text">
-                ¿No tienes cuenta?
-                <a asp-controller="Account" asp-action="Register">Regístrate</a>
+                No tienes cuenta?
+                <a asp-controller="Account" asp-action="Register">Registrate</a>
             </p>
         </div>
     </div>

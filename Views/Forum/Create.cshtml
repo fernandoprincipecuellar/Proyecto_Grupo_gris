@@ -4,140 +4,142 @@
     ViewData["Title"] = "Nuevo Reporte";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-xl-11">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <div class="row g-0">
-                    <!-- Lateral Informativo (Lado Izquierdo) -->
-                    <div class="col-lg-5 d-none d-lg-flex flex-column justify-content-between p-5 text-white position-relative" style="background: linear-gradient(135deg, #166534 0%, #064e3b 100%);">
-                        <div class="position-relative z-index-2">
-                            <a asp-action="Index" class="btn btn-link text-white text-decoration-none p-0 mb-5 d-inline-flex align-items-center gap-2 opacity-75 hover-opacity-100">
-                                <i class="bi bi-arrow-left"></i> Volver al foro
-                            </a>
-                            <h2 class="display-5 fw-bold mb-4">Reporta un Incidente</h2>
-                            <p class="fs-5 opacity-75 mb-5">Tu participación es fundamental para cuidar nuestro ecosistema. Envía tu reporte y las autoridades correspondientes podrán tomar acción.</p>
-                            
-                            <div class="glass-panel p-4 rounded-4 mb-4">
-                                <h5 class="fw-bold mb-3"><i class="bi bi-shield-check me-2"></i>Consejos para un buen reporte</h5>
-                                <ul class="list-unstyled m-0">
-                                    <li class="mb-3 d-flex gap-3 align-items-start">
-                                        <div class="bg-white bg-opacity-20 rounded-circle p-1 px-2 small">1</div>
-                                        <span>Sé específico en la descripción del problema.</span>
-                                    </li>
-                                    <li class="mb-3 d-flex gap-3 align-items-start">
-                                        <div class="bg-white bg-opacity-20 rounded-circle p-1 px-2 small">2</div>
-                                        <span>Asegúrate de que la foto sea clara y nítida.</span>
-                                    </li>
-                                    <li class="d-flex gap-3 align-items-start">
-                                        <div class="bg-white bg-opacity-20 rounded-circle p-1 px-2 small">3</div>
-                                        <span>Indica el nivel de urgencia real.</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+<div class="py-8 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <div class="max-w-5xl mx-auto">
+        <div class="glass-card rounded-3xl overflow-hidden">
+            <div class="flex flex-col lg:flex-row">
+                <!-- Lateral Informativo -->
+                <div class="lg:w-5/12 hidden lg:flex flex-col justify-between p-8 text-white relative" style="background: linear-gradient(135deg, #006c50 0%, #001915 100%);">
+                    <div class="relative z-10">
+                        <a asp-action="Index" class="inline-flex items-center gap-2 text-white/75 hover:text-white transition-colors mb-8 font-label-md text-label-md">
+                            <span class="material-symbols-outlined text-lg">arrow_back</span> Volver al foro
+                        </a>
+                        <h2 class="font-display-lg text-display-lg-mobile mb-4">Reporta un Incidente</h2>
+                        <p class="font-body-lg text-body-lg opacity-75 mb-8">Tu participacion es fundamental para cuidar nuestro ecosistema. Envía tu reporte y las autoridades correspondientes podran tomar accion.</p>
                         
-                        <div class="position-relative z-index-2 mt-4">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="bg-white rounded-circle" style="width: 10px; height: 10px;"></div>
-                                <div class="bg-white bg-opacity-25 rounded-circle" style="width: 10px; height: 10px;"></div>
-                                <div class="bg-white bg-opacity-25 rounded-circle" style="width: 10px; height: 10px;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Decoración de fondo -->
-                        <div class="position-absolute bottom-0 end-0 p-4 opacity-10" style="pointer-events: none;">
-                            <i class="bi bi-recycle" style="font-size: 15rem; transform: rotate(15deg); display: block;"></i>
+                        <div class="glass-card bg-white/10 p-6 rounded-2xl mb-4">
+                            <h5 class="font-headline-md text-headline-md mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined">shield</span> Consejos para un buen reporte
+                            </h5>
+                            <ul class="space-y-4">
+                                <li class="flex gap-3 items-start">
+                                    <div class="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">1</div>
+                                    <span>Sé especifico en la descripcion del problema.</span>
+                                </li>
+                                <li class="flex gap-3 items-start">
+                                    <div class="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">2</div>
+                                    <span>Asegurate de que la foto sea clara y nitida.</span>
+                                </li>
+                                <li class="flex gap-3 items-start">
+                                    <div class="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">3</div>
+                                    <span>Indica el nivel de urgencia real.</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
+                    
+                    <div class="absolute bottom-0 right-0 opacity-10 pointer-events-none">
+                        <span class="material-symbols-outlined" style="font-size: 15rem; transform: rotate(15deg); display: block;">eco</span>
+                    </div>
+                </div>
 
-                    <!-- Formulario (Lado Derecho) -->
-                    <div class="col-lg-7 p-4 p-md-5 bg-white">
-                        <div class="d-lg-none mb-4">
-                            <a asp-action="Index" class="text-success text-decoration-none d-flex align-items-center gap-2">
-                                <i class="bi bi-arrow-left"></i> Volver al foro
-                            </a>
-                            <h2 class="fw-bold mt-3">Nuevo reporte</h2>
-                        </div>
+                <!-- Formulario -->
+                <div class="lg:w-7/12 p-6 md:p-8">
+                    <div class="lg:hidden mb-4">
+                        <a asp-action="Index" class="text-secondary flex items-center gap-2 font-label-md text-label-md">
+                            <span class="material-symbols-outlined text-lg">arrow_back</span> Volver al foro
+                        </a>
+                        <h2 class="font-headline-lg text-headline-lg-mobile mt-3 font-bold">Nuevo reporte</h2>
+                    </div>
 
-                        <form asp-action="Create" method="post" enctype="multipart/form-data">
-                            <div class="row g-4">
-                                <!-- Tipo de Reporte -->
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold text-dark">¿Qué está sucediendo?</label>
-                                    <select asp-for="ReportType" class="form-select modern-input py-3">
-                                        <option value="" selected disabled>Seleccionar categoría</option>
-                                        <option value="Contaminación de agua">Contaminación de agua</option>
-                                        <option value="Botadero ilegal">Botadero ilegal</option>
-                                        <option value="Calidad del aire">Calidad del aire</option>
-                                        <option value="Tala de árboles">Tala de árboles</option>
-                                        <option value="Maltrato animal/fauna">Maltrato animal o fauna silvestre</option>
-                                        <option value="Otro">Otro incidente ambiental</option>
-                                    </select>
-                                    <span asp-validation-for="ReportType" class="text-danger small"></span>
-                                </div>
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        <div class="space-y-6">
+                            <!-- Tipo de Reporte -->
+                            <div>
+                                <label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider mb-2">Que esta sucediendo?</label>
+                                <select asp-for="ReportType" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-outline-variant focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all font-body-md">
+                                    <option value="" selected disabled>Seleccionar categoria</option>
+                                    <option value="Contaminación de agua">Contaminacion de agua</option>
+                                    <option value="Botadero ilegal">Botadero ilegal</option>
+                                    <option value="Calidad del aire">Calidad del aire</option>
+                                    <option value="Tala de árboles">Tala de arboles</option>
+                                    <option value="Maltrato animal/fauna">Maltrato animal o fauna silvestre</option>
+                                    <option value="Otro">Otro incidente ambiental</option>
+                                </select>
+                                <span asp-validation-for="ReportType" class="text-error text-xs mt-1 block"></span>
+                            </div>
 
-                                <!-- Descripción -->
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold text-dark">Descripción detallada</label>
-                                    <textarea asp-for="Description" class="form-control modern-input" rows="4" placeholder="Cuéntanos más detalles sobre el incidente..."></textarea>
-                                    <span asp-validation-for="Description" class="text-danger small"></span>
-                                </div>
+                            <!-- Descripcion -->
+                            <div>
+                                <label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider mb-2">Descripcion detallada</label>
+                                <textarea asp-for="Description" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-outline-variant focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all font-body-md" rows="4" placeholder="Cuentanos mas detalles sobre el incidente..."></textarea>
+                                <span asp-validation-for="Description" class="text-error text-xs mt-1 block"></span>
+                            </div>
 
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Imagen -->
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold text-dark">Evidencia visual</label>
-                                    <div class="modern-upload-card" onclick="document.getElementById('imageUpload').click();">
+                                <div>
+                                    <label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider mb-2">Evidencia visual</label>
+                                    <div class="border-2 border-dashed border-outline-variant rounded-2xl p-6 text-center cursor-pointer hover:border-secondary hover:bg-secondary/5 transition-all" onclick="document.getElementById('imageUpload').click();">
                                         <input type="file" id="imageUpload" name="imageFile" hidden accept="image/*" onchange="previewImage(this)" />
                                         <div id="uploadPlaceholder">
-                                            <i class="bi bi-cloud-arrow-up display-5 text-success mb-3"></i>
-                                            <p class="mb-1 fw-bold">Adjuntar foto</p>
-                                            <p class="small text-muted m-0">Haz clic para subir</p>
+                                            <span class="material-symbols-outlined text-secondary text-4xl mb-2 block">cloud_upload</span>
+                                            <p class="font-bold text-on-surface mb-1">Adjuntar foto</p>
+                                            <p class="text-sm text-on-surface-variant">Haz clic para subir</p>
                                         </div>
-                                        <img id="imagePreview" src="#" alt="Preview" class="img-fluid rounded-3 d-none" style="max-height: 180px;" />
+                                        <img id="imagePreview" src="#" alt="Preview" class="rounded-xl max-h-[180px] mx-auto d-none" />
                                     </div>
                                 </div>
 
-                                <!-- Ubicación -->
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold text-dark">Ubicación</label>
-                                    <div class="modern-location-card">
-                                        <div class="map-stripes"></div>
-                                        <div class="p-3 bg-light border-top">
-                                            <div class="d-flex align-items-center gap-2 mb-1">
-                                                <i class="bi bi-geo-alt-fill text-danger"></i>
-                                                <span class="fw-bold small">Ubicación detectada</span>
+                                <!-- Ubicacion -->
+                                <div>
+                                    <label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider mb-2">Ubicacion</label>
+                                    <div class="rounded-2xl overflow-hidden border border-outline-variant">
+                                        <div class="h-20 bg-surface-container-low" style="background-image: linear-gradient(45deg, #e4e9e8 25%, transparent 25%, transparent 50%, #e4e9e8 50%, #e4e9e8 75%, transparent 75%, transparent); background-size: 20px 20px;"></div>
+                                        <div class="p-3 bg-surface-container-low">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="material-symbols-outlined text-error text-sm">location_on</span>
+                                                <span class="font-bold text-sm">Ubicacion detectada</span>
                                             </div>
-                                            <p class="text-muted smaller mb-0">Calle Principal 123, Madrid</p>
+                                            <p class="text-on-surface-variant text-xs m-0">Calle Principal 123, Madrid</p>
                                             <input type="hidden" asp-for="Location" value="Calle Principal 123, Madrid" />
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Urgencia -->
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold text-dark">Nivel de prioridad</label>
-                                    <div class="modern-urgency-group">
-                                        <input type="radio" asp-for="Urgency" value="Baja" id="urg-low" class="btn-check" />
-                                        <label class="btn btn-modern-urgency" for="urg-low">Baja</label>
-
-                                        <input type="radio" asp-for="Urgency" value="Media" id="urg-med" class="btn-check" checked />
-                                        <label class="btn btn-modern-urgency" for="urg-med">Media</label>
-
-                                        <input type="radio" asp-for="Urgency" value="Alta" id="urg-high" class="btn-check" />
-                                        <label class="btn btn-modern-urgency" for="urg-high">Alta</label>
-                                    </div>
-                                </div>
-
-                                <!-- Botón de Envío -->
-                                <div class="col-md-12 pt-3">
-                                    <button type="submit" class="btn btn-success btn-lg w-100 py-3 rounded-3 fw-bold shadow-sm hover-up">
-                                        Publicar Reporte <i class="bi bi-send-fill ms-2"></i>
-                                    </button>
+                            <!-- Urgencia -->
+                            <div>
+                                <label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider mb-2">Nivel de prioridad</label>
+                                <div class="flex gap-4">
+                                    <label class="flex-1 cursor-pointer">
+                                        <input type="radio" asp-for="Urgency" value="Baja" id="urg-low" class="peer hidden" />
+                                        <div class="peer-checked:border-secondary peer-checked:bg-secondary/10 peer-checked:text-secondary border-2 border-outline-variant rounded-xl p-3 text-center font-bold transition-all">
+                                            Baja
+                                        </div>
+                                    </label>
+                                    <label class="flex-1 cursor-pointer">
+                                        <input type="radio" asp-for="Urgency" value="Media" id="urg-med" class="peer hidden" checked />
+                                        <div class="peer-checked:border-secondary peer-checked:bg-secondary/10 peer-checked:text-secondary border-2 border-outline-variant rounded-xl p-3 text-center font-bold transition-all">
+                                            Media
+                                        </div>
+                                    </label>
+                                    <label class="flex-1 cursor-pointer">
+                                        <input type="radio" asp-for="Urgency" value="Alta" id="urg-high" class="peer hidden" />
+                                        <div class="peer-checked:border-error peer-checked:bg-error/10 peer-checked:text-error border-2 border-outline-variant rounded-xl p-3 text-center font-bold transition-all">
+                                            Alta
+                                        </div>
+                                    </label>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+
+                            <!-- Boton de Envio -->
+                            <button type="submit" class="w-full py-4 bg-secondary text-white rounded-xl font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-lg shadow-secondary/20">
+                                Publicar Reporte
+                                <span class="material-symbols-outlined text-lg">send</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -162,99 +164,3 @@
         }
     </script>
 }
-
-<style>
-    .glass-panel {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .z-index-2 {
-        z-index: 2;
-    }
-    
-    .modern-input {
-        border: 2px solid #f3f4f6;
-        border-radius: 12px;
-        padding-left: 1.25rem;
-        transition: all 0.2s;
-    }
-    
-    .modern-input:focus {
-        border-color: #166534;
-        box-shadow: 0 0 0 4px rgba(22, 101, 52, 0.1);
-    }
-    
-    .modern-upload-card {
-        border: 2px dashed #e5e7eb;
-        border-radius: 16px;
-        padding: 1.5rem;
-        text-align: center;
-        cursor: pointer;
-        background: #f9fafb;
-        transition: all 0.2s;
-        height: 140px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .modern-upload-card:hover {
-        border-color: #166534;
-        background: #f0fdf4;
-    }
-    
-    .modern-location-card {
-        border: 2px solid #f3f4f6;
-        border-radius: 16px;
-        overflow: hidden;
-        height: 140px;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .map-stripes {
-        flex: 1;
-        background: #eef2ff;
-        background-image: linear-gradient(45deg, #e0e7ff 25%, transparent 25%, transparent 50%, #e0e7ff 50%, #e0e7ff 75%, transparent 75%, transparent);
-        background-size: 20px 20px;
-    }
-    
-    .modern-urgency-group {
-        display: flex;
-        gap: 1rem;
-    }
-    
-    .btn-modern-urgency {
-        flex: 1;
-        border: 2px solid #f3f4f6;
-        border-radius: 12px;
-        padding: 0.75rem;
-        font-weight: 700;
-        background: white;
-        color: #6b7280;
-    }
-    
-    .btn-check:checked + .btn-modern-urgency {
-        border-color: #166534;
-        background: #f0fdf4;
-        color: #166534;
-    }
-    
-    .hover-up {
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .hover-up:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(22, 101, 52, 0.25) !important;
-    }
-    
-    .hover-opacity-100:hover {
-        opacity: 1 !important;
-    }
-    
-    .smaller { font-size: 0.75rem; }
-</style>

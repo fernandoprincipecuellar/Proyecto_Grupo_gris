@@ -6,128 +6,127 @@
     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
-<div class="forum-container">
-    <div class="forum-header">
+<div class="py-8 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <!-- Header & Action Section -->
+    <section class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
-            <h1 class="display-5 fw-bold text-success mb-1">Foro Comunitario</h1>
-            <p class="text-muted">Reportes y denuncias ambientales de la comunidad.</p>
+            <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">Foro Comunitario</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Colabora con tu comunidad reportando incidentes ambientales y encontrando soluciones sostenibles juntos.</p>
         </div>
-        <div class="d-none d-md-block">
-            <a asp-action="Create" class="btn btn-success rounded-pill px-4 py-2">
-                <i class="bi bi-plus-lg me-2"></i>Nuevo reporte
-            </a>
-        </div>
-    </div>
+        <a asp-action="Create" class="flex items-center justify-center gap-2 bg-secondary text-on-secondary px-8 py-4 rounded-full font-label-md text-label-md shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all w-full md:w-auto">
+            <span class="material-symbols-outlined">add</span>
+            Nuevo reporte
+        </a>
+    </section>
 
     @if (ViewBag.LastVisitedPost != null)
     {
         var lastPost = (Proyecto_Grupo_gris.Api.DTOs.Forum.ForumPostDto)ViewBag.LastVisitedPost;
-        <div class="last-visited-section mb-5">
-            <h4 class="fw-bold mb-3 text-success">
-                <i class="bi bi-clock-history me-2"></i>Último foro revisado
+        <div class="mb-8">
+            <h4 class="font-headline-md text-headline-md text-secondary mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined">history</span> Ultimo foro revisado
             </h4>
             <a asp-action="Details" asp-route-id="@lastPost.Id" class="text-decoration-none">
-                <div class="last-visited-card card border-0 shadow-sm rounded-4 overflow-hidden d-flex flex-row align-items-center">
-                    <div class="last-visited-img-wrapper" style="width: 150px; height: 100px; flex-shrink: 0;">
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-row items-center hover:shadow-lg transition-all">
+                    <div class="w-[150px] h-[100px] shrink-0 overflow-hidden">
                         @if (!string.IsNullOrEmpty(lastPost.ImageUrl))
                         {
-                            <img src="@lastPost.ImageUrl" alt="@lastPost.ReportType" class="w-100 h-100 object-fit-cover" />
+                            <img src="@lastPost.ImageUrl" alt="@lastPost.ReportType" class="w-full h-full object-cover" />
                         }
                         else
                         {
-                            <div class="d-flex align-items-center justify-content-center h-100 bg-secondary-subtle">
-                                <i class="bi bi-image text-muted"></i>
+                            <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
+                                <span class="material-symbols-outlined text-outline">image</span>
                             </div>
                         }
                     </div>
-                    <div class="p-3">
-                        <span class="badge bg-success-subtle text-success mb-1">@lastPost.ReportType</span>
-                        <h6 class="fw-bold text-dark mb-1">@(lastPost.Description?.Length > 60 ? lastPost.Description.Substring(0, 60) + "..." : lastPost.Description)</h6>
-                        <small class="text-muted">
-                            <i class="bi bi-geo-alt-fill text-success"></i> @lastPost.Location
-                        </small>
+                    <div class="p-4">
+                        <span class="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label-md text-label-md mb-1">@lastPost.ReportType</span>
+                        <h6 class="font-bold text-on-surface mb-1">@(lastPost.Description?.Length > 60 ? lastPost.Description.Substring(0, 60) + "..." : lastPost.Description)</h6>
+                        <span class="text-sm text-on-surface-variant flex items-center gap-1">
+                            <span class="material-symbols-outlined text-secondary text-sm">location_on</span> @lastPost.Location
+                        </span>
                     </div>
                 </div>
             </a>
         </div>
     }
 
-    <div class="forum-grid">
+    <!-- Reports Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
         @if (Model != null && Model.Any())
         {
             foreach (var post in Model)
             {
-                <div class="forum-card-wrapper position-relative">
+                <article class="glass-card rounded-[2rem] overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-secondary/5 transition-all duration-500">
                     <a asp-action="Details" asp-route-id="@post.Id" class="stretched-link"></a>
-                    <div class="forum-card">
-                        <div class="forum-card-img-wrapper">
-                            @if (!string.IsNullOrEmpty(post.ImageUrl))
-                            {
-                                <img src="@post.ImageUrl" alt="@post.ReportType" class="forum-card-img" />
-                            }
-                            else
-                            {
-                                <div class="d-flex align-items-center justify-content-center h-100 bg-secondary-subtle">
-                                    <i class="bi bi-image fs-1 text-muted"></i>
-                                </div>
-                            }
-                        </div>
-                        <div class="forum-card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <span class="badge @(post.Urgency == "Alta" ? "bg-danger" : post.Urgency == "Media" ? "bg-warning text-dark" : "bg-info text-dark")">
-                                    @post.Urgency
-                                </span>
-                                
-                                @if (post.UserId == currentUserId && !string.IsNullOrEmpty(currentUserId))
-                                {
-                                    <form asp-action="Delete" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este reporte?');" class="position-relative z-3">
-                                        <input type="hidden" name="id" value="@post.Id" />
-                                        <button type="submit" class="btn btn-link text-danger p-0 fs-5 lh-1" title="Eliminar reporte">
-                                            <i class="bi bi-trash3-fill"></i>
-                                        </button>
-                                    </form>
-                                }
+                    <div class="aspect-[16/10] overflow-hidden relative">
+                        @if (!string.IsNullOrEmpty(post.ImageUrl))
+                        {
+                            <img src="@post.ImageUrl" alt="@post.ReportType" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        }
+                        else
+                        {
+                            <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
+                                <span class="material-symbols-outlined text-outline text-4xl">image</span>
                             </div>
-                            
-                            <p class="forum-card-text">@post.Description</p>
-                            
-                            <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
-                                <div class="forum-card-location m-0">
-                                    <i class="bi bi-geo-alt-fill text-success"></i> @post.Location
-                                </div>
-                                <small class="text-muted">@post.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</small>
-                            </div>
-                        </div>
-                        <div class="forum-card-footer">
-                            <div class="forum-footer-item">
-                                <i class="bi bi-chat-dots"></i> @post.CommentsCount
-                            </div>
-                            <div class="forum-footer-item">
-                                <i class="bi bi-heart-fill"></i> @post.LikesCount
-                            </div>
+                        }
+                        <div class="absolute top-4 right-4 px-3 py-1 rounded-full font-label-md text-label-md text-white @(post.Urgency == "Alta" ? "bg-error" : post.Urgency == "Media" ? "bg-amber-500" : "bg-secondary")">
+                            @post.Urgency
                         </div>
                     </div>
-                </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="material-symbols-outlined text-secondary text-sm">calendar_today</span>
+                            <span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">@post.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">@post.Description</p>
+                        <div class="mt-auto pt-6 border-t border-outline-variant/30 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary">location_on</span>
+                                <span class="text-label-md font-label-md text-secondary">@post.Location</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1.5 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+                                    <span class="text-label-md font-label-md">@post.CommentsCount</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-secondary">
+                                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                    <span class="text-label-md font-label-md">@post.LikesCount</span>
+                                </div>
+                            </div>
+                        </div>
+                        @if (post.UserId == currentUserId && !string.IsNullOrEmpty(currentUserId))
+                        {
+                            <form asp-action="Delete" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este reporte?');" class="relative z-3 mt-3">
+                                <input type="hidden" name="id" value="@post.Id" />
+                                <button type="submit" class="text-error hover:text-on-error transition-colors flex items-center gap-1 text-sm font-label-md">
+                                    <span class="material-symbols-outlined text-lg">delete</span> Eliminar
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </article>
             }
         }
         else
         {
-            <div class="col-12 text-center py-5">
-                <div class="bg-white rounded-4 p-5 shadow-sm border border-dashed">
-                    <i class="bi bi-chat-square-text display-1 text-success opacity-25 mb-4"></i>
-                    <h3 class="fw-bold">No hay reportes aún</h3>
-                    <p class="text-muted">Sé el primero en compartir un incidente ambiental en tu comunidad.</p>
-                    <a asp-action="Create" class="btn btn-success rounded-pill px-4 mt-3">Crear primer reporte</a>
+            <div class="col-span-full text-center py-16">
+                <div class="glass-card rounded-3xl p-10 inline-block">
+                    <span class="material-symbols-outlined text-6xl text-secondary/25 mb-4 block">forum</span>
+                    <h3 class="font-headline-md text-headline-md font-bold mb-2">No hay reportes aun</h3>
+                    <p class="text-on-surface-variant mb-4">Sé el primero en compartir un incidente ambiental en tu comunidad.</p>
+                    <a asp-action="Create" class="inline-flex items-center gap-2 bg-secondary text-white px-6 py-3 rounded-xl font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors">
+                        <span class="material-symbols-outlined">add</span> Crear primer reporte
+                    </a>
                 </div>
             </div>
         }
     </div>
 </div>
 
-<a asp-action="Create" class="forum-floating-btn d-md-none">
-    <i class="bi bi-plus-lg"></i> Nuevo reporte
-</a>
-
-<a asp-action="Create" class="forum-floating-btn d-none d-md-flex">
-    <i class="bi bi-plus-lg"></i> Nuevo reporte
+<!-- Mobile FAB -->
+<a asp-action="Create" class="md:hidden fixed bottom-6 right-6 w-16 h-16 rounded-full bg-secondary text-on-secondary shadow-2xl flex items-center justify-center z-40 active:scale-90 transition-transform">
+    <span class="material-symbols-outlined text-[32px]">add</span>
 </a>

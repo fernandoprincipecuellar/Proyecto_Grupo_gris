@@ -1,137 +1,296 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" class="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Proyecto_Grupo_gris</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>@ViewData["Title"] - EcoRuta</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00201c",
+                        "secondary": "#006c50",
+                        "on-secondary-fixed-variant": "#00513c",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#2e4c48",
+                        "on-secondary-fixed": "#002116",
+                        "outline-variant": "#c1c8c6",
+                        "surface-container-low": "#f0f5f4",
+                        "on-secondary-container": "#006f52",
+                        "on-primary-container": "#779691",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#0f2e2a",
+                        "on-background": "#171d1c",
+                        "inverse-primary": "#adcdc7",
+                        "tertiary": "#021816",
+                        "inverse-on-surface": "#edf2f1",
+                        "tertiary-fixed": "#cee8e4",
+                        "surface-tint": "#46645f",
+                        "secondary-container": "#00fabe",
+                        "on-tertiary-fixed": "#081f1d",
+                        "on-surface-variant": "#414847",
+                        "primary-fixed": "#c8e9e3",
+                        "on-surface": "#171d1c",
+                        "surface-container": "#eaefee",
+                        "primary": "#001915",
+                        "surface-bright": "#f5faf9",
+                        "tertiary-container": "#162d2b",
+                        "primary-fixed-dim": "#adcdc7",
+                        "surface-variant": "#dee3e3",
+                        "surface-dim": "#d6dbda",
+                        "background": "#f5faf9",
+                        "surface": "#f5faf9",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#00e1ab",
+                        "tertiary-fixed-dim": "#b3ccc8",
+                        "secondary-fixed": "#36ffc4",
+                        "outline": "#717977",
+                        "on-tertiary-container": "#7d9592",
+                        "on-tertiary-fixed-variant": "#344b48",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2c3131",
+                        "surface-container-high": "#e4e9e8",
+                        "surface-container-highest": "#dee3e3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "4px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Proyecto_Grupo_gris.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark site-navbar">
-            <div class="container-fluid">
-                <a class="navbar-brand site-brand" asp-area="" asp-controller="Home" asp-action="Index">EcoRuta</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarMain">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 site-nav-links">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Forum" asp-action="Index">Foro</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Chat" asp-action="Index">Asistente</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Premios">Premios</a>
-                        </li>
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="Profile">Perfil</a>
-                            </li>
-                        }
-                    </ul>
-                    <div class="d-flex align-items-center gap-2">
-                        <a class="btn btn-outline-light btn-sm" href="#">Soporte</a>
-                        <partial name="_LoginPartial" />
+<body class="bg-background text-on-background font-body-md text-body-md antialiased">
+    <!-- TopNavBar -->
+    <nav class="nav-main fixed top-0 w-full z-50 transition-all duration-500">
+        <!-- Solid background -->
+        <div class="absolute inset-0 bg-primary-container"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
+
+        <div class="relative flex justify-between items-center px-margin-mobile md:px-margin-desktop h-[72px] max-w-container-max mx-auto">
+            <!-- Left: Logo + Nav Links -->
+            <div class="flex items-center gap-10">
+                <!-- Logo -->
+                <a asp-controller="Home" asp-action="Index" class="nav-logo flex items-center gap-2.5 group relative">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-secondary/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-secondary to-on-secondary-fixed-variant flex items-center justify-center shadow-lg shadow-secondary/20 group-hover:shadow-secondary/40 group-hover:scale-105 transition-all duration-400">
+                            <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+                        </div>
                     </div>
+                    <div class="flex flex-col">
+                        <span class="font-display-lg text-lg font-bold text-white tracking-tight leading-none">EcoRuta</span>
+                        <span class="text-[10px] font-label-md text-secondary-container/60 uppercase tracking-[0.2em] leading-none mt-0.5">Rutas Ecologicas</span>
+                    </div>
+                </a>
+
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center gap-1 relative">
+                    <a class="nav-link relative px-4 py-2 font-label-md text-[13px] text-inverse-primary/60 hover:text-white transition-all duration-300 rounded-lg group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "text-white !bg-white/10" : "hover:bg-white/5")" asp-controller="Home" asp-action="Index">
+                        <span class="relative z-10">Inicio</span>
+                    </a>
+                    <a class="nav-link relative px-4 py-2 font-label-md text-[13px] text-inverse-primary/60 hover:text-white transition-all duration-300 rounded-lg group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Forum" ? "text-white !bg-white/10" : "hover:bg-white/5")" asp-controller="Forum" asp-action="Index">
+                        <span class="relative z-10">Foro</span>
+                    </a>
+                    <a class="nav-link relative px-4 py-2 font-label-md text-[13px] text-inverse-primary/60 hover:text-white transition-all duration-300 rounded-lg group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Chat" ? "text-white !bg-white/10" : "hover:bg-white/5")" asp-controller="Chat" asp-action="Index">
+                        <span class="relative z-10">Asistente</span>
+                    </a>
+                    <a class="nav-link relative px-4 py-2 font-label-md text-[13px] text-inverse-primary/60 hover:text-white transition-all duration-300 rounded-lg group @(ViewContext.RouteData.Values["action"]?.ToString() == "Premios" ? "text-white !bg-white/10" : "hover:bg-white/5")" asp-controller="Home" asp-action="Premios">
+                        <span class="relative z-10">Premios</span>
+                    </a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a class="nav-link relative px-4 py-2 font-label-md text-[13px] text-inverse-primary/60 hover:text-white transition-all duration-300 rounded-lg group @(ViewContext.RouteData.Values["action"]?.ToString() == "Profile" ? "text-white !bg-white/10" : "hover:bg-white/5")" asp-controller="Home" asp-action="Profile">
+                            <span class="relative z-10">Perfil</span>
+                        </a>
+                    }
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted bg-white py-4">
-        <div class="container text-center">
-            <div class="mb-3">
-                <a class="text-decoration-none" asp-controller="Home" asp-action="Index">
-                    <span class="fs-5 fw-bold" style="color: #166534;"><i class="bi bi-recycle me-2"></i>EcoRuta</span>
-                </a>
+            <!-- Right: Auth -->
+            <div class="flex items-center gap-3">
+                <partial name="_LoginPartial" />
             </div>
-            <div class="mb-3 d-flex justify-content-center gap-4">
-                <a href="#" class="text-secondary text-decoration-none small hover-success">Sobre Nosotros</a>
-                <a href="#" class="text-secondary text-decoration-none small hover-success" data-bs-toggle="modal" data-bs-target="#contactoModal">Contacto</a>
-                <a asp-controller="Home" asp-action="Privacy" class="text-secondary text-decoration-none small hover-success">Privacidad</a>
+        </div>
+    </nav>
+
+    <main class="pt-20">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative w-full overflow-hidden mt-12">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-container to-primary"></div>
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 2px 2px, rgba(0,250,190,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        <div class="absolute top-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse-slow"></div>
+        <div class="absolute bottom-0 right-0 w-80 h-80 bg-secondary-fixed/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3 animate-pulse-slow" style="animation-delay: 1s;"></div>
+
+        <div class="relative z-10 px-margin-mobile md:px-margin-desktop pt-16 pb-8 max-w-container-max mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <a asp-controller="Home" asp-action="Index" class="flex items-center gap-2 mb-4 group">
+                        <span class="material-symbols-outlined text-secondary-fixed text-3xl group-hover:rotate-12 transition-transform duration-300">eco</span>
+                        <span class="font-display-lg text-headline-md text-white tracking-tight">EcoRuta</span>
+                    </a>
+                    <p class="text-inverse-primary/70 font-body-md text-body-md leading-relaxed mb-6 max-w-xs">Impulsando el reciclaje inteligente para ciudades mas sostenibles.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary/30 flex items-center justify-center text-inverse-primary/70 hover:text-secondary-fixed transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-secondary/20">
+                            <span class="material-symbols-outlined text-lg">logo_facebook</span>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary/30 flex items-center justify-center text-inverse-primary/70 hover:text-secondary-fixed transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-secondary/20">
+                            <span class="material-symbols-outlined text-lg">tag</span>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary/30 flex items-center justify-center text-inverse-primary/70 hover:text-secondary-fixed transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-secondary/20">
+                            <span class="material-symbols-outlined text-lg">smart_display</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Plataforma -->
+                <div>
+                    <h4 class="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest mb-5">Plataforma</h4>
+                    <ul class="space-y-3">
+                        <li><a asp-controller="Home" asp-action="Index" class="text-inverse-primary/60 hover:text-secondary-fixed font-body-md text-body-md transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-secondary/0 group-hover:bg-secondary fixed transition-all"></span>Inicio</a></li>
+                        <li><a asp-controller="Forum" asp-action="Index" class="text-inverse-primary/60 hover:text-secondary-fixed font-body-md text-body-md transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2">Foro Ciudadano</a></li>
+                        <li><a asp-controller="Chat" asp-action="Index" class="text-inverse-primary/60 hover:text-secondary-fixed font-body-md text-body-md transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2">Asistente IA</a></li>
+                        <li><a asp-controller="Home" asp-action="Premios" class="text-inverse-primary/60 hover:text-secondary-fixed font-body-md text-body-md transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2">Premios</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest mb-5">Legal</h4>
+                    <ul class="space-y-3">
+                        <li><a asp-controller="Home" asp-action="Privacy" class="text-inverse-primary/60 hover:text-secondary-fixed font-body-md text-body-md transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2">Privacidad</a></li>
+                        <li><a href="#" class="text-inverse-primary/60 hover:text-secondary-fixed font-body-md text-body-md transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2">Terminos Legales</a></li>
+                        <li><a href="#" class="text-inverse-primary/60 hover:text-secondary-fixed font-body-md text-body-md transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2">Politica de Cookies</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div>
+                    <h4 class="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest mb-5">Contacto</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-inverse-primary/60">
+                            <span class="material-symbols-outlined text-secondary/60 text-lg">mail</span>
+                            <span class="font-body-md text-body-md">contacto@ecoruta.com</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-inverse-primary/60">
+                            <span class="material-symbols-outlined text-secondary/60 text-lg">call</span>
+                            <span class="font-body-md text-body-md">+51 999 888 777</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-inverse-primary/60">
+                            <span class="material-symbols-outlined text-secondary/60 text-lg">location_on</span>
+                            <span class="font-body-md text-body-md">Lima, Peru</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <p class="mb-0 small">&copy; 2026 - Proyecto EcoRuta - Comprometidos con el planeta</p>
+
+            <!-- Bottom bar -->
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-inverse-primary/40 font-body-md text-sm">&copy; 2026 EcoRuta. Todos los derechos reservados.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-inverse-primary/40 hover:text-secondary-fixed font-body-md text-sm transition-colors duration-300">Ayuda</a>
+                    <a href="#" class="text-inverse-primary/40 hover:text-secondary-fixed font-body-md text-sm transition-colors duration-300">Soporte</a>
+                    <a href="#" class="text-inverse-primary/40 hover:text-secondary-fixed font-body-md text-sm transition-colors duration-300">Status</a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- Modal de Contacto -->
     <div class="modal fade" id="contactoModal" tabindex="-1" aria-labelledby="contactoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header text-white" style="background-color: #166534;">
-                    <h5 class="modal-title" id="contactoModalLabel"><i class="bi bi-person-lines-fill me-2"></i>Contacto - EcoRuta</h5>
+            <div class="modal-content border-0 rounded-3xl overflow-hidden shadow-2xl" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);">
+                <div class="modal-header text-white border-0" style="background: linear-gradient(135deg, #001915 0%, #006c50 100%);">
+                    <h5 class="modal-title font-headline-md" id="contactoModalLabel">
+                        <span class="material-symbols-outlined me-2 align-middle">contact_mail</span>Contacto - EcoRuta
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-start p-4">
-                    <p class="text-muted mb-4">¿Tienes alguna pregunta o sugerencia? ¡Nos encantaría escucharte! Contáctanos a través de los siguientes medios:</p>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-                                    <i class="bi bi-building fs-5" style="color: #166534;"></i>
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block" style="line-height: 1;">Empresa</small>
-                                    <strong>EcoRuta</strong>
-                                </div>
+                <div class="modal-body p-6">
+                    <p class="text-on-surface-variant mb-5 font-body-md">Tienes alguna pregunta o sugerencia? Nos encantaria escucharte!</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container-low transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/20 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary">business</span>
+                            </div>
+                            <div>
+                                <span class="text-xs font-label-md text-outline uppercase tracking-wider">Empresa</span>
+                                <p class="font-body-md text-on-surface m-0 font-medium">EcoRuta</p>
                             </div>
                         </li>
-                        <li class="mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-                                    <i class="bi bi-envelope fs-5" style="color: #166534;"></i>
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block" style="line-height: 1;">Email</small>
-                                    <strong>contacto@ecoruta.com</strong>
-                                </div>
+                        <li class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container-low transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/20 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary">mail</span>
+                            </div>
+                            <div>
+                                <span class="text-xs font-label-md text-outline uppercase tracking-wider">Email</span>
+                                <p class="font-body-md text-on-surface m-0 font-medium">contacto@ecoruta.com</p>
                             </div>
                         </li>
-                        <li class="mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-                                    <i class="bi bi-telephone fs-5" style="color: #166534;"></i>
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block" style="line-height: 1;">Teléfono</small>
-                                    <strong>+51 999 888 777</strong>
-                                </div>
+                        <li class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container-low transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/20 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary">call</span>
+                            </div>
+                            <div>
+                                <span class="text-xs font-label-md text-outline uppercase tracking-wider">Telefono</span>
+                                <p class="font-body-md text-on-surface m-0 font-medium">+51 999 888 777</p>
                             </div>
                         </li>
-                        <li>
-                            <div class="d-flex align-items-center">
-                                <div class="bg-light rounded-circle p-2 me-3 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-                                    <i class="bi bi-geo-alt fs-5" style="color: #166534;"></i>
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block" style="line-height: 1;">Dirección</small>
-                                    <strong>Lima, Perú</strong>
-                                </div>
+                        <li class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container-low transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/20 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-secondary">location_on</span>
+                            </div>
+                            <div>
+                                <span class="text-xs font-label-md text-outline uppercase tracking-wider">Direccion</span>
+                                <p class="font-body-md text-on-surface m-0 font-medium">Lima, Peru</p>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="modal-footer border-0 bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <div class="modal-footer border-0 p-4" style="background: rgba(245,250,249,0.8);">
+                    <button type="button" class="px-8 py-2.5 rounded-xl bg-secondary text-white font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all duration-300 hover:shadow-lg hover:shadow-secondary/30 hover:-translate-y-0.5" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

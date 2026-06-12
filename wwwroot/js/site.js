@@ -1,4 +1,13 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿// Navbar scroll effect
+document.addEventListener('DOMContentLoaded', function () {
+    const nav = document.querySelector('.nav-main');
+    if (!nav) return;
 
-// Write your JavaScript code.
+    window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    }, { passive: true });
+});
