@@ -10,6 +10,7 @@ namespace Proyecto_Grupo_gris.Models
         public string City { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public int Puntos { get; set; } = 1000;
 
         public virtual ICollection<ForumPost> ForumPosts { get; set; } = new List<ForumPost>();
         public virtual ICollection<EcoRoute> EcoRoutes { get; set; } = new List<EcoRoute>();

@@ -7,7 +7,7 @@ namespace Proyecto_Grupo_gris.Api.Services;
 
 public class CloudinaryService : ICloudinaryService
 {
-    private readonly Cloudinary _cloudinary;
+    private readonly Cloudinary? _cloudinary;
 
     public CloudinaryService(IConfiguration configuration)
     {
@@ -17,7 +17,8 @@ public class CloudinaryService : ICloudinaryService
 
         if (string.IsNullOrWhiteSpace(cloudName) || string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(apiSecret))
         {
-            throw new InvalidOperationException("Cloudinary no está configurado correctamente en appsettings.json.");
+            _cloudinary = null;
+            return;
         }
 
         _cloudinary = new Cloudinary(new Account(cloudName, apiKey, apiSecret))
@@ -28,7 +29,7 @@ public class CloudinaryService : ICloudinaryService
 
     public async Task<string?> UploadImageAsync(IFormFile file, string? folder = null)
     {
-        if (file == null || file.Length == 0)
+        if (_cloudinary == null || file == null || file.Length == 0)
             return null;
 
         await using var stream = file.OpenReadStream();

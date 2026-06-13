@@ -19,6 +19,16 @@
         </a>
     </section>
 
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <form asp-action="ClearAll" method="post" onsubmit="return confirm('Esto borrara TODOS los reportes. Estas seguro?');" class="mb-6">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="text-error text-sm underline hover:no-underline">
+                Borrar todos los reportes
+            </button>
+        </form>
+    }
+
     @if (ViewBag.LastVisitedPost != null)
     {
         var lastPost = (Proyecto_Grupo_gris.Api.DTOs.Forum.ForumPostDto)ViewBag.LastVisitedPost;
@@ -59,54 +69,55 @@
             foreach (var post in Model)
             {
                 <article class="glass-card rounded-[2rem] overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-secondary/5 transition-all duration-500">
-                    <a asp-action="Details" asp-route-id="@post.Id" class="stretched-link"></a>
-                    <div class="aspect-[16/10] overflow-hidden relative">
-                        @if (!string.IsNullOrEmpty(post.ImageUrl))
-                        {
-                            <img src="@post.ImageUrl" alt="@post.ReportType" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                        }
-                        else
-                        {
-                            <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
-                                <span class="material-symbols-outlined text-outline text-4xl">image</span>
-                            </div>
-                        }
-                        <div class="absolute top-4 right-4 px-3 py-1 rounded-full font-label-md text-label-md text-white @(post.Urgency == "Alta" ? "bg-error" : post.Urgency == "Media" ? "bg-amber-500" : "bg-secondary")">
-                            @post.Urgency
-                        </div>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="material-symbols-outlined text-secondary text-sm">calendar_today</span>
-                            <span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">@post.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</span>
-                        </div>
-                        <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">@post.Description</p>
-                        <div class="mt-auto pt-6 border-t border-outline-variant/30 flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-secondary">location_on</span>
-                                <span class="text-label-md font-label-md text-secondary">@post.Location</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="flex items-center gap-1.5 text-on-surface-variant">
-                                    <span class="material-symbols-outlined text-[20px]">chat_bubble</span>
-                                    <span class="text-label-md font-label-md">@post.CommentsCount</span>
+                    <a asp-action="Details" asp-route-id="@post.Id" class="flex flex-col flex-1 text-decoration-none text-inherit">
+                        <div class="aspect-[16/10] overflow-hidden relative">
+                            @if (!string.IsNullOrEmpty(post.ImageUrl))
+                            {
+                                <img src="@post.ImageUrl" alt="@post.ReportType" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            }
+                            else
+                            {
+                                <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
+                                    <span class="material-symbols-outlined text-outline text-4xl">image</span>
                                 </div>
-                                <div class="flex items-center gap-1.5 text-secondary">
-                                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                                    <span class="text-label-md font-label-md">@post.LikesCount</span>
+                            }
+                            <div class="absolute top-4 right-4 px-3 py-1 rounded-full font-label-md text-label-md text-white @(post.Urgency == "Alta" ? "bg-error" : post.Urgency == "Media" ? "bg-amber-500" : "bg-secondary")">
+                                @post.Urgency
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-1">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="material-symbols-outlined text-secondary text-sm">calendar_today</span>
+                                <span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">@post.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">@post.Description</p>
+                            <div class="mt-auto pt-6 border-t border-outline-variant/30 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-secondary">location_on</span>
+                                    <span class="text-label-md font-label-md text-secondary">@post.Location</span>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex items-center gap-1.5 text-on-surface-variant">
+                                        <span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+                                        <span class="text-label-md font-label-md">@post.CommentsCount</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 text-secondary">
+                                        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                        <span class="text-label-md font-label-md">@post.LikesCount</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        @if (post.UserId == currentUserId && !string.IsNullOrEmpty(currentUserId))
-                        {
-                            <form asp-action="Delete" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este reporte?');" class="relative z-3 mt-3">
-                                <input type="hidden" name="id" value="@post.Id" />
-                                <button type="submit" class="text-error hover:text-on-error transition-colors flex items-center gap-1 text-sm font-label-md">
-                                    <span class="material-symbols-outlined text-lg">delete</span> Eliminar
-                                </button>
-                            </form>
-                        }
-                    </div>
+                    </a>
+                    @if (post.UserId == currentUserId && !string.IsNullOrEmpty(currentUserId))
+                    {
+                        <form asp-action="Delete" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este reporte?');" class="px-6 pb-4">
+                            <input type="hidden" name="id" value="@post.Id" />
+                            <button type="submit" class="text-error hover:text-on-error transition-colors flex items-center gap-1 text-sm font-label-md">
+                                <span class="material-symbols-outlined text-lg">delete</span> Eliminar
+                            </button>
+                        </form>
+                    }
                 </article>
             }
         }

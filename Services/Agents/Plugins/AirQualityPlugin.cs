@@ -23,9 +23,12 @@ namespace Proyecto_Grupo_gris.Services.Agents.Plugins
                 if (string.IsNullOrWhiteSpace(apiKey))
                     return "Error: OpenWeather API key no configurada.";
 
-                var geoUrl = $"http://api.openweathermap.org/geo/1.0/direct?q={Uri.EscapeDataString(city)}&limit=1&appid={apiKey}";
+                var geoUrl = $"https://api.openweathermap.org/geo/1.0/direct?q={Uri.EscapeDataString(city)}&limit=1&appid={apiKey}";
                 using var geoResponse = await _httpClient.GetAsync(geoUrl);
                 var geoPayload = await geoResponse.Content.ReadFromJsonAsync<JsonElement>();
+
+                if (geoPayload.ValueKind != JsonValueKind.Array)
+                    return $"Error: La API key de OpenWeather no es valida o no esta configurada.";
 
                 if (geoPayload.GetArrayLength() == 0)
                     return $"No se encontraron coordenadas para {city}";
@@ -67,6 +70,10 @@ namespace Proyecto_Grupo_gris.Services.Agents.Plugins
                 return $"Error al consultar calidad del aire: {response.StatusCode}";
 
             var payload = await response.Content.ReadFromJsonAsync<JsonElement>();
+
+            if (payload.ValueKind != JsonValueKind.Object || !payload.TryGetProperty("list", out _))
+                return "Error: La API key de OpenWeather no es valida o la respuesta no tiene el formato esperado.";
+
             var list = payload.GetProperty("list")[0];
             var main = list.GetProperty("main");
             var components = list.GetProperty("components");

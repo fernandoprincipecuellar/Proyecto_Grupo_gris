@@ -23,6 +23,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<ForumComment> ForumComments { get; set; }
     public DbSet<ForumLike> ForumLikes { get; set; }
+    public DbSet<Prize> Prizes { get; set; }
+    public DbSet<PrizeRedemption> PrizeRedemptions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -128,6 +130,20 @@ public class ApplicationDbContext : DbContext
             b.HasOne(l => l.Post).WithMany(p => p.Likes).HasForeignKey(l => l.PostId).IsRequired();
             b.HasOne(l => l.User).WithMany().HasForeignKey(l => l.UserId);
             b.ToTable("ForumLikes");
+        });
+
+        modelBuilder.Entity<Prize>(b =>
+        {
+            b.HasKey(p => p.Id);
+            b.ToTable("Prizes");
+        });
+
+        modelBuilder.Entity<PrizeRedemption>(b =>
+        {
+            b.HasKey(r => r.Id);
+            b.HasOne(r => r.User).WithMany().HasForeignKey(r => r.UserId).IsRequired();
+            b.HasOne(r => r.Prize).WithMany().HasForeignKey(r => r.PrizeId).IsRequired();
+            b.ToTable("PrizeRedemptions");
         });
     }
 }

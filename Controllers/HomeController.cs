@@ -26,14 +26,21 @@ public class HomeController : Controller
         _cache = cache;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        int puntos = 2450;
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null) puntos = user.Puntos;
+        }
+
         var model = new DashboardViewModel
         {
             ReciclajeTotalKg = 124,
             Crecimiento = "+15%",
             Entregas = 48,
-            Puntos = 2450,
+            Puntos = puntos,
             RecolectorNombre = "Camión Recolector",
             RecolectorDireccion = "Calle Principal 123",
             Distancia = "A 500 Metros de tu hogar",
@@ -50,9 +57,8 @@ public class HomeController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
         
-        // Puntos simulados para la demostración
         ViewBag.UserName = user?.Nombre ?? user?.Email ?? "Usuario";
-        ViewBag.Puntos = 2450; 
+        ViewBag.Puntos = user?.Puntos ?? 0;
         
         return View();
     }
@@ -137,12 +143,19 @@ public class HomeController : Controller
 
     [Route("api/stats")]
     [HttpGet]
-    public IActionResult GetStats()
+    public async Task<IActionResult> GetStats()
     {
+        int puntos = 2488;
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null) puntos = user.Puntos;
+        }
+
         return Json(new {
             totalKg = Math.Round(_totalKg, 1),
             entregas = _entregas,
-            puntos = 2488,
+            puntos = puntos,
             co2 = 89 + (int)(_totalKg - 124),
             arboles = 12,
             agua = 340 + (int)(_totalKg - 124) * 5

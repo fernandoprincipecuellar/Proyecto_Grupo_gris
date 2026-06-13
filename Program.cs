@@ -281,6 +281,25 @@ using (var scope = app.Services.CreateScope())
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "Error seeding identity data.");
     }
+
+    try
+    {
+        if (!db.Prizes.Any())
+        {
+            db.Prizes.AddRange(
+                new Prize { Id = 1, Name = "20% Dto. en EcoMercado", Description = "Valido en toda la seccion de productos organicos y a granel.", PointCost = 500, IconName = "shopping_cart", Category = "Supermercado", BadgeText = "Super Ahorro", GradientFrom = "#006c50", GradientTo = "#001915" },
+                new Prize { Id = 2, Name = "2x1 en Cafe Especialidad", Description = "Disfruta de un cafe premium con un amigo en GreenBeans.", PointCost = 300, IconName = "local_cafe", Category = "Alimentos", BadgeText = "Coffee Lover", GradientFrom = "#8b5a2b", GradientTo = "#3d2510" },
+                new Prize { Id = 3, Name = "Saldo Transporte Publico", Description = "Anade 10E de saldo a tu tarjeta de transporte metropolitana.", PointCost = 1000, IconName = "directions_transit", Category = "Transporte", BadgeText = "Transporte", GradientFrom = "#004d7a", GradientTo = "#002233" },
+                new Prize { Id = 4, Name = "Entrada Parques Nacionales", Description = "Pase de un dia para descubrir la biodiversidad de nuestras reservas.", PointCost = 1500, IconName = "forest", Category = "Naturaleza", BadgeText = "Naturaleza", GradientFrom = "#1a5c2e", GradientTo = "#062010" }
+            );
+            db.SaveChanges();
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Error seeding prizes.");
+    }
 }
 
 // 🔥 PIPELINE

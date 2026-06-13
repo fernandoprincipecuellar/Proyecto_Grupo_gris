@@ -30,10 +30,10 @@
                     <span class="text-secondary-container/60 font-label-md text-[11px] uppercase tracking-[0.2em] block mb-3">Tus EcoPuntos</span>
                     <div class="flex items-center justify-center gap-3 mb-4">
                         <span class="material-symbols-outlined text-secondary-container text-4xl animate-float" style="font-variation-settings: 'FILL' 1;">eco</span>
-                        <h2 class="font-display-lg text-5xl text-white font-bold animate-fade-in-up" style="animation-delay: 0.2s;">@ViewBag.Puntos</h2>
+                        <h2 id="puntos-display" class="font-display-lg text-5xl text-white font-bold animate-fade-in-up" style="animation-delay: 0.2s;">@ViewBag.Puntos</h2>
                     </div>
                     <div class="w-full bg-white/10 h-2.5 rounded-full mb-4 overflow-hidden">
-                        <div class="h-full rounded-full animate-glow-pulse" style="width: 65%; background: linear-gradient(90deg, #00fabe, #36ffc4);"></div>
+                        <div id="puntos-bar" class="h-full rounded-full animate-glow-pulse" style="width: 65%; background: linear-gradient(90deg, #00fabe, #36ffc4);"></div>
                     </div>
                     <p class="text-inverse-primary/50 font-body-md text-sm">Sigue reciclando para subir de nivel!</p>
                 </div>
@@ -48,7 +48,6 @@
                     </h3>
                 </div>
                 <div class="space-y-3">
-                    <!-- Top 1 -->
                     <div class="flex items-center gap-4 p-3.5 rounded-2xl transition-all duration-300" style="background: linear-gradient(135deg, rgba(0,250,190,0.08), rgba(0,108,80,0.05)); border: 1px solid rgba(0,250,190,0.15);">
                         <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
                             <span class="text-white font-bold text-xs">1</span>
@@ -62,7 +61,6 @@
                         </div>
                         <span class="material-symbols-outlined text-amber-500 text-xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
                     </div>
-                    <!-- Top 2 -->
                     <div class="flex items-center gap-4 p-3.5 rounded-2xl hover:bg-secondary/5 transition-all duration-300 border border-transparent hover:border-outline-variant/30">
                         <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center">
                             <span class="text-white font-bold text-xs">2</span>
@@ -75,7 +73,6 @@
                             <p class="text-[11px] text-on-surface-variant">4,850 pts</p>
                         </div>
                     </div>
-                    <!-- Top 3 -->
                     <div class="flex items-center gap-4 p-3.5 rounded-2xl hover:bg-secondary/5 transition-all duration-300 border border-transparent hover:border-outline-variant/30">
                         <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center">
                             <span class="text-white font-bold text-xs">3</span>
@@ -88,7 +85,6 @@
                             <p class="text-[11px] text-on-surface-variant">4,100 pts</p>
                         </div>
                     </div>
-                    <!-- Current User -->
                     <div class="flex items-center gap-4 p-3.5 rounded-2xl border border-secondary/20" style="background: linear-gradient(135deg, rgba(0,108,80,0.06), rgba(0,250,190,0.04));">
                         <div class="w-8 h-8 rounded-xl bg-secondary flex items-center justify-center shadow-lg shadow-secondary/20">
                             <span class="text-white font-bold text-xs">12</span>
@@ -98,7 +94,7 @@
                         </div>
                         <div class="flex-1">
                             <p class="font-label-md text-label-md text-secondary font-bold">@ViewBag.UserName (Tu)</p>
-                            <p class="text-[11px] text-secondary">@ViewBag.Puntos pts</p>
+                            <p id="user-rank-points" class="text-[11px] text-secondary">@ViewBag.Puntos pts</p>
                         </div>
                     </div>
                 </div>
@@ -112,123 +108,132 @@
                     <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">Catalogo de Recompensas</h1>
                     <p class="font-body-md text-body-md text-on-surface-variant">Beneficios exclusivos para eco-ciudadanos activos.</p>
                 </div>
-                <div class="flex gap-2">
-                    <span class="px-4 py-2 rounded-xl bg-secondary/10 text-secondary font-label-md text-[13px] font-bold">Todos</span>
-                    <span class="px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md text-[13px] transition-colors cursor-pointer">Supermercado</span>
-                    <span class="px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md text-[13px] transition-colors cursor-pointer">Transporte</span>
-                </div>
             </div>
 
-            <!-- Reward Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Coupon 1 -->
-                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up">
-                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #006c50, #00513c, #001915);">
-                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(0,250,190,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
-                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">shopping_cart</span>
-                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider" style="background: linear-gradient(135deg, #00fabe, #006c50);">Super Ahorro</span>
-                        <div class="absolute bottom-4 right-4 text-right">
-                            <span class="text-2xl font-bold text-white">20%</span>
-                            <span class="block text-white/60 text-[10px]">DESCUENTO</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-headline-md text-headline-md text-primary mb-2">20% Dto. en EcoMercado</h4>
-                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Valido en toda la seccion de productos organicos y a granel.</p>
-                            <div class="flex items-center gap-2 mb-5">
-                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
-                                <span class="text-secondary font-bold font-label-md">500 EcoPuntos</span>
-                            </div>
-                        </div>
-                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
-                            <span class="material-symbols-outlined text-base">shopping_cart</span>
-                            Canjear Cupon
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Coupon 2 -->
-                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up" style="animation-delay: 0.1s;">
-                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #8b5a2b, #5d3a1a, #3d2510);">
-                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,200,100,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
-                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">local_cafe</span>
-                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">Coffee Lover</span>
-                        <div class="absolute bottom-4 right-4 text-right">
-                            <span class="text-2xl font-bold text-white">2x1</span>
-                            <span class="block text-white/60 text-[10px]">PROMO</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-headline-md text-headline-md text-primary mb-2">2x1 en Cafe Especialidad</h4>
-                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Disfruta de un cafe premium con un amigo en GreenBeans.</p>
-                            <div class="flex items-center gap-2 mb-5">
-                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
-                                <span class="text-secondary font-bold font-label-md">300 EcoPuntos</span>
-                            </div>
-                        </div>
-                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
-                            <span class="material-symbols-outlined text-base">local_cafe</span>
-                            Canjear Cupon
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Coupon 3 -->
-                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up" style="animation-delay: 0.2s;">
-                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #004d7a, #003d66, #002233);">
-                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(100,200,255,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
-                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">directions_transit</span>
-                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-blue-500/80 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">Transporte</span>
-                        <div class="absolute bottom-4 right-4 text-right">
-                            <span class="text-2xl font-bold text-white">10E</span>
-                            <span class="block text-white/60 text-[10px]">SALDO</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-headline-md text-headline-md text-primary mb-2">Saldo Transporte Publico</h4>
-                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Anade 10E de saldo a tu tarjeta de transporte metropolitana.</p>
-                            <div class="flex items-center gap-2 mb-5">
-                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
-                                <span class="text-secondary font-bold font-label-md">1000 EcoPuntos</span>
-                            </div>
-                        </div>
-                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
-                            <span class="material-symbols-outlined text-base">directions_transit</span>
-                            Canjear Cupon
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Coupon 4 -->
-                <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up" style="animation-delay: 0.3s;">
-                    <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, #1a5c2e, #0d3d1c, #062010);">
-                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(100,255,150,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
-                        <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">forest</span>
-                        <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-emerald-600/80 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">Naturaleza</span>
-                        <div class="absolute bottom-4 right-4 text-right">
-                            <span class="text-2xl font-bold text-white">1 dia</span>
-                            <span class="block text-white/60 text-[10px]">ACCESO</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-headline-md text-headline-md text-primary mb-2">Entrada Parques Nacionales</h4>
-                            <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">Pase de un dia para descubrir la biodiversidad de nuestras reservas.</p>
-                            <div class="flex items-center gap-2 mb-5">
-                                <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
-                                <span class="text-secondary font-bold font-label-md">1500 EcoPuntos</span>
-                            </div>
-                        </div>
-                        <button class="w-full py-3.5 bg-secondary text-white rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5 active:scale-[0.98]">
-                            <span class="material-symbols-outlined text-base">forest</span>
-                            Canjear Cupon
-                        </button>
-                    </div>
+            <div id="prizes-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="col-span-full text-center py-10">
+                    <div class="loading-spinner mx-auto mb-3"></div>
+                    <p class="text-on-surface-variant text-sm">Cargando recompensas...</p>
                 </div>
             </div>
         </section>
     </div>
 </div>
+
+<!-- Toast notification -->
+<div id="toast-container" class="fixed bottom-6 right-6 z-50 hidden">
+    <div id="toast" class="px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-full opacity-0">
+        <span id="toast-icon" class="material-symbols-outlined text-xl"></span>
+        <span id="toast-message" class="font-label-md text-sm"></span>
+    </div>
+</div>
+
+<script>
+(function() {
+    let userPuntos = @ViewBag.Puntos;
+
+    async function loadPrizes() {
+        try {
+            const resp = await fetch('/api/v1/prizes');
+            if (!resp.ok) throw new Error('Error al cargar premios');
+            const prizes = await resp.json();
+            renderPrizes(prizes);
+        } catch (e) {
+            document.getElementById('prizes-grid').innerHTML =
+                '<div class="col-span-full text-center py-10"><p class="text-error">Error al cargar recompensas.</p></div>';
+        }
+    }
+
+    function renderPrizes(prizes) {
+        const grid = document.getElementById('prizes-grid');
+        if (!prizes.length) {
+            grid.innerHTML = '<div class="col-span-full text-center py-10"><p class="text-on-surface-variant">No hay recompensas disponibles.</p></div>';
+            return;
+        }
+
+        grid.innerHTML = prizes.map((p, i) => {
+            const canAfford = userPuntos >= p.pointCost;
+            const delay = (i * 0.1).toFixed(1);
+            return `
+            <div class="reward-card glass-card-elevated rounded-3xl overflow-hidden flex flex-col animate-fade-in-up" style="animation-delay: ${delay}s;">
+                <div class="h-44 relative overflow-hidden" style="background: linear-gradient(135deg, ${p.gradientFrom}, ${p.gradientTo});">
+                    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(0,250,190,0.3) 1px, transparent 0); background-size: 16px 16px;"></div>
+                    <span class="material-symbols-outlined text-white/10 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">${p.iconName}</span>
+                    <span class="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm" style="background: linear-gradient(135deg, #00fabe, #006c50);">${p.badgeText}</span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-headline-md text-headline-md text-primary mb-2">${p.name}</h4>
+                        <p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed">${p.description}</p>
+                        <div class="flex items-center gap-2 mb-5">
+                            <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
+                            <span class="text-secondary font-bold font-label-md">${p.pointCost.toLocaleString()} EcoPuntos</span>
+                        </div>
+                    </div>
+                    <button onclick="redeemPrize(${p.id}, ${p.pointCost}, '${p.name.replace(/'/g, "\\'")}')" 
+                        ${!canAfford ? 'disabled title="No tienes suficientes puntos"' : ''}
+                        class="w-full py-3.5 rounded-2xl font-label-md text-label-md transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] ${canAfford ? 'bg-secondary text-white hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}">
+                        <span class="material-symbols-outlined text-base">${canAfford ? 'shopping_cart' : 'lock'}</span>
+                        ${canAfford ? 'Canjear Cupon' : 'Puntos insuficientes'}
+                    </button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    window.redeemPrize = async function(prizeId, cost, name) {
+        if (!confirm(`Canjear "${name}" por ${cost} EcoPuntos?`)) return;
+
+        try {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['RequestVerificationToken'] = token;
+
+            const resp = await fetch(`/api/v1/prizes/${prizeId}/redeem`, {
+                method: 'POST',
+                headers: headers
+            });
+
+            const data = await resp.json();
+
+            if (!resp.ok) {
+                showToast(data.error || 'Error al canjear', 'error');
+                return;
+            }
+
+            userPuntos = data.puntosRestantes;
+            document.getElementById('puntos-display').textContent = userPuntos.toLocaleString();
+            document.getElementById('user-rank-points').textContent = userPuntos.toLocaleString() + ' pts';
+
+            showToast(`Canjeado: ${name}. Te quedan ${userPuntos.toLocaleString()} EcoPuntos`, 'success');
+            loadPrizes();
+        } catch (e) {
+            showToast('Error de conexion', 'error');
+        }
+    };
+
+    function showToast(message, type) {
+        const container = document.getElementById('toast-container');
+        const toast = document.getElementById('toast');
+        const icon = document.getElementById('toast-icon');
+        const msg = document.getElementById('toast-message');
+
+        toast.className = type === 'success'
+            ? 'px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 bg-secondary text-white'
+            : 'px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 bg-error text-white';
+
+        icon.textContent = type === 'success' ? 'check_circle' : 'error';
+        msg.textContent = message;
+
+        container.classList.remove('hidden');
+        toast.classList.remove('translate-y-full', 'opacity-0');
+
+        setTimeout(() => {
+            toast.classList.add('translate-y-full', 'opacity-0');
+            setTimeout(() => container.classList.add('hidden'), 300);
+        }, 3000);
+    }
+
+    loadPrizes();
+})();
+</script>

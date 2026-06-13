@@ -77,10 +77,17 @@ namespace Proyecto_Grupo_gris.Controllers
             }
 
             // Obtener el último foro revisado de la sesión
-            var lastVisitedJson = HttpContext.Session.GetString("LastVisitedPost");
-            if (!string.IsNullOrEmpty(lastVisitedJson))
+            try
             {
-                ViewBag.LastVisitedPost = JsonSerializer.Deserialize<ForumPostDto>(lastVisitedJson);
+                var lastVisitedJson = HttpContext.Session.GetString("LastVisitedPost");
+                if (!string.IsNullOrEmpty(lastVisitedJson))
+                {
+                    ViewBag.LastVisitedPost = JsonSerializer.Deserialize<ForumPostDto>(lastVisitedJson);
+                }
+            }
+            catch
+            {
+                // Session no disponible, ignorar
             }
 
             return View(posts);
@@ -286,6 +293,28 @@ namespace Proyecto_Grupo_gris.Controllers
                 await InvalidateForumCacheAsync();
             }
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ClearAll()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var comments = await context.ForumComments.ToListAsync();
+            context.ForumComments.RemoveRange(comments);
+
+            var likes = await context.ForumLikes.ToListAsync();
+            context.ForumLikes.RemoveRange(likes);
+
+            var posts = await context.ForumPosts.ToListAsync();
+            context.ForumPosts.RemoveRange(posts);
+
+            await context.SaveChangesAsync();
+            await InvalidateForumCacheAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

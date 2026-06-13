@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Detalles del Reporte";
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
 }
 
 <div class="py-8 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
@@ -124,25 +125,35 @@
                             <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
                             <span class="font-bold">@Model.LikesCount Likes</span>
                         </div>
-                        <form asp-action="Like" method="post">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <button type="submit" class="px-4 py-2 rounded-xl border border-error/20 text-error font-label-md text-label-md hover:bg-error/5 transition-colors flex items-center gap-1">
-                                <span class="material-symbols-outlined text-lg">thumb_up</span> Me gusta
-                            </button>
-                        </form>
+                        @if (isAuthenticated)
+                        {
+                            <form asp-action="Like" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="px-4 py-2 rounded-xl border border-error/20 text-error font-label-md text-label-md hover:bg-error/5 transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-lg">thumb_up</span> Me gusta
+                                </button>
+                            </form>
+                        }
                     </div>
                     <div class="p-4 rounded-xl bg-surface-container-low">
                         <div class="flex items-center gap-2 mb-3">
                             <span class="material-symbols-outlined text-secondary">chat</span>
                             <span class="font-bold">@Model.CommentsCount Comentarios</span>
                         </div>
-                        <form asp-action="AddComment" method="post" class="flex gap-2">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <input type="text" name="commentText" class="flex-1 px-4 py-2 rounded-xl bg-white border border-outline-variant focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all text-sm" placeholder="Escribe un comentario..." required />
-                            <button type="submit" class="px-4 py-2 rounded-xl bg-secondary text-white font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors">
-                                <span class="material-symbols-outlined text-lg">send</span>
-                            </button>
-                        </form>
+                        @if (isAuthenticated)
+                        {
+                            <form asp-action="AddComment" method="post" class="flex gap-2">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="text" name="commentText" class="flex-1 px-4 py-2 rounded-xl bg-white border border-outline-variant focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all text-sm" placeholder="Escribe un comentario..." required />
+                                <button type="submit" class="px-4 py-2 rounded-xl bg-secondary text-white font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors">
+                                    <span class="material-symbols-outlined text-lg">send</span>
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p class="text-on-surface-variant text-sm"><a asp-controller="Account" asp-action="Login" class="text-secondary font-medium hover:underline">Inicia sesion</a> para comentar.</p>
+                        }
                     </div>
                 </div>
             </div>
