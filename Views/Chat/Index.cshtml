@@ -9,9 +9,7 @@
 </style>
 
 <div class="relative pt-4 h-[calc(100vh-80px)] w-full flex flex-col items-center overflow-hidden">
-    <!-- Chat Interface Canvas -->
     <section class="relative z-10 w-full max-w-4xl h-full flex flex-col px-margin-mobile md:px-margin-desktop py-4">
-        <!-- AI Identity Header -->
         <div class="glass-card rounded-xl p-4 mb-4 flex items-center justify-between shadow-sm shrink-0">
             <div class="flex items-center gap-4">
                 <div class="relative">
@@ -21,32 +19,32 @@
                     <div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary-fixed-dim rounded-full border-2 border-white animate-pulse"></div>
                 </div>
                 <div>
-                    <h1 class="font-headline-md text-headline-md text-secondary">EcoAsistente</h1>
+                    <h1 class="font-headline-md text-headline-md text-secondary">EcoRoute AI</h1>
                     <p class="font-label-md text-label-md text-secondary-fixed-dim flex items-center gap-1">
                         <span class="w-1.5 h-1.5 bg-secondary-fixed-dim rounded-full"></span>
                         Activo
                     </p>
                 </div>
             </div>
+            <button id="btnClearHistory" class="w-10 h-10 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center hover:scale-105 transition-transform" title="Limpiar historial">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
         </div>
 
-        <!-- Messages Window -->
         <div class="flex-1 overflow-y-auto scrollbar-hide space-y-6 pb-32" id="chatMessages">
-            <!-- AI Welcome Message -->
             <div class="flex gap-4 max-w-[85%]">
                 <div class="w-8 h-8 rounded-full bg-secondary-container flex-shrink-0 flex items-center justify-center">
                     <span class="material-symbols-outlined text-sm">eco</span>
                 </div>
                 <div class="glass-card p-5 rounded-2xl rounded-tl-none shadow-sm">
                     <p class="font-body-md text-body-md text-on-surface">
-                        Hola! Soy tu asistente de EcoRuta. Estoy aqui para ayudarte a optimizar tus habitos de reciclaje y encontrar los puntos de recogida mas cercanos. En que puedo ayudarte hoy?
+                        Hola! Soy EcoRoute AI. Puedo ayudarte con informacion del clima, calidad del aire y el foro de la comunidad ecologica. En que puedo ayudarte?
                     </p>
                     <span class="block mt-2 text-[10px] font-semibold text-outline tracking-wider uppercase" id="initialTime"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Typing indicator -->
         <div class="flex gap-4 max-w-[85%] mb-4" id="typingContainer" style="display: none;">
             <div class="w-8 h-8 rounded-full bg-secondary-container flex-shrink-0 flex items-center justify-center">
                 <span class="material-symbols-outlined text-sm">eco</span>
@@ -58,11 +56,10 @@
             </div>
         </div>
 
-        <!-- Input Area -->
         <div class="fixed bottom-8 left-0 right-0 px-margin-mobile md:px-margin-desktop z-20">
             <div class="max-w-4xl mx-auto">
                 <form id="chatForm" class="glass-card p-2 pr-2 pl-6 rounded-full flex items-center shadow-xl border-secondary/10 group focus-within:ring-2 ring-secondary/20 transition-all">
-                    <input type="text" class="bg-transparent border-none focus:ring-0 flex-1 font-body-md text-on-surface placeholder:text-outline/60 outline-none" id="messageInput" placeholder="Escribe tu consulta sobre reciclaje..." autocomplete="off" required />
+                    <input type="text" class="bg-transparent border-none focus:ring-0 flex-1 font-body-md text-on-surface placeholder:text-outline/60 outline-none" id="messageInput" placeholder="Pregunta sobre clima, aire, foro..." autocomplete="off" required />
                     <button type="submit" class="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform glow-mint shadow-lg" title="Enviar">
                         <span class="material-symbols-outlined">send</span>
                     </button>
@@ -75,13 +72,13 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
-            document.getElementById('initialTime').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
+            document.getElementById('initialTime').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
             const form = document.getElementById('chatForm');
             const input = document.getElementById('messageInput');
             const messagesContainer = document.getElementById('chatMessages');
             const typingContainer = document.getElementById('typingContainer');
+            const btnClearHistory = document.getElementById('btnClearHistory');
 
             function getCurrentTime() {
                 return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -90,11 +87,11 @@
             function appendMessage(text, isUser) {
                 const wrapper = document.createElement('div');
                 wrapper.className = `flex gap-4 ${isUser ? 'justify-end max-w-[85%]' : 'max-w-[85%]'}`;
-                
+
                 if (isUser) {
                     wrapper.innerHTML = `
                         <div class="bg-secondary p-5 rounded-2xl rounded-tr-none shadow-md text-white">
-                            <p class="font-body-md text-body-md">${text}</p>
+                            <p class="font-body-md text-body-md">${escapeHtml(text)}</p>
                             <span class="block mt-2 text-[10px] font-semibold text-white/70 tracking-wider uppercase text-right">${getCurrentTime()}</span>
                         </div>
                     `;
@@ -104,29 +101,41 @@
                             <span class="material-symbols-outlined text-sm">eco</span>
                         </div>
                         <div class="glass-card p-5 rounded-2xl rounded-tl-none shadow-sm">
-                            <p class="font-body-md text-body-md text-on-surface">${text}</p>
+                            <p class="font-body-md text-body-md text-on-surface whitespace-pre-wrap">${text}</p>
                             <span class="block mt-2 text-[10px] font-semibold text-outline tracking-wider uppercase">${getCurrentTime()}</span>
                         </div>
                     `;
                 }
-                
+
                 messagesContainer.appendChild(wrapper);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
 
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            btnClearHistory.addEventListener('click', async () => {
+                await fetch('@Url.Action("ClearHistory", "Chat")', { method: 'POST' });
+                messagesContainer.innerHTML = '';
+                location.reload();
+            });
+
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
+
                 const userMessage = input.value.trim();
                 if (!userMessage) return;
-                
+
                 appendMessage(userMessage, true);
                 input.value = '';
-                
+
                 messagesContainer.appendChild(typingContainer);
                 typingContainer.style.display = 'flex';
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                
+
                 try {
                     const response = await fetch('@Url.Action("Send", "Chat")', {
                         method: 'POST',
@@ -136,12 +145,12 @@
                         },
                         body: JSON.stringify({ message: userMessage })
                     });
-                    
+
                     if (!response.ok) throw new Error('Error de red');
-                    
+
                     const data = await response.json();
                     typingContainer.style.display = 'none';
-                    
+
                     if (data.response) {
                         appendMessage(data.response, false);
                     } else if (data.error) {
@@ -150,7 +159,7 @@
                 } catch (error) {
                     console.error('Error:', error);
                     typingContainer.style.display = 'none';
-                    appendMessage('Oops, parece que hubo un error de conexion con la IA. Por favor, intenta de nuevo.', false);
+                    appendMessage('Error de conexion con la IA. Intenta de nuevo.', false);
                 }
             });
         });

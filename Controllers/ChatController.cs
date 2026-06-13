@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using Proyecto_Grupo_gris.Services;
+using Proyecto_Grupo_gris.Services.Agents.Interfaces;
 
 namespace Proyecto_Grupo_gris.Controllers
 {
     public class ChatController : Controller
     {
-        private readonly ChatService _chatService;
+        private readonly IAgentService _agentService;
 
-        public ChatController(ChatService chatService)
+        public ChatController(IAgentService agentService)
         {
-            _chatService = chatService;
+            _agentService = agentService;
         }
 
         [HttpGet]
@@ -26,8 +26,15 @@ namespace Proyecto_Grupo_gris.Controllers
                 return BadRequest(new { error = "Message is required." });
             }
 
-            var response = await _chatService.SendMessageAsync(request.Message);
+            var response = await _agentService.ChatAsync(request.Message);
             return Json(new { response });
+        }
+
+        [HttpPost("Chat/ClearHistory")]
+        public async Task<IActionResult> ClearHistory()
+        {
+            await _agentService.ClearHistoryAsync();
+            return Json(new { response = "Historial limpiado." });
         }
     }
 

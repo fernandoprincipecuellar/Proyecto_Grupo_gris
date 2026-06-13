@@ -118,6 +118,12 @@ builder.Services.AddOpenAIChatCompletion(
     endpoint: new Uri(aiEndpoint));
 builder.Services.AddScoped<Proyecto_Grupo_gris.Services.ChatService>();
 
+// 🔥 AGENT IA - Semantic Kernel Agent con Plugins
+builder.Services.AddScoped<Proyecto_Grupo_gris.Services.Agents.Plugins.WeatherPlugin>();
+builder.Services.AddScoped<Proyecto_Grupo_gris.Services.Agents.Plugins.AirQualityPlugin>();
+builder.Services.AddScoped<Proyecto_Grupo_gris.Services.Agents.Plugins.ForumPlugin>();
+builder.Services.AddScoped<Proyecto_Grupo_gris.Services.Agents.Interfaces.IAgentService, Proyecto_Grupo_gris.Services.Agents.EcoRouteAgent>();
+
 // 🔥 Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
