@@ -295,26 +295,5 @@ namespace Proyecto_Grupo_gris.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ClearAll()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var comments = await context.ForumComments.ToListAsync();
-            context.ForumComments.RemoveRange(comments);
-
-            var likes = await context.ForumLikes.ToListAsync();
-            context.ForumLikes.RemoveRange(likes);
-
-            var posts = await context.ForumPosts.ToListAsync();
-            context.ForumPosts.RemoveRange(posts);
-
-            await context.SaveChangesAsync();
-            await InvalidateForumCacheAsync();
-
-            return RedirectToAction(nameof(Index));
-        }
     }
 }

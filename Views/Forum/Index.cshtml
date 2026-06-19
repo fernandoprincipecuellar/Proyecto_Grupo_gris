@@ -19,16 +19,6 @@
         </a>
     </section>
 
-    @if (User.Identity?.IsAuthenticated == true)
-    {
-        <form asp-action="ClearAll" method="post" onsubmit="return confirm('Esto borrara TODOS los reportes. Estas seguro?');" class="mb-6">
-            @Html.AntiForgeryToken()
-            <button type="submit" class="text-error text-sm underline hover:no-underline">
-                Borrar todos los reportes
-            </button>
-        </form>
-    }
-
     @if (ViewBag.LastVisitedPost != null)
     {
         var lastPost = (Proyecto_Grupo_gris.Api.DTOs.Forum.ForumPostDto)ViewBag.LastVisitedPost;
